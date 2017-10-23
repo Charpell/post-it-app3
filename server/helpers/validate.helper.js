@@ -12,7 +12,8 @@ const validStringContent = (userName, groupName) => {
   return true;
 };
 
+
 module.exports = {
   validStringLength,
-  validStringContent
+  validStringContent,
 };

@@ -11,7 +11,7 @@ describe('EndPoint: Helper Functions', () => {
 
 
   describe('EndPoint: ValidStringLength Function', () => {
-    it('It returns null when no parameter is given', () => {
+    it('should return null when no parameter is given', () => {
       expect(validStringLength('', '')).equal(null);
     });
 
@@ -19,21 +19,21 @@ describe('EndPoint: Helper Functions', () => {
       expect(validStringLength).to.be.a('function');
     });
 
-    it('It returns true when the two parameter are greater than 1', () => {
+    it('should return true when the two parameter are greater than 1', () => {
       expect(validStringLength(userName, groupName)).equal(true);
     });
 
-    it('It returns null when no group name is missing', () => {
+    it('should return null when no group name is missing', () => {
       expect(validStringLength(userName, '')).equal(null);
     });
 
-    it('It returns null when no user name is missing', () => {
+    it('should return null when no user name is missing', () => {
       expect(validStringLength('', groupName)).equal(null);
     });
   });
 
   describe('EndPoint: validStringContent Function', () => {
-    it('It returns true when no parameter is given', () => {
+    it('should return true when no parameter is given', () => {
       expect(validStringContent('', '')).equal(true);
     });
 
@@ -41,15 +41,15 @@ describe('EndPoint: Helper Functions', () => {
       expect(validStringContent).to.be.a('function');
     });
 
-    it('It returns true when the two parameter are greater than 1', () => {
+    it('should return true when the two parameter are greater than 1', () => {
       expect(validStringContent(userName, groupName)).equal(true);
     });
 
-    it('It returns false', () => {
+    it('should return false', () => {
       expect(validStringContent(userName, '.')).equal(false);
     });
 
-    it('It returns false', () => {
+    it('should return false', () => {
       expect(validStringContent('#', '&')).equal(false);
     });
   });

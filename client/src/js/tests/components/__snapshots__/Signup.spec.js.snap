@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Signup Component About component should render as expected 1`] = `
+<div>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-3"
+      />
+      <div
+        className="col-md-6 col-sm-6 col-xs-12"
+      >
+        <h3>
+          Sign Up
+        </h3>
+        <form
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              placeholder="Username"
+              required={true}
+              type="text"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              placeholder="Email"
+              required={true}
+              type="text"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              pattern="[234][0-9]{12}"
+              placeholder="Phone Number: Ex 2348066098146"
+              required={true}
+              title="It will contain only 13 numbers and must start with 234"
+              type="text"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              pattern="(?=.*\\\\d).{6,}"
+              placeholder="Password"
+              required={true}
+              title="Must contain at least 6 characters and 1 number"
+              type="password"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              pattern="(?=.*\\\\d).{6,}"
+              placeholder="Verify Password"
+              required={true}
+              type="password"
+            />
+          </div>
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div
+        className="col-sm-3"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Signup Component Signup component should render as expected 1`] = `
+<div>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-3"
+      />
+      <div
+        className="col-md-6 col-sm-6 col-xs-12"
+      >
+        <h3>
+          Sign Up
+        </h3>
+        <form
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              placeholder="Username"
+              required={true}
+              type="text"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              placeholder="Email"
+              required={true}
+              type="text"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              pattern="[234][0-9]{12}"
+              placeholder="Phone Number: Ex 2348066098146"
+              required={true}
+              title="It will contain only 13 numbers and must start with 234"
+              type="text"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              pattern="(?=.*\\\\d).{6,}"
+              placeholder="Password"
+              required={true}
+              title="Must contain at least 6 characters and 1 number"
+              type="password"
+            />
+          </div>
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              pattern="(?=.*\\\\d).{6,}"
+              placeholder="Verify Password"
+              required={true}
+              type="password"
+            />
+          </div>
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div
+        className="col-sm-3"
+      />
+    </div>
+  </div>
+</div>
+`;

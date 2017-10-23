@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import assign from 'object-assign';
+
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 import AppAPI from '../utils/appAPI';
@@ -71,13 +72,14 @@ const AppStore = assign({}, EventEmitter.prototype, {
     contactsStore = contacts;
   },
 
-  // Get All Users in the database
   getAllUsersNumber() {
     return allUsersNumberStore;
   },
+
   setAllUsersNumber(number) {
     allUsersNumberStore = number;
   },
+
   getdatabaseUsers() {
     return databaseUsersStore;
   },
@@ -86,25 +88,27 @@ const AppStore = assign({}, EventEmitter.prototype, {
     databaseUsersStore = contacts;
   },
 
-
   getAllEmails() {
     return allEmails;
   },
+
   setEmails(emails) {
     allEmails = emails;
   },
 
-  // Get the Current User who signed up with Google
   getGoogleSignup() {
     return googleSignUpStore;
   },
+
   setGoogleSignIn(googleUser) {
     loggedInPicture.push(googleUser.photoURL);
     googleSignUpStore = googleUser;
   },
+
   getGroups() {
     return groupsStore;
   },
+
   saveGroup(group) {
     groupsStore.push(group);
   },
@@ -112,9 +116,6 @@ const AppStore = assign({}, EventEmitter.prototype, {
   setGroups(groups) {
     groupsStore = groups;
   },
-
-  // Get the Current Group When the User has Clicked on A Group
-
 
   getCurrentGroup() {
     return currentGroupStore;
@@ -124,11 +125,10 @@ const AppStore = assign({}, EventEmitter.prototype, {
     currentGroupStore = group;
   },
 
-
-  // Get Users in a Group
   getGroupUsers() {
     return groupUsersStore;
   },
+
   addUserToGroup(users) {
     groupUsersStore.push(users);
   },
@@ -137,7 +137,6 @@ const AppStore = assign({}, EventEmitter.prototype, {
     groupUsersStore = users;
   },
 
-  // Get Emails in a Group
   getGroupEmails() {
     return groupEmailStore;
   },
@@ -146,7 +145,6 @@ const AppStore = assign({}, EventEmitter.prototype, {
     groupEmailStore = emails;
   },
 
-  // Get Numbers in a Group
   getGroupNumbers() {
     return groupNumbersStore;
   },
@@ -155,29 +153,30 @@ const AppStore = assign({}, EventEmitter.prototype, {
     groupNumbersStore = numbers;
   },
 
-  // Get Messages
   getMessages() {
     return messagesStore;
   },
+
   saveMessages(message) {
     messagesStore.push(message);
   },
+
   setMessages(messages) {
     messagesStore = messages;
   },
 
-  // Get Notification
   getNotification() {
     return notificationStore;
   },
+
   setNotification(notify) {
     notificationStore = notify;
   },
 
-  // Get Personal Message
   getPersonalMessage() {
     return personalMessageStore;
   },
+
   savePersonalMessage(message) {
     personalMessageStore.push(message);
   },
@@ -185,15 +184,16 @@ const AppStore = assign({}, EventEmitter.prototype, {
   setPersonalMessage(message) {
     personalMessageStore = message;
   },
+
   removeMessage(messageId) {
     const index = personalMessageStore.findIndex(x => x.id === messageId);
     personalMessageStore.splice(index, 1);
   },
 
-  // Get Archive Message
   getArchiveMessage() {
     return archiveMessageStore;
   },
+
   saveArchiveMessage(message) {
     archiveMessageStore.push(message);
   },
@@ -202,7 +202,6 @@ const AppStore = assign({}, EventEmitter.prototype, {
     archiveMessageStore = message;
   },
 
-  // Get Archive Message
   getSeenUsers() {
     return seenUsersStore;
   },
@@ -214,9 +213,11 @@ const AppStore = assign({}, EventEmitter.prototype, {
   emitChange() {
     this.emit(CHANGE_EVENT);
   },
+
   addChangeListener(callback) {
     this.on('change', callback);
   },
+
   removeChangeListener(callback) {
     this.removeListener('change', callback);
   }

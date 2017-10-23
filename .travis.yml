@@ -4,4 +4,4 @@ node_js:
 before_install:
   - travis_wait npm install
 after_script:
-  - npm run coverage
+  - npm test
