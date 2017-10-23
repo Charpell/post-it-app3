@@ -1,9 +1,12 @@
 module.exports = {
   setupFiles: [
-    '<rootDir>/mock/localStorage'
+    '<rootDir>/mock/LocalStorageMock'
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
     '/test/'
+  ],
+  coveragePathIgnorePatterns: [
+    'LocalStorageMock'
   ]
 };

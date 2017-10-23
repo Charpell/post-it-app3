@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WelcomeBoard component About component should render as expected 1`] = `
+<div
+  className="container"
+  id="main"
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12"
+      data-intro="Message Board where every messages are posted and received. Happy Posting!"
+    >
+      <div
+        className="viewMessageBoard"
+      >
+        <div
+          className="container"
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="col-sm-3"
+            />
+            <div
+              className="col-md-6 col-sm-6 col-xs-12"
+            >
+              <center>
+                <h3>
+                  Welcome 
+                </h3>
+              </center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

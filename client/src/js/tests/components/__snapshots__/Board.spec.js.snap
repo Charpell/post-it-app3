@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Board component About component should render as expected 1`] = `
+<div
+  className="container"
+  id="main"
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12"
+    >
+      <div
+        className="viewMessageBoard"
+      />
+      <div
+        className="sendMessageDiv"
+      >
+        <form
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-group col-sm-2"
+          >
+            <select
+              className="form-control"
+              id="exampleFormControlSelect1"
+            >
+              <option>
+                Normal
+              </option>
+              <option>
+                Urgent
+              </option>
+              <option>
+                Critical
+              </option>
+            </select>
+          </div>
+          <input
+            className="col-sm-10 sendMessageInput"
+            placeholder="Enter a message"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;

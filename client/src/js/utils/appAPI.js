@@ -4,13 +4,13 @@ import AppActions from '../actions/AppActions';
 
 module.exports = {
   saveContact(contact) {
-    axios.post('/user/signup', {
+    return axios.post('/user/signup', {
       userName: contact.username,
       email: contact.email,
       password: contact.password,
       number: contact.number
     }).then((response) => {
-      const user = response.data;
+      const user = response.data.userData;
       if (response.data.message ===
          'The email address is already in use by another account.') {
         toastr.error(response.data.message);
@@ -27,7 +27,7 @@ module.exports = {
   },
 
   getContacts() {
-    axios.get('/users/allusers')
+    return axios.get('/users/allusers')
       .then((contacts) => {
         AppActions.receiveContact(contacts.data);
       })
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   getNumbers() {
-    axios.get('/users/allnumbers')
+    return axios.get('/users/allnumbers')
         .then((response) => {
           AppActions.receiveNumber(response.data);
         })
@@ -47,7 +47,7 @@ module.exports = {
   },
 
   getEmails() {
-    axios.get('/users/allemails')
+    return axios.get('/users/allemails')
         .then((response) => {
           AppActions.receiveEmails(response.data);
         })
@@ -57,7 +57,7 @@ module.exports = {
   },
 
   saveGroup(group) {
-    axios.post('/group', {
+    return axios.post('/group', {
       groupName: group.groupName,
       userName: group.userName
     }).then((response) => {
@@ -68,7 +68,7 @@ module.exports = {
   },
 
   getGroups(userName) {
-    axios.get(`/group/${userName}`)
+    return axios.get(`/group/${userName}`)
     .then((response) => {
       const groups = response.data;
       AppActions.receiveGroups(groups);
@@ -78,7 +78,7 @@ module.exports = {
   },
 
   getNotifications(userName) {
-    axios.get(`/user/notification/${userName}`)
+    return axios.get(`/user/notification/${userName}`)
     .then((response) => {
       const notification = response.data;
       AppActions.receiveNotification(notification);
@@ -89,7 +89,7 @@ module.exports = {
   },
 
   addUserToGroup(addUser) {
-    axios.post('/group/groupName/user', {
+    return axios.post('/group/groupName/user', {
       groupName: addUser.groupname,
       user: addUser.userName
     })
@@ -101,7 +101,7 @@ module.exports = {
   },
 
   saveMessages(message) {
-    axios.post('/group/user/message/notification/priority', {
+    return axios.post('/group/user/message', {
       group: message.group,
       user: message.user,
       message: message.text,
@@ -118,7 +118,7 @@ module.exports = {
   seenMessage(user) {
     const groupName = user.groupName;
     const messageID = user.messageID;
-    axios.get(`/seen/${groupName}/${messageID}`)
+    return axios.get(`/seen/${groupName}/${messageID}`)
     .then((response) => {
       AppActions.receiveSeenUsers(response.data);
     })
@@ -128,21 +128,18 @@ module.exports = {
   },
 
   login(contact) {
-    axios.post('/user/signin', {
+    return axios.post('/user/signin', {
       email: contact.email,
       password: contact.password
     }).then((response) => {
       const user = response.data.userData;
-      const groups = response.data.groups;
-
-      if (response.data === 'There is no user record corresponding to this identifier. The user may have been deleted.') {
+      if (response.data === 'There is no user record corresponding to this ') {
         toastr.error(response.data);
       } else if (response.data.message ===
          'The password is invalid or the user does not have a password.') {
         toastr.error(response.data.message);
       } else {
         AppActions.receiveLogin(user);
-        AppActions.receiveGroups(groups);
         toastr.success('Welcome To PostIt');
       }
     }).catch(() => {
@@ -151,7 +148,7 @@ module.exports = {
   },
 
   setLogout() {
-    axios.post('/user/signout').then((response) => {
+    return axios.post('/user/signout').then((response) => {
       toastr.success(response.data.message);
     }).catch((error) => {
       toastr.error(error);
@@ -161,7 +158,7 @@ module.exports = {
   searchUserMessageInGroup(group) {
     const groupName = group.groupName;
     const user = group.userName;
-    axios.get(`/groups/${groupName}/${user}`)
+    return axios.get(`/groups/${groupName}/${user}`)
       .then((response) => {
         const messages = response.data.messages;
         const users = response.data.users;
@@ -179,7 +176,7 @@ module.exports = {
     const number = googleUser.number;
     const uid = googleUser.uid;
 
-    axios.post('/google/signup', {
+    return axios.post('/google/signup', {
       userName,
       email,
       number,
@@ -194,7 +191,7 @@ module.exports = {
   },
 
   resetPassword(email) {
-    axios.post('/user/reset', { email
+    return axios.post('/user/reset', { email
     }).then((response) => {
       toastr.success(response.data.message);
     }).catch((error) => {
