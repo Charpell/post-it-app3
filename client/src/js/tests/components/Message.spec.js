@@ -1,55 +1,70 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import Message from '../../components/Dashboard/Message'
+import Message from '../../components/container/Message'
 import AppActions from '../../actions/AppActions'
 
 jest.mock('../../../../../server/config', () => ({
-  }));
+}));
 jest.mock('../../actions/AppActions');
 
 let spyOnDispatcher;
 beforeEach(() => {
-spyOnDispatcher = jest.spyOn(AppActions, 'resetPassword');
+  spyOnDispatcher = jest.spyOn(AppActions, 'seenMessage');
 });
 
 afterEach(() => {
-spyOnDispatcher.mockReset();
+  spyOnDispatcher.mockReset();
 });
 
+
 describe('Message component', () => {
-  it('It should render Message component', () => {
+  const props = {
+    message: [{ message: 'I am a message' }],
+    group:'Andela'
+  }
+
+
+  it('should create a snapshot of itself', () => {
     const tree = renderer.create(<Message />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  it('It should display the necessary elements', () => {
-    const wrapper = shallow(<Message />);
+  const wrapper = mount(<Message {...props} />);
+
+  it('should display the necessary elements', () => {
+    expect(wrapper.props().message).toEqual([{ message: 'I am a message' }])
+    expect(wrapper.props().group).toEqual('Andela')
+  });
+
+  it('should display the necessary elements', () => {
+    expect(wrapper.find('div').length).toBe(2);
+    expect(wrapper.find('p').length).toBe(1);
+    expect(wrapper.find('span').length).toBe(2);
+  });
+
+
+  it('expects the following functions defined', () => {
     wrapper.instance().componentWillMount();
     wrapper.instance().componentWillUnmount();
-    expect(wrapper.find('div').length).toBe(6);
-    expect(wrapper.find('h2').length).toBe(1);
-    expect(wrapper.find('h4').length).toBe(1);
-    expect(wrapper.find('form').length).toBe(1);
-    expect(wrapper.find('input').length).toBe(1);
-    expect(wrapper.find('a').length).toBe(1);
-    expect(wrapper.find('br').length).toBe(3);
-});
+    wrapper.instance().onChange();
+    wrapper.instance().closeModal();
+  });
 
-  it('It should expect handleSeenMessage AppAction to be called', () => {
+
+  it('should expect seenMessage AppAction to be called', () => {
     const spyOnDispatcher = spyOn(AppActions, 'seenMessage');
     const event = {
-        target: {
-          name: 'name',
-          value: 'value',
-        },
-        preventDefault: () => jest.fn()
-      };
-    const wrapper = mount(<Message />);
-    wrapper.instance().refs.email.value = 'someemail@email.com';
+      target: {
+        name: 'name',
+        value: 'value',
+      },
+      preventDefault: () => jest.fn()
+    };
+
     wrapper.instance().handleSeenMessage(event);
     expect(spyOnDispatcher).toHaveBeenCalled();
-});
+  });
 
 });
 

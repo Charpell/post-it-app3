@@ -5,3 +5,4 @@ before_install:
   - travis_wait npm install
 after_script:
   - npm test
+  - npm run client-test

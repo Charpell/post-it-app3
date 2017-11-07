@@ -1,7 +1,8 @@
 import AppConstants from '../../constants/AppConstants';
 
-const AppAction = {
-  action: AppConstants.RECEIVE_LOGIN,
+const StoreMock = {
+  actionType: AppConstants.RECEIVE_LOGIN,
+  userStore: 'Sly'
 };
 
-export default AppAction;
+export default StoreMock;

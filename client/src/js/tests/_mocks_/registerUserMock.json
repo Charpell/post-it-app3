@@ -1,0 +1,10 @@
+{
+  "message": "Welcome to Post it app",
+  "userData": {
+      "uid": "2q0WzE1QqWXGQb5ji4011hgR1602",
+      "displayName": "Fred",
+      "email": "ddd@gt.njg",
+      "redirectEventId": null
+  },
+  "myToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNwbGF5TmFtZSI6IkhoIiwiZW1haWwiOiJkZGRAZ3QubmpnIiwiaWF0IjoxNTA5NjMyNDkwLCJleHAiOjE1MDk2MzYwOTB9.2JpqQzrNOwzSAMKOgaAhUAXlUhUF7yQ8fkEXNFZ9CTg"
+}

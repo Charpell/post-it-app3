@@ -1,83 +1,102 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import Signin from '../../components/Signin'
-import GoogleWelcome from '../../components/GoogleWelcome'
-import AppActions from '../../actions/AppActions'
-
-jest.mock('../../../../../server/config', () => ({
-    provider: {
-        addScope: jest.fn()
-    },
-    firebase: {
-        auth: () => {
-            return {
-                signInWithPopup: () => (
-                    Promise.resolve()
-                )
-            }
-        }
-    }
-  }));
-jest.mock('../../actions/AppActions');
+import Signin from '../../components/container/Signin';
+import GoogleWelcome from '../../components/container/GoogleWelcome';
+import AppActions from '../../actions/AppActions';
+import GoogleButton from 'react-google-button';
+import AppStore from '../../stores/AppStore';
+import Input from '../../components/presentation/Input.jsx'
+import firebase from '../../../../../server/config'
 
 
-let spyOnDispatcher;
-beforeEach(() => {
+jest.mock('../../../../../server/config', () => {
+/**
+ * @description describes a function that mocks firebase module,
+ * fires it action to make an Api call, returns a promise that is mocked
+ *
+ * @param { void } void takes no parameter
+ *
+ * @return { object } mockfirebase object
+ *
+ * @function Test
+ */
+  function Test() {
 
+  }
+  const mockFirebase = jest.fn().mockReturnValue({
+    signInWithPopup: jest.fn().mockReturnValue(Promise.resolve({
+      googleUser: 'testUser'
+    }))
+  });
+  Test.prototype.addScope = jest.fn();
+  mockFirebase.GoogleAuthProvider = Test;
+  return {
+    auth: mockFirebase,
+  };
 });
 
-afterEach(() => {
-spyOnDispatcher.mockReset();
-});
+const googleSpy = jest.spyOn(AppActions, 'googleLogin');
+const loginUserSpy = jest.spyOn(AppActions, 'loginUser'); 
+const getGoogleSignupSpy = jest.spyOn(AppStore, 'getGoogleSignup');
+const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
+
 
 describe('Signin Component', () => {
-  it('It should expect Signin Component to render ', () => {
-    const tree = renderer.create(<Signin />).toJSON();
-    expect(tree).toMatchSnapshot();
+
+  const wrapper = mount(<Signin />);
+  it('should have an empty initial state as the component ', () => {
+    expect(wrapper.state().emails).toHaveLength(0);
+    expect(wrapper.state().googleComponent).toEqual(false);
+    expect(wrapper.state().googleUser).toEqual(null);
+    expect(wrapper.state().email).toEqual('');
+    expect(wrapper.state().password).toEqual('');
   });
 
-  it('should display the necessary elements', () => {
-    const wrapper = mount(<Signin />);
+  it('should have all the method in the component to be defined', () => {
+    expect(wrapper.node.handleChange).toBeDefined();
+    expect(wrapper.node.handleSubmit).toBeDefined();
+    expect(wrapper.node.handleGoogleSignin).toBeDefined();
+    expect(wrapper.node.onChange).toBeDefined();
+  });
+  
+  it('should sign in a validated user', () => {
+    wrapper.setState({
+      email: 'testemail@email.com',
+      password: 'test'
+    })
+    wrapper.find('form').simulate('submit')
+    expect(loginUserSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call componentDidMount lifecycle', () => {
+    expect(addChangeListenerSpy).toHaveBeenCalled();
+  });
+
+  it('should find all component rendered element', () => {
+    expect(wrapper.find(GoogleButton)).toHaveLength(1);
+    expect(wrapper.find('Input').length).toEqual(2);
+    expect(wrapper.find('button')).toHaveLength(1);
+  })
+
+  it('expects the following functions defined', () => {
+    const event = {
+      target: {
+        name: 'name',
+        value: 'value',
+      },
+      preventDefault: () => jest.fn()
+    };
+    wrapper.instance().componentDidMount();
     wrapper.instance().componentWillUnmount();
-    expect(wrapper.find('div').length).toBe(7);
-    expect(wrapper.find('h2').length).toBe(1);
-    expect(wrapper.find('h4').length).toBe(1);
-    expect(wrapper.find('form').length).toBe(1);
-    expect(wrapper.find('input').length).toBe(1);
-    expect(wrapper.find('a').length).toBe(1);
-    expect(wrapper.find('br').length).toBe(3);
-    expect(wrapper.find(GoogleWelcome)).to.have.length(1);
-});
-
-it('It should expect login Action to be called', () => {
-    const spyOnDispatcher = spyOn(AppActions, 'login');
-    const event = {
-        target: {
-          name: 'name',
-          value: 'value',
-        },
-        preventDefault: () => jest.fn()
-      };
-    const wrapper = mount(<Signin />);
-    wrapper.instance().refs.email.value = 'someemail@email.com';
     wrapper.instance().handleSubmit(event);
-    expect(spyOnDispatcher).toHaveBeenCalled();
-});
+    wrapper.instance().onChange();
+  });
 
-it('It should expect receivelogin Action to be called', () => {
-    const spyOnDispatcher = spyOn(AppActions, 'google');
-    const event = {
-        target: {
-          name: 'name',
-          value: 'value',
-        },
-        preventDefault: () => jest.fn()
-      };
-    const wrapper = mount(<Signin />);
-    wrapper.instance().refs.email.value = 'someemail@email.com';
-    wrapper.instance().handleGoogleSignin(event);
-    expect(spyOnDispatcher).toHaveBeenCalled();
-});
-
+  xit('should call firebase', () => {
+    wrapper.find(GoogleButton).simulate('click');
+    expect(firebase.auth.GoogleAuthProvider.prototype.addScope)
+    .toHaveBeenCalledTimes(2);
+    expect(firebase.auth().signInWithPopup).toHaveBeenCalled();
+  })
 });

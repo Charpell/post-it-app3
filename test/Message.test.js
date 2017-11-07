@@ -1,28 +1,26 @@
-import chaiHttp from 'chai-http';
 import chai from 'chai';
 import request from 'supertest';
 
-import app from './../server/app';
+import app from '../server/app';
 
-
-chai.use(chaiHttp);
 const should = chai.should();
 const expect = chai.expect;
-const email = 'newton@gmail.com';
+
+const email = 'yank@gmail.com';
 const password = '123456';
 
 describe('Create Message', () => {
   const group = 'Facebook';
-  const user = 'Newton';
+  const user = 'Yank';
   const message = 'This is a test message';
-  const notification = 'Newton has posted in Facebook group';
+  const notification = 'Yank has posted in Facebook group';
   const priority = 'Normal';
 
 
-  it('should return status 200 when the user logs in',
+  it('should successfully sign in a resgistered user',
   (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email, password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -31,23 +29,17 @@ describe('Create Message', () => {
         res.body.should.have.property('message')
         .eql('Welcome to Post it app');
         res.body.should.have.nested.property('userData.email')
-        .eql('newton@gmail.com');
+        .eql('yank@gmail.com');
         res.body.should.have.nested.property('userData.displayName')
-        .eql('Newton');
-        res.body.should.have.nested.property('userData.uid')
-        .eql('iw1fohfINNfbOJbjBwy0jDQ8rlH2');
-        res.body.should.have.nested.property('userData.apiKey')
-        .eql('AIzaSyDx5Xi4OxL1F18jqNO1L1JyAhO8CM3J3h0');
-        res.body.should.have.nested.property('userData.authDomain')
-        .eql('post-it-app-8b2cb.firebaseapp.com');
+        .eql('Yank');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 201 when a message is created', (done) => {
+  it('should successfully create a message', (done) => {
     request(app)
-      .post('/group/user/message')
+      .post('/api/v1/group/user/message')
       .send({ group, user, message, notification, priority })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -64,10 +56,10 @@ describe('Create Message', () => {
         .eql('Facebook');
         res.body.should.have.property('user');
         res.body.should.have.property('user')
-        .eql('Newton');
+        .eql('Yank');
         res.body.should.have.property('notification');
         res.body.should.have.property('notification')
-        .eql('Newton has posted in Facebook group');
+        .eql('Yank has posted in Facebook group');
         res.body.should.have.property('priority');
         res.body.should.have.property('priority')
         .eql('Normal');
@@ -76,48 +68,82 @@ describe('Create Message', () => {
   });
 
 
-  it('should return status 400 when the Group Name or Message field is Invalid',
+  it('should return validation error if the group name field is undefined',
     (done) => {
       request(app)
-      .post('/group/user/message')
-      .send({ notification, priority, user, group: '', message: '' })
+      .post('/api/v1/group/user/message')
+      .send({ notification, priority, user, message })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
-        res.body.should.have.property('message')
-        .eql('The Message or Groupname field is invalid');
+        res.body.should.have.property('errorMessage');
+        res.body.should.have.property('errorMessage')
+        .eql('Group name is required');
         if (err) return done(err);
         done();
       });
     });
 
-  it('should return status 400 when Notification or Priority field is Invalid',
+  it('should return validation error if the group name field is missing',
   (done) => {
     request(app)
-      .post('/group/user/message')
-      .send({ group, user, message, notification: '', priority: '' })
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        res.status.should.equal(400);
-        res.body.should.be.a('object');
-        res.body.should.have.property('message');
-        res.body.should.have.property('message')
-        .eql('The Notification or Priority field is invalid');
-        if (err) return done(err);
-        done();
-      });
+    .post('/api/v1/group/user/message')
+    .send({ notification, priority, user, group: '', message })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('errorMessage');
+      res.body.should.have.property('errorMessage')
+      .eql('Group name is required');
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('should return validation error if the user name field is undefined',
+  (done) => {
+    request(app)
+    .post('/api/v1/group/user/message')
+    .send({ notification, priority, group, message })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('errorMessage');
+      res.body.should.have.property('errorMessage')
+      .eql('Username is required');
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('should return validation error if the user name field is missing',
+  (done) => {
+    request(app)
+    .post('/api/v1/group/user/message')
+    .send({ notification, priority, user: '', group, message })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('errorMessage');
+      res.body.should.have.property('errorMessage')
+      .eql('Username is required');
+      if (err) return done(err);
+      done();
+    });
   });
 });
 
-describe('EndPoint: Users who have read a message', () => {
-  it('should return status 200 when the all notification is received',
+describe('EndPoint: Read Message', () => {
+  it('should successfully return all notifications of a user',
   (done) => {
-    const groupName = 'Bl';
-    const messageID = '-KwiOgTT0onFnS1WltCn';
+    const groupName = 'Lll';
+    const messageID = '-KyFtHJMfy45vGEpW5kL';
     request(app)
-      .get(`/seen/${groupName}/${messageID}`)
+      .get(`/api/v1/seen/${groupName}/${messageID}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
@@ -129,10 +155,10 @@ describe('EndPoint: Users who have read a message', () => {
         expect('users').to.have.lengthOf(5);
         res.body.should.have.property('groupName');
         res.body.should.have.nested.property('groupName')
-        .eql('Bl');
+        .eql('Lll');
         res.body.should.have.property('messageID');
         res.body.should.have.nested.property('messageID')
-        .eql('-KwiOgTT0onFnS1WltCn');
+        .eql('-KyFtHJMfy45vGEpW5kL');
         if (err) return done(err);
         done();
       });
