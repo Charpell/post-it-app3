@@ -4,10 +4,11 @@ import GoogleButton from 'react-google-button';
 
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import { firebase, provider } from '../../../../../server/config';
+import config from '../../../../../server/config';
 import { validateEmail } from '../../helpers/utils';
 import GoogleWelcome from './GoogleWelcome';
 import Input from '../presentation/Input';
+const { firebase, provider } = config;
 
 
 /**
@@ -130,7 +131,6 @@ class Signin extends Component {
       .then((result) => {
         const { photoURL, uid, email } = result.user;
         const displayName = firstName(result.user.displayName);
-        localStorage.setItem('photoURL', JSON.stringify(photoURL));
         const googleUser = {
           displayName,
           email,

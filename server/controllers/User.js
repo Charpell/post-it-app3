@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 import config from './../config';
 import { capitalizeFirstLetter, queryUserDatabase } from './../helpers/utils';
 
@@ -115,9 +117,19 @@ class User {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then((user) => {
+      const displayName = user.displayName;
+
+      const myToken = jwt.sign({
+        displayName,
+        email
+      },
+      process.env.TOKEN_SECRET,
+      { expiresIn: 60 * 1 });
+
       res.status(200).send({
         message: 'Welcome to Post it app',
         userData: user,
+        myToken
       });
     }).catch((error) => {
       const errorCode = error.code;

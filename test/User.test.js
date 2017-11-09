@@ -629,12 +629,12 @@ describe('EndPoint: Reset Password', () => {
 describe('EndPoint: Phone Numbers', () => {
   it('should successfully return numbers in user database', (done) => {
     request(app)
-      .get('/api/v1/users/allnumbers')
+      .get('/api/v1/users/numbers')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(18);
+        res.body.should.have.lengthOf(19);
         expect(res.body).include(
           '2345677676878',
           '2345677676338',
@@ -655,12 +655,12 @@ describe('EndPoint: Phone Numbers', () => {
 describe('EndPoint: Emails', () => {
   it('should successfully return emails in user database', (done) => {
     request(app)
-      .get('/api/v1/users/allemails')
+      .get('/api/v1/users/emails')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(18);
+        res.body.should.have.lengthOf(19);
         expect(res.body).include(
           'wesumeh@gmail.com',
           'emekasmithyu@gmal.com',
@@ -681,12 +681,12 @@ describe('EndPoint: Emails', () => {
 describe('EndPoint: Users', () => {
   it('should successfully return the users in user database', (done) => {
     request(app)
-      .get('/api/v1/users/allusers')
+      .get('/api/v1/users/users')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(18);
+        res.body.should.have.lengthOf(19);
         expect(res.body).include(
           'Abdul-Quddus',
           'Gideon',

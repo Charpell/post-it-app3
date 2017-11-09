@@ -34,7 +34,7 @@ const AppAPI = {
   login(userDetails) {
     return axios.post('/api/v1/user/signin', userDetails)
     .then((response) => {
-      const user = response.data.userData;
+      const user = response.data;
       AppActions.receiveLogin(user);
       toastr.success('Welcome To PostIt');
     }).catch(getServerErrors);
@@ -64,11 +64,14 @@ const AppAPI = {
    * @returns { Object } returns an object containing user's group
    */
   getGroups(userName) {
-    return axios.get(`/api/v1/group/${userName}`)
+    return axios.get(`/api/v1/group/${userName}`,
+    { headers: { authorization: localStorage.getItem('token') } })
     .then((response) => {
       const groups = response.data;
       AppActions.receiveGroups(groups);
-    }).catch(getClientErrors);
+    }).catch((err) => {
+      getClientErrors(err);
+    });
   },
 
    /**

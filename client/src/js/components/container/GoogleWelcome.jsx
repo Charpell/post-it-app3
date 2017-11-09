@@ -86,12 +86,13 @@ export default class GoogleWelcome extends Component {
     */
   handleSubmit(event) {
     event.preventDefault();
-    const contact = { ...this.state.googleDetail, number: this.state.number };
+    const userDetails = { ...this.state.googleDetail,
+      number: this.state.number };
 
     if (this.state.numbers.includes(this.state.number)) {
       toastr.error('The phone number already exist');
     } else {
-      AppActions.googleSignup(contact);
+      AppActions.googleSignup(userDetails);
     }
   }
 

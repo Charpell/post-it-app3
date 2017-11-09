@@ -84,7 +84,8 @@
     "no-unused-vars": false,
     "localStorage": true,
     "location": true,
-    "document": true
+    "document": true,
+    "window": true
   },
   "parser": "babel-eslint",
   "parserOptions": {

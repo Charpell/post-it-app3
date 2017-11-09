@@ -3,7 +3,7 @@
 exports[`Message component should create a snapshot of itself 1`] = `
 <div>
   <a
-    className="list-group-item list-group-item-action flex-column align-items-start"
+    className="list-group-item list-group-item-action"
     href="#"
   >
     <div
@@ -31,5 +31,22 @@ exports[`Message component should create a snapshot of itself 1`] = `
       className="mb-1"
     />
   </a>
+  <div>
+    <li
+      className="collapsed"
+      data-toggle="collapse"
+      onClick={undefined}
+    >
+      <a
+        href="#"
+        onClick={undefined}
+      >
+        <i
+          className="fa fa-globe fa-lg"
+        />
+          
+      </a>
+    </li>
+  </div>
 </div>
 `;

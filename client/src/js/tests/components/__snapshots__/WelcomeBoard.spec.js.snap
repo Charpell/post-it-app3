@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`WelcomeBoard component WelcomeBoard component should render as expected 1`] = `
+exports[`WelcomeBoard component should create a snapshot of itself 1`] = `
 <div
   className="container"
   id="main"

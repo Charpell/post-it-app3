@@ -92,8 +92,27 @@ export const sendEmailNotification = (group, priority) => {
         to: emails,
         subject: 'New Message Received',
         text: 'PostIt App ?',
-        html: `<p>Hello</p>This is to notify you that a 
-        message has been posted in ${group} group`
+        html: `
+        <div style="width: 100%; background-color: #f2f2f2; padding: 2%;">
+        <div style="width: 60%; background-color: white; margin: auto;">
+          <div style="height:40px; background-color: #2e353d ; width:100%">
+            <center><h2 style="padding-top: 7px; color: #f2f2f2;">Post-it</h2>
+            </center>
+          </div>
+          <div style="padding: 4%">
+            <div class="row">
+              <p>This email has been sent to you because you have a message
+               from Post-iT</p>
+              <p>Please follow this link to log in: <a style="background-color: 
+              #2e353d; padding: 5px;cursor: pointer; color: #f2f2f2;
+               text-decoration: none;" 
+              href="post-it-app35.herokuapp.com">Go to Post-it</a></p>
+              <div style="border-top: 3px solid #2e353d ;"></div>
+              <p style="font-weight: bold; color: #2e353d ">The PostIt Team</p>
+            </div>
+          </div>
+        </div>
+      </div>`
       };
       transporter.sendMail(mailOptions, () => {
       });

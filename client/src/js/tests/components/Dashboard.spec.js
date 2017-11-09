@@ -4,12 +4,12 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 
 import Dashboard from '../../components/container/Dashboard';
-import DashboardNavigation from '../../components/container/DashboardNavigation';
+import DashboardNavigation from
+'../../components/container/DashboardNavigation';
 import MessageBoard from '../../components/container/MessageBoard';
 import SideBar from '../../components/presentation/SideBar';
 import WelcomeBoard from '../../components/presentation/WelcomeBoard';
 import localStorageMock from '../../../../../mock/LocalStorageMock';
-import AppStore from '../../stores/AppStore';
 
 window.localStorage = localStorageMock;
 
@@ -20,7 +20,6 @@ jest.mock('../../stores/AppStore');
 
 
 const mock = jest.fn();
-const getAuthenticatedStateSpy = jest.spyOn(AppStore, 'getUser');
 
 
 describe('Dashboard Component', () => {
@@ -32,7 +31,7 @@ describe('Dashboard Component', () => {
     databaseUsers: ['James', 'August'],
     notification: ['James posted in Andela Group']
   };
-  
+
   const wrapper = shallow(<Dashboard />);
 
   it('should contain a <WelcomeBoard /> component', () => {
@@ -48,10 +47,8 @@ describe('Dashboard Component', () => {
   });
 
   it('should return initial default state inside the component', () => {
-    expect(wrapper.state().user).toEqual('');
     expect(wrapper.state().allUsers.length).toEqual(0);
     expect(wrapper.state().currentGroup).toEqual('');
-    expect(wrapper.state().databaseUsers.length).toEqual(0);
     expect(wrapper.state().groups.length).toEqual(0);
     expect(wrapper.state().notification.length).toEqual(0);
   });
@@ -60,17 +57,15 @@ describe('Dashboard Component', () => {
     () => {
       wrapper.setState(newStateProperty);
       expect(wrapper.state('user')).toEqual('Ebuka');
-      expect(wrapper.state().allUsers.length).toEqual(2);
       expect(wrapper.state().currentGroup).toEqual('Andela');
-      expect(wrapper.state().databaseUsers.length).toEqual(2);
       expect(wrapper.state().groups.length).toEqual(2);
       expect(wrapper.state().notification.length).toEqual(1);
       expect(wrapper.find(MessageBoard)).toHaveLength(1);
     });
 
-    it('expects the following functions to be defined', () => {
-      wrapper.instance().componentDidMount();
-      wrapper.instance().componentWillUnmount();
-      wrapper.instance().onChange();
-    });
+  it('expects the following functions to be defined', () => {
+    wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillUnmount();
+    wrapper.instance().onChange();
+  });
 });

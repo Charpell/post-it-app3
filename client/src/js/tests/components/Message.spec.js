@@ -38,7 +38,7 @@ describe('Message component', () => {
   });
 
   it('should display the necessary elements', () => {
-    expect(wrapper.find('div').length).toBe(2);
+    expect(wrapper.find('div').length).toBe(3);
     expect(wrapper.find('p').length).toBe(1);
     expect(wrapper.find('span').length).toBe(2);
   });

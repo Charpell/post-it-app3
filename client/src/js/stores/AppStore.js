@@ -8,7 +8,6 @@ import AppAPI from '../utils/AppAPI';
 const CHANGE_EVENT = 'change';
 
 let isAuthenticated = false;
-let contactsStore = [];
 let currentGroupStore = '';
 let messagesStore = [];
 let groupsStore = [];
@@ -18,7 +17,6 @@ let notificationStore = [];
 let allUsersNumberStore = [];
 let seenUsersStore = [];
 let googleSignUpStore = null;
-const profilePicture = [];
 let allEmails = [];
 
 const AppStore = assign({}, EventEmitter.prototype, {
@@ -69,32 +67,10 @@ const AppStore = assign({}, EventEmitter.prototype, {
  * @returns { void } void
  */
   saveUser(user) {
-    localStorage.setItem('user', JSON.stringify(user.displayName));
+    localStorage.setItem('user', JSON.stringify(user.userData.displayName));
+    localStorage.setItem('token', user.myToken);
   },
 
-/**
- * @description describes a function that returns list of users
- *
- * @method getContacts
- *
- * @returns { Object } returns list of users
- */
-  getContacts() {
-    return contactsStore;
-  },
-
-/**
- * @description describes a function that fetches users
- *
- * @method setContacts
- *
- * @param { Object } contacts
- *
- * @returns { void } void
- */
-  setContacts(contacts) {
-    contactsStore = contacts;
-  },
 
 /**
  * @description describes a function that returns list of numbers
@@ -191,13 +167,11 @@ const AppStore = assign({}, EventEmitter.prototype, {
  * @returns { void } void
  */
   setGoogleSignIn(googleUser) {
-    profilePicture.push(googleUser.photoURL);
     googleSignUpStore = googleUser;
   },
 
 /**
  * @description describes a function that returns groups the user belongs to
- *
  *
  * @method getGroups
  *

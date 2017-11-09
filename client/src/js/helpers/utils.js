@@ -37,8 +37,8 @@ export const getClientErrors = (error) => {
 
 
 /**
-	* @description decribes a method that validates the user's email
-	*
+ * @description decribes a method that validates the user's email
+ *
  * @function validateEmail
  *
  * @param { email } email to verify

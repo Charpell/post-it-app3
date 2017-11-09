@@ -177,7 +177,7 @@ describe('PostIt AppActions', () => {
   it('should dispatch a view action of type POST_MESSAGE', () => {
     AppActions.postMessage(message);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
-      actionType: AppConstants.SAVE_MESSAGE,
+      actionType: AppConstants.POST_MESSAGE,
       message
     });
   });

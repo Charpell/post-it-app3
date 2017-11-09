@@ -26,11 +26,10 @@ export default class DashBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allUsers: [],
       groups: [],
-      contacts: [],
+      groupUsers: [],
       currentGroup: '',
-      databaseUsers: [],
+      allUsers: [],
       notification: []
     };
     this.onChange = this.onChange.bind(this);
@@ -41,7 +40,7 @@ export default class DashBoard extends Component {
    * @method componentWillMount
    *
    * @description Adds an event Listener to the Store and fires when
-   *the component is fully mounted.
+   * the component is fully mounted.
    *
    * @return {void}
    *
@@ -76,12 +75,11 @@ export default class DashBoard extends Component {
    */
   onChange() {
     this.setState({
-      contacts: AppStore.getGroupUsers(),
+      groupUsers: AppStore.getGroupUsers(),
       groups: AppStore.getGroups(),
       currentGroup: AppStore.getCurrentGroup(),
-      databaseUsers: AppStore.getDatabaseUsers(),
+      allUsers: AppStore.getDatabaseUsers(),
       notification: AppStore.getNotification(),
-      allUsers: AppStore.getContacts(),
     });
   }
 
@@ -95,8 +93,6 @@ export default class DashBoard extends Component {
    */
   render() {
     const userName = JSON.parse(localStorage.getItem('user'));
-    const photoURL = JSON.parse(localStorage.getItem('photoURL')) ||
-    'https://history.indiana.edu/images/no-photo.jpg';
     return (
       <div>
         <div className="nav-side-menu" >
@@ -108,31 +104,19 @@ export default class DashBoard extends Component {
             data-toggle="collapse" data-target="#menu-content"></i>
           <div className="menu-list">
             <ul id="menu-content" className="menu-content collapse out">
-              <li>
-                <a href="#">
-                  <i className="fa fa-dashboard fa-lg"></i>&nbsp;
-                  <img
-                    src={photoURL}
-                    alt="Smiley face"
-                    height="42"
-                    width="42"
-                  />&nbsp;{userName}
-                </a>
-              </li>
-              <br />
-
+                &nbsp;&nbsp;&nbsp;{userName}
               <DashboardNavigation
                 group={this.state.groups}
                 user={this.state.user}
-                allUsers={this.state.databaseUsers}
+                allUsers={this.state.allUsers}
                 notification={this.state.notification}
                 userName ={userName}
               />
               <br />
 
               <SideBar
-                contact={this.state.contacts}
-                group={this.state.groups}
+                groupUsers={this.state.groupUsers}
+                groups={this.state.groups}
                 currentGroup={this.state.currentGroup}
               />
             </ul>

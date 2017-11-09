@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ResetPassword component should render MessageBoard component 1`] = `
+exports[`MessageBoard component should render MessageBoard component 1`] = `
 <div
   className="container"
   id="main"
@@ -12,7 +12,7 @@ exports[`ResetPassword component should render MessageBoard component 1`] = `
       className="col-md-12"
     >
       <div
-        className="viewMessageBoard"
+        className="viewMessageMessageBoard"
       />
       <div
         className="sendMessageDiv"

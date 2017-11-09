@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Groups component should render Groups component 1`] = `
+exports[`Groups component should create a snapshot of itself 1`] = `
 <li
   onClick={[Function]}
 >

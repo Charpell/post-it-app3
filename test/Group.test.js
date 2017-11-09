@@ -10,7 +10,7 @@ const email = 'jat@gmail.com';
 const password = '123456';
 
 describe('Create Group', () => {
-  const group = 'Songla';
+  const group = 'Denoe';
   const userName = 'Ebuka';
 
   it('should successfully sign in a resgistered user',
@@ -110,7 +110,7 @@ describe('Create Group', () => {
         res.body.should.have.property('message');
         res.body.should.have.property('groupName');
         res.body.should.have.nested.property('groupName')
-        .eql('Songla');
+        .eql('Denoe');
         res.body.should.have.nested.property('userName')
         .eql('Ebuka');
         if (err) return done(err);
@@ -212,7 +212,7 @@ describe('EndPoint: Users and Messages in a Group',
   });
 });
 
-describe('EndPoint: Get all Groups of a User', () => {
+describe('EndPoint: Get all Groups', () => {
   it('should successfully sign in a resgistered user',
   (done) => {
     request(app)
@@ -241,14 +241,15 @@ describe('EndPoint: Get all Groups of a User', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(6);
+        res.body.should.have.lengthOf(7);
         res.body.should.be.eql([
           { groupName: 'Lll' },
           { groupName: 'Ann' },
           { groupName: 'Bnbt' },
           { groupName: 'Bvbv' },
           { groupName: 'Yuio' },
-          { groupName: 'Wan' }
+          { groupName: 'Wan' },
+          { groupName: 'Blhh' }
         ]);
         if (err) return done(err);
         done();

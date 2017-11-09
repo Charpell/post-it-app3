@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Home It should render Home component 1`] = `
+exports[`Home should create a snapshot of itself 1`] = `
 <div
   className="container"
 >

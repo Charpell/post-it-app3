@@ -24,10 +24,10 @@ export default class SideBar extends Component {
   render() {
     const userName = JSON.parse(localStorage.getItem('user'));
 
-    const groups = this.props.group.map((keyName, keyIndex) =>
+    const groups = this.props.groups.map((keyName, keyIndex) =>
     <Groups KeyName={keyName} key={keyIndex} userName={this.props.userName}/>);
 
-    const allUsers = this.props.contact.map((keyName, keyIndex) =>
+    const groupUsers = this.props.groupUsers.map((keyName, keyIndex) =>
     <Users KeyName={keyName} key={keyIndex}/>);
 
     return (
@@ -44,7 +44,7 @@ export default class SideBar extends Component {
         <br />
 
         <ModalButton menuName={'Users'}/>
-          {allUsers}
+          {groupUsers}
         <br />
       </div>
     );

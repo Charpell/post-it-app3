@@ -3,6 +3,7 @@ import User from './controllers/User';
 import Group from './controllers/Group';
 import Message from './controllers/Message';
 import Validate from './helpers/Validate';
+import jwtTokenValidation from './helpers/jwtTokenValidation';
 
 const router = express.Router();
 
@@ -19,8 +20,8 @@ User.signout);
 router.post('/api/v1/user/reset/', Validate.isAuthenticated,
 User.resetPassword);
 
-router.post('/api/v1/group', Validate.isAuthenticated, Validate.createGroup,
-Group.createGroup);
+router.post('/api/v1/group', Validate.isAuthenticated,
+Validate.createGroup, Group.createGroup);
 
 router.post('/api/v1/group/groupName/user', Validate.isAuthenticated,
 Validate.addUserToGroup, Group.addUserToGroup);
