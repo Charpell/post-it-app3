@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Users component should render as expected 1`] = `
+<li
+  className="collapsed"
+  data-toggle="collapse"
+>
+  <a
+    href="#"
+  >
+    <i
+      className="fa fa-globe fa-lg"
+    />
+      
+  </a>
+</li>
+`;

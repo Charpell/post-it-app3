@@ -3,239 +3,414 @@ import assign from 'object-assign';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
-import AppAPI from '../utils/appAPI';
+import AppAPI from '../utils/AppAPI';
 
 const CHANGE_EVENT = 'change';
 
-let userStore = '';
-let authenticate = false;
-let contactsStore = [];
+let isAuthenticated = false;
 let currentGroupStore = '';
 let messagesStore = [];
 let groupsStore = [];
 let groupUsersStore = [];
-let groupEmailStore = [];
-let groupNumbersStore = [];
 let databaseUsersStore = [];
 let notificationStore = [];
-let personalMessageStore = [];
 let allUsersNumberStore = [];
-let archiveMessageStore = [];
 let seenUsersStore = [];
 let googleSignUpStore = null;
-const loggedInUser = [];
-const loggedInPicture = [];
 let allEmails = [];
 
 const AppStore = assign({}, EventEmitter.prototype, {
 
-  getAuth() {
-    return authenticate;
+/**
+ * @description describes a function that gets the authenticated state
+ * of the user
+ *
+ * @method getAuthenticatedState
+ *
+ * @returns { Boolean } returns a bool
+ */
+  getAuthenticatedState() {
+    return isAuthenticated;
   },
 
-  setAuth() {
-    authenticate = true;
+/**
+ * @description This sets the authentication state to true
+ *
+ * @method setAuthenticatedState
+ *
+ * @returns { Boolean } returns True
+ */
+  setAuthenticatedState() {
+    isAuthenticated = true;
   },
+
+/**
+ * @description This logs the user out of the app
+ *
+ * @method setLogout
+ *
+ * @returns { Boolean } returns False
+ */
   setLogout() {
-    authenticate = false;
+    isAuthenticated = false;
   },
 
-  getLoggedInUser() {
-    return loggedInUser;
-  },
 
-  getLoggedInPicture() {
-    return loggedInPicture;
-  },
-
-  getUser() {
-    return userStore;
-  },
-
+/**
+ * @description describes a function that save the user's detail in the
+ * localStorage
+ *
+ * @param { Object } user
+ *
+ * @method saveUser
+ *
+ * @returns { void } void
+ */
   saveUser(user) {
-    userStore = user;
-    loggedInUser.push(user.displayName);
+    localStorage.setItem('user', JSON.stringify(user.userData.displayName));
+    localStorage.setItem('token', user.myToken);
   },
 
-  setUser(user) {
-    userStore = user;
-  },
 
-  getContacts() {
-    return contactsStore;
-  },
-  saveContact(contact) {
-    contactsStore.push(contact);
-  },
-
-  setContacts(contacts) {
-    contactsStore = contacts;
-  },
-
+/**
+ * @description describes a function that returns list of numbers
+ *
+ * @method getAllUsersNumber
+ *
+ * @returns { Object } returns list of numbers
+ */
   getAllUsersNumber() {
     return allUsersNumberStore;
   },
 
-  setAllUsersNumber(number) {
-    allUsersNumberStore = number;
+/**
+ * @description describes a function that fetches numbers
+ *
+ * @method setAllUsersNumber
+ *
+ * @param { Object } numbers
+ *
+ * @returns { void } void
+ */
+  setAllUsersNumber(numbers) {
+    allUsersNumberStore = numbers;
   },
 
-  getdatabaseUsers() {
+/**
+ * @description describes a function that returns list of users in a group
+ *
+ * @method getDatabaseUsers
+ *
+ * @returns { Object } returns list of users from a group
+ */
+  getDatabaseUsers() {
     return databaseUsersStore;
   },
 
-  setdatabaseUsers(contacts) {
-    databaseUsersStore = contacts;
+/**
+ * @description describes a function that fetches users in a group
+ *
+ * @method setDatabaseUsers
+ *
+ * @param { Object } users
+ *
+ * @returns { Object } returns list of users in a group
+ */
+  setDatabaseUsers(users) {
+    databaseUsersStore = users;
   },
 
+/**
+ * @description describes a function that returns list of emails
+ *
+ * @method getAllEmails
+ *
+ * @returns { Object } returns list of emails
+ */
   getAllEmails() {
     return allEmails;
   },
 
+/**
+ * @description describes a function that fetches emails
+ *
+ * @method setAllUsersNumber
+ *
+ * @param { Object } emails
+ *
+ * @returns { Object } returns list of emails
+ */
   setEmails(emails) {
     allEmails = emails;
   },
 
+/**
+ * @description describes a function that fetch the details signed in
+ * via google
+ *
+ * @method getGoogleSignup
+ *
+ * @returns { Object } returns userdetails via google signup
+ */
   getGoogleSignup() {
     return googleSignUpStore;
   },
 
+/**
+ * @description describes a function that registers a user into the app
+ * via google signup
+ *
+ * @method setGoogleSignIn
+ *
+ * @param { Object } googleUser
+ *
+ * @returns { void } void
+ */
   setGoogleSignIn(googleUser) {
-    loggedInPicture.push(googleUser.photoURL);
     googleSignUpStore = googleUser;
   },
 
+/**
+ * @description describes a function that returns groups the user belongs to
+ *
+ * @method getGroups
+ *
+ * @returns { Object } returns list of the user's group
+ */
   getGroups() {
     return groupsStore;
   },
 
-  saveGroup(group) {
-    groupsStore.push(group);
-  },
-
+/**
+ * @description describes a function that fetchs all the group the the user
+ * belongs to
+ *
+ * @method setGroups
+ *
+ * @param { Object } groups
+ *
+ * @returns { void } void
+ */
   setGroups(groups) {
     groupsStore = groups;
   },
 
+/**
+ * @description describes a function that gets the user's current group
+ *
+ * @method getCurrentGroup
+ *
+ * @returns { Object } returns the current group
+ */
   getCurrentGroup() {
     return currentGroupStore;
   },
 
+/**
+ * @description describes a function that sets the user's current group
+ *
+ * @method setCurrentGroup
+ *
+ * @param { Object } group
+ *
+ * @returns { void } void
+ */
   setCurrentGroup(group) {
     currentGroupStore = group;
   },
 
+/**
+ * @description describes a function that gets object of users in a group
+ *
+ * @method getGroupUsers
+ *
+ * @memberof AppStore
+ *
+ * @returns { Object } returns an object of usersin a group
+ */
   getGroupUsers() {
     return groupUsersStore;
   },
 
-  addUserToGroup(users) {
+
+  saveGroupUsers(users) {
     groupUsersStore.push(users);
   },
 
+/**
+ * @description describes a function that saves the a user in a group
+ *
+ * @method setGroupUsers
+ *
+ * @param { Object } users
+ *
+ * @memberof AppStore
+ *
+ * @returns { void } void
+ */
   setGroupUsers(users) {
     groupUsersStore = users;
   },
 
-  getGroupEmails() {
-    return groupEmailStore;
-  },
-
-  setGroupEmails(emails) {
-    groupEmailStore = emails;
-  },
-
-  getGroupNumbers() {
-    return groupNumbersStore;
-  },
-
-  setGroupNumbers(numbers) {
-    groupNumbersStore = numbers;
-  },
-
+/**
+ * @description describes a function that get messages in a group
+ *
+ * @method getMessages
+ *
+ * @memberof AppStore
+ *
+ * @returns { Object } Returns an object of group messages
+ */
   getMessages() {
     return messagesStore;
   },
 
+/**
+ * @description describes a function that saves messages in state
+ *
+ * @method saveMessages
+ *
+ * @memberof AppStore
+ *
+ * @param { Object } message
+ *
+ * @returns { void } void
+ */
   saveMessages(message) {
     messagesStore.push(message);
   },
 
+/**
+ * @description describes a function that fetches messages in a group
+ *
+ * @method setMessages
+ *
+ * @memberof AppStore
+ *
+ * @param { Object } messages
+ *
+ * @returns { void } void
+ */
   setMessages(messages) {
     messagesStore = messages;
   },
 
+/**
+ * @description describes a function that get notification of a user
+ *
+ * @method getNotification
+ *
+ * @memberof AppStore
+ *
+ * @returns { Object } returns user's notification
+ */
   getNotification() {
     return notificationStore;
   },
 
-  setNotification(notify) {
-    notificationStore = notify;
+/**
+ * @description describes a function that fetches notification of a user
+ *
+ * @method setNotification
+ *
+ * @memberof AppStore
+ *
+ * @param { Object } notifications
+ *
+ * @returns { void } void
+ */
+  setNotification(notifications) {
+    notificationStore = notifications;
   },
 
-  getPersonalMessage() {
-    return personalMessageStore;
-  },
-
-  savePersonalMessage(message) {
-    personalMessageStore.push(message);
-  },
-
-  setPersonalMessage(message) {
-    personalMessageStore = message;
-  },
-
-  removeMessage(messageId) {
-    const index = personalMessageStore.findIndex(x => x.id === messageId);
-    personalMessageStore.splice(index, 1);
-  },
-
-  getArchiveMessage() {
-    return archiveMessageStore;
-  },
-
-  saveArchiveMessage(message) {
-    archiveMessageStore.push(message);
-  },
-
-  setArchiveMessage(message) {
-    archiveMessageStore = message;
-  },
-
+/**
+ * @description describes a function that get list users of who have read
+ * a message
+ *
+ * @method getSeenUsers
+ *
+ * @memberof AppStore
+ *
+ * @returns { Object } returns users
+ */
   getSeenUsers() {
     return seenUsersStore;
   },
 
+/**
+ * @description describes a function that fetches list of users of users
+ * who have read a message
+ *
+ * @method setSeenUsers
+ *
+ * @memberof AppStore
+ *
+ * @param { Object } users
+ *
+ * @returns { void } void
+ */
   setSeenUsers(users) {
     seenUsersStore = users;
   },
 
+/**
+ * @description AppStore emit event change
+ *
+ * @memberof AppStore
+ *
+ * @method emitChange
+ *
+ * @returns { void }
+ */
   emitChange() {
     this.emit(CHANGE_EVENT);
   },
 
+  /**
+ * @description AppStore change listener. Listens to change from the store
+ * with respect to the listener in the component
+ *
+ * @param { Object } callback
+ *
+ * @method addChangeListener
+ *
+ * @memberof AppStore
+ *
+ * @returns {void}
+ */
   addChangeListener(callback) {
     this.on('change', callback);
   },
 
+/**
+ * @description Remove AppStore change listener
+ *
+ * @param { Object } callback
+ *
+ * @method removeChangeListener
+ *
+ * @memberof AppStore
+ *
+ * @returns { void }
+ */
   removeChangeListener(callback) {
     this.removeListener('change', callback);
   }
 
 });
 
+
 AppDispatcher.register((payload) => {
   const action = payload.action;
 
   switch (action.actionType) {
-    case AppConstants.SAVE_CONTACT:
-      AppStore.saveContact(action.contact);
-      AppAPI.saveContact(action.contact);
+    case AppConstants.SIGN_UP:
+      AppAPI.signUpUser(action.userDetails);
       AppStore.emit(CHANGE_EVENT);
       break;
 
-    case AppConstants.RECEIVE_CONTACT:
-      AppStore.setdatabaseUsers(action.contacts);
+    case AppConstants.RECEIVE_USERS:
+      AppStore.setDatabaseUsers(action.users);
       AppStore.emit(CHANGE_EVENT);
       break;
 
@@ -244,15 +419,14 @@ AppDispatcher.register((payload) => {
       AppStore.emit(CHANGE_EVENT);
       break;
 
-    case AppConstants.RECEIVE_ALLUSERS_NUMBER:
-      AppStore.setAllUsersNumber(action.number);
+    case AppConstants.RECEIVE_NUMBERS:
+      AppStore.setAllUsersNumber(action.numbers);
       AppStore.emit(CHANGE_EVENT);
       break;
 
 
     case AppConstants.SAVE_GROUP:
-      AppStore.saveGroup(action.group);
-      AppAPI.saveGroup(action.group);
+      AppAPI.createGroup(action.group);
       AppStore.emit(CHANGE_EVENT);
       break;
 
@@ -272,14 +446,13 @@ AppDispatcher.register((payload) => {
       break;
 
     case AppConstants.SAVE_GROUP_USER:
-      AppStore.addUserToGroup(action.addUser);
       AppAPI.addUserToGroup(action.addUser);
       AppStore.emit(CHANGE_EVENT);
       break;
 
-    case AppConstants.SAVE_MESSAGE:
+    case AppConstants.POST_MESSAGE:
       AppStore.saveMessages(action.message);
-      AppAPI.saveMessages(action.message);
+      AppAPI.postMessages(action.message);
       AppStore.emit(CHANGE_EVENT);
       break;
 
@@ -299,20 +472,18 @@ AppDispatcher.register((payload) => {
       break;
 
     case AppConstants.SIGN_IN:
-      AppAPI.login(action.contact);
+      AppAPI.login(action.userDetails);
       AppStore.emit(CHANGE_EVENT);
       break;
 
     case AppConstants.RECEIVE_LOGIN:
       AppStore.saveUser(action.user);
-      AppStore.setAuth();
+      AppStore.setAuthenticatedState();
       AppStore.emit(CHANGE_EVENT);
       break;
 
     case AppConstants.LOGOUT:
-      window.localStorage.removeItem('user');
-      window.localStorage.removeItem('photoURL');
-      window.localStorage.removeItem('groupName');
+      localStorage.clear();
       location.reload();
       AppStore.setLogout();
       AppAPI.setLogout();

@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageBoard component should render MessageBoard component 1`] = `
+<div
+  className="container"
+  id="main"
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12"
+    >
+      <div
+        className="viewMessageMessageBoard"
+      />
+      <div
+        className="sendMessageDiv"
+      >
+        <form
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-group col-sm-2"
+          >
+            <select
+              className="form-control"
+              id="exampleFormControlSelect1"
+            >
+              <option>
+                Normal
+              </option>
+              <option>
+                Urgent
+              </option>
+              <option>
+                Critical
+              </option>
+            </select>
+          </div>
+          <input
+            className="col-sm-10 sendMessageInput"
+            placeholder="Enter a message"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;

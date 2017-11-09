@@ -1,52 +1,38 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import SideBar from '../../components/Dashboard/SideBar'
-import AppActions from '../../actions/AppActions'
+
+import SideBar from '../../components/presentation/SideBar';
+import localStorageMock from '../../../../../mock/LocalStorageMock';
+import AppStore from '../../stores/AppStore';
+
+window.localStorage = localStorageMock;
 
 jest.mock('../../../../../server/config', () => ({
-  }));
-jest.mock('../../actions/AppActions');
-
-
-let spyOnDispatcher;
-beforeEach(() => {
-    spyOnDispatcher = spyOn(AppActions, 'getGroups');
-});
-
-afterEach(() => {
-    spyOnDispatcher.mockReset();
-});
+}));
 
 describe('SideBar Component', () => {
-  it('It should render SideBar omponent', () => {
-    const tree = renderer.create(<SideBar />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
+  localStorage.setItem('user', JSON.stringify('Ebuka'));
+  const props = {
+    groups: [{ groupName: 'Andela' }],
+    groupUsers: ['George', 'Phil', 'Odim'],
+    currentGroup: 'Andela',
+    user: JSON.parse(localStorage.getItem('user'))
+  };
+
+
+  const wrapper = mount(<SideBar {...props} />);
 
   it('should display the necessary elements', () => {
-    const wrapper = mount(<SideBar />);
-    expect(wrapper.find('div').length).toBe(7);
-    expect(wrapper.find('h2').length).toBe(1);
-    expect(wrapper.find('h4').length).toBe(1);
-    expect(wrapper.find('form').length).toBe(1);
-    expect(wrapper.find('input').length).toBe(1);
-    expect(wrapper.find('a').length).toBe(1);
-    expect(wrapper.find('br').length).toBe(3);
-});
+    expect(wrapper.find('div').length).toBe(2);
+    expect(wrapper.find('a').length).toBe(6);
+    expect(wrapper.find('br').length).toBe(2);
+  });
 
-it('It should expect getGroups Action to be called', () => {
-    const event = {
-        target: {
-          name: 'name',
-          value: 'value',
-        },
-        preventDefault: () => jest.fn()
-      };
-    const wrapper = mount(<SideBar />);
-    wrapper.instance().refs.email.value = 'someemail@email.com';
-    expect(spyOnDispatcher).toHaveBeenCalled();
-});
-
-
+  it('should have initial props in the component', () => {
+    expect(wrapper.props().groups).toEqual([{ groupName: 'Andela' }]);
+    expect(wrapper.props().groupUsers).toEqual(['George', 'Phil', 'Odim']);
+    expect(wrapper.props().currentGroup).toEqual('Andela');
+    expect(wrapper.props().user).toEqual('Ebuka');
+  });
 });

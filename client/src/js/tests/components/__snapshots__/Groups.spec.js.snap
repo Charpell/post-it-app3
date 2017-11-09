@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Groups component should create a snapshot of itself 1`] = `
+<li
+  onClick={[Function]}
+>
+  <a
+    className="text-decoration"
+    href="#/dashboard"
+  />
+</li>
+`;

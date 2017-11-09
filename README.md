@@ -1,4 +1,4 @@
-# Post-it-app
+## Post-it-app
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
 [![Build Status](https://travis-ci.org/Charpell/post-it-app.svg?branch=Chore/Feedback-Implementation)](https://travis-ci.org/Charpell/post-it-app) [![Coverage Status](https://coveralls.io/repos/github/Charpell/post-it-app/badge.svg?branch=Chore/Feedback-Implementation)](https://coveralls.io/github/Charpell/post-it-app?branch=Production-Build)
 [![Code Climate](https://codeclimate.com/github/Charpell/post-it-app/badges/gpa.svg)](https://codeclimate.com/github/Charpell/post-it-app)
@@ -40,45 +40,72 @@ PostIt is a simple application that allows friends and colleagues create groups 
  * [Axios:](https://www.npmjs.com/package/axios)  Axios is an http client library used in making API calls.
  * [Jest:](https://facebook.github.io/jest/) Jest is used to run tests.
 
- # Coding Style
+## Coding Style
 - Airbnb 
 
-# Language
+## Language
 - Javascript
 
 ## Limitations
-+ Users cannot upload picture
-+ Users cannot choose to accept invitation request
-+ Users cannot leave a group
++ Users cannot upload their picture.
++ Users cannot choose to accept or reject an invitation request.
++ Users cannot leave a group.
 + Users cannot delete a message when sent
 
 ## FAQ
-### Is PostIt app free or do you plan to monetize it in future?
+#### Is PostIt app free or do you plan to monetize it in future?
 Yes its totally free and it will continue to be free
 
-### How many end points are there currently?
+#### How many end points are there currently?
 Currently its 15
 
-### Is PostIt app open source
+#### Is PostIt app open source?
 Yes, and i encourage you to contribute to the project
 
-### What if I want to use another port on my local machine?
+#### What if I want to use another port on my local machine?
 That's easy. In the root of the project. create a file named .env and add the following line to it:
 `PORT=<your_desired_port>`
 where <your_desired_port> is the port you want to use. So, if you want to use port 9000, you will write:
 `PORT=9000`
 
 
+
 ## Contributions
- Contributions are always welcome. If you are interested in enhancing the features in the project, follow these steps below:
- + Fork the project to your repository then clone it to your local machine.
- + Create a new branch and make features that will enhance it.
- + If the you wish to update an existing enhancement submit a pull request.
- + If you find bugs in the application, create a `New Issue` and let me know about it.
- + If you need clarification on what is not clear, contact me via mail [ebuka.umeh@andela.com](mailto:ebuka.umeh@andela.com)
+PostIt welcomes contributions in form of pull requests, as main purpose of open sourcing is to make it better and easier to use.
+
+#### Reporting Bugs
+ If you find bugs in the application, create a `New Issue` with additional data, like your node/npm version or snippet of code and let me know about it.
+
+#### Contact
+ If you need clarification on what is not clear, contact me via mail [ebuka.umeh@andela.com](mailto:ebuka.umeh@andela.com)
+
+#### Pull requests
++ Fork the repository and create a branch from `develop`.
++ If you have added or changed existing code, add unit tests!
++ Ensure that all unit tests passes.
++ Check that your code lints (Eslint)
+
+#### Style guide
++ Use es6 syntax only
++ Use semicolons
++ 2 space indention (no tabs)
++ Prefer single quote over double quote
++ Prefer template strings
++ 120 character length limit
++ Do not use console.log, etc in code (expect debugging locally)
++ Always add exact versions of packages 3.2.0 instead of ^3.2.0
+
+#### Branch Naming Convention
+A sample of the branch naming convention is found on the [Branch Naming wiki page](https://github.com/Charpell/post-it-app/wiki/Branch-Naming-Convention)
+
+#### Commit Message Convention
+A sample of the commit message convention is  found on the [Commit Message wiki page](https://github.com/Charpell/post-it-app/wiki/Commit-Message-Convention)
+
+#### Pull Request Naming and Description Convention
+A sample of the pull request naming and description convention on the [Pull Request Naming and Description wiki page](https://github.com/Charpell/post-it-app/wiki/Pull-Request-Naming-and-Description-Convention)
 
 ## Author
-    Ebuka Umeh
+Ebuka Umeh
 
 ## License & Copyright
 MIT © [Ebuka Umeh](https://github.com/Charpell)

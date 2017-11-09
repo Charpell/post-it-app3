@@ -1,13 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
-import AppAPI from './js/utils/appAPI'
-import App from "./js/components/App";
+import App from './js/components/container/App';
 import main from './main.scss';
-import bootstrap from './js/vendors/bootstrap'
-import {firebaseAuth, firebase}from '../../server/config';
-
+import bootstrap from './js/vendors/bootstrap';
 
 ReactDOM.render(
   <BrowserRouter basename="/#">

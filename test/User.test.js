@@ -1,48 +1,43 @@
-const chaiHttp = require('chai-http');
-const chai = require('chai');
-const request = require('supertest');
+import faker from 'faker';
+import chai from 'chai';
+import request from 'supertest';
 
-const app = require('../server/app');
+import app from '../server/app';
 
-chai.use(chaiHttp);
 const should = chai.should();
 const expect = chai.expect;
+
 const password = '123456';
+
 
 describe('EndPoint: SignUp', () => {
   const userName = 'Kakashi';
-  const email = 'kishis@gmail.com';
-  const number = '2348066098146';
+  const email = faker.internet.email();
+  const number = '2348088098146';
 
-  it('should return 200 when a user sign up successfully', (done) => {
+  it('should successfully create a new user', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, password, email, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
-        res.body.should.have.property('message').eql('Welcome to Post it app');
+        res.body.should.have.property('message')
+        .eql('Welcome to Post it app');
         res.body.should.have.nested.property('userData.email')
-        .eql('kishis@gmail.com');
+        .eql(email.toLowerCase());
         res.body.should.have.nested.property('userData.displayName')
         .eql('Kakashi');
-        res.body.should.have.nested.property('userData.uid');
-        res.body.should.have.nested.property('userData.apiKey');
-        res.body.should.have.nested.property('userData.photoURL');
-        res.body.should.have.nested.property('userData.emailVerified');
-        res.body.should.have.nested.property('userData.phoneNumber');
-        res.body.should.have.nested.property('userData.isAnonymous');
-        res.body.should.have.nested.property('userData.authDomain');
         if (err) return done(err);
         done();
       });
   });
 
 
-  it('should return status 400 for missing username', (done) => {
+  it('should return validation error if username is undefined', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ email, password, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -50,15 +45,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide username, password, number and email');
+        .eql('Username is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing phone number', (done) => {
+  it('should return validation error if phone number is undefined', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, email, password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -66,15 +61,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide username, password, number and email');
+        .eql('Phone number is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing email', (done) => {
+  it('should return validation error if email is undefined', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, password, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -82,15 +77,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide username, password, number and email');
+        .eql('Email is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing password', (done) => {
+  it('should return validation error if password is undefined', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, email, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -98,15 +93,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide username, password, number and email');
+        .eql('Password is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for empty username field', (done) => {
+  it('should return validation error if username field is empty', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName: '', email, password, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -114,15 +109,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('Username, password, number or email field cannot be empty');
+        .eql('Username is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for empty phone number field', (done) => {
+  it('should return validation error if number field is empty', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, email, password, number: '' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -130,15 +125,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('Username, password, number or email field cannot be empty');
+        .eql('Phone number is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for empty email field', (done) => {
+  it('should require the email field is not empty', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, email: '', password, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -146,15 +141,15 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('Username, password, number or email field cannot be empty');
+        .eql('Email is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing password', (done) => {
+  it('should require that password field is not empty', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, email, number, password: '' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -162,15 +157,16 @@ describe('EndPoint: SignUp', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('Username, password, number or email field cannot be empty');
+        .eql('Password is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for badly formatted email', (done) => {
+  it('should return validation error if email field is badly formatted',
+  (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, password, number, email: 'ebuka@' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -184,9 +180,9 @@ describe('EndPoint: SignUp', () => {
       });
   });
 
-  it('should return status 409 for existing email', (done) => {
+  it('should not create a user with an existing email', (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, password, number, email })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -201,9 +197,10 @@ describe('EndPoint: SignUp', () => {
   });
 
 
-  it('should return status 400 for a weak password', (done) => {
+  it('should return validation error if password characters is less than 5',
+  (done) => {
     request(app)
-      .post('/user/signup')
+      .post('/api/v1/user/signup')
       .send({ userName, email, number, password: '1234' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -221,10 +218,10 @@ describe('EndPoint: SignUp', () => {
 
 describe('SignIn Route', () => {
   const email = 'jat@gmail.com';
-  it('should return status 200 for when all parameters are complete',
+  it('should successfully sign in a resgistered user',
   (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email, password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -238,18 +235,14 @@ describe('SignIn Route', () => {
         .eql('Jat');
         res.body.should.have.nested.property('userData.uid')
         .eql('Sb1mgQOVOoXafC3MMnQXVjKlPdJ2');
-        res.body.should.have.nested.property('userData.apiKey')
-        .eql('AIzaSyDx5Xi4OxL1F18jqNO1L1JyAhO8CM3J3h0');
-        res.body.should.have.nested.property('userData.authDomain')
-        .eql('post-it-app-8b2cb.firebaseapp.com');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing email', (done) => {
+  it('should return validation error if email field is undefined', (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -257,15 +250,16 @@ describe('SignIn Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('You need to provide password and email');
+        .eql('Email is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing password', (done) => {
+  it('should return validation error if password field is undefined',
+  (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -273,15 +267,15 @@ describe('SignIn Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('You need to provide password and email');
+        .eql('Password is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 when email field is empty', (done) => {
+  it('should return validation error if email field is empty', (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email: '', password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -289,15 +283,15 @@ describe('SignIn Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('Email or Password field cannot be empty.');
+        .eql('Email is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 when password field is empty', (done) => {
+  it('should return validation error if password field is empty', (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email, password: '' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -305,15 +299,16 @@ describe('SignIn Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('Email or Password field cannot be empty.');
+        .eql('Password is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for badly fomatted email', (done) => {
+  it('should return validation error if email field is badly formatted',
+  (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ password, email: 'ebuka@' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -327,9 +322,10 @@ describe('SignIn Route', () => {
       });
   });
 
-  it('should return status 404 if a email/user dose not exist', (done) => {
+  it('should return validation error if an email address does not exist',
+  (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ password, email: 'hhd@gmail.com' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -337,23 +333,24 @@ describe('SignIn Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('There is no user record corresponding to this email.');
+        .eql('The email does not exist.');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 404 for a password that does not exist', (done) => {
+  it('should return validation error if the password is invalid',
+  (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email, password: '123456ggh' })
       .set('Accept', 'application/json')
       .end((err, res) => {
-        res.status.should.equal(404);
+        res.status.should.equal(401);
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('The password is invalid or the user does not have a password.');
+        .eql('The password is invalid.');
         if (err) return done(err);
         done();
       });
@@ -366,9 +363,9 @@ describe('Google SignUp Route', () => {
   const number = '2348066098146';
   const uid = 'rbjxWT5b4AfHirNE4IDlS0ELk882';
 
-  it('should return status 400 for missing username', (done) => {
+  it('should return validation error if the username is undefined', (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ email, uid, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -376,15 +373,16 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide userName, uid, number and email');
+        .eql('Username is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing phone number', (done) => {
+  it('should return validation error if the phone number is undefined',
+  (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName, email, uid })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -392,15 +390,16 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide userName, uid, number and email');
+        .eql('Phone number is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing email', (done) => {
+  it('should return validation error if the email is undefined',
+  (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName, uid, number })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -408,15 +407,16 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('You need to provide userName, uid, number and email');
+        .eql('Email is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for missing uid', (done) => {
+  it('should return validation error if the uid is undefined',
+  (done) => {
     request(app)
-    .post('/google/signup')
+    .post('/api/v1/google/signup')
     .send({ userName, email, number })
     .set('Accept', 'application/json')
     .end((err, res) => {
@@ -424,14 +424,16 @@ describe('Google SignUp Route', () => {
       res.body.should.be.a('object');
       res.body.should.have.property('message');
       res.body.message.should.be
-      .eql('You need to provide userName, uid, number and email');
+      .eql('Uid is required');
       if (err) return done(err);
       done();
     });
   });
-  it('should return status 400 for empty uid field', (done) => {
+
+  it('should return validation error if uid field is empty',
+  (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName, email, number, uid: '' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -439,15 +441,15 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('userName, uid, number or email cannot be empty');
+        .eql('Uid is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for empty username field', (done) => {
+  it('should return validation error if username field is empty', (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName: '', email, number, uid })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -455,15 +457,15 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('userName, uid, number or email cannot be empty');
+        .eql('Username is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for empty empty field', (done) => {
+  it('should return validation error if email field is empty', (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName, email: '', number, uid })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -471,15 +473,15 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('userName, uid, number or email cannot be empty');
+        .eql('Email is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 400 for empty number field', (done) => {
+  it('should return validation error if number field is empty', (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName, email, number: '', uid })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -487,15 +489,15 @@ describe('Google SignUp Route', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.message.should.be
-        .eql('userName, uid, number or email cannot be empty');
+        .eql('Phone number is required');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 409 for existing Username', (done) => {
+  it('should not create a user with an existing Username', (done) => {
     request(app)
-      .post('/google/signup')
+      .post('/api/v1/google/signup')
       .send({ userName, email, number, uid })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -512,19 +514,21 @@ describe('Google SignUp Route', () => {
 
 
 describe('Home Page', () => {
-  it('should return a status of 200 on the home page', (done) => {
-    chai.request(app)
-      .get('/')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        res.body.should.be.a('object');
+  it('should open the home page of the app', (done) => {
+    request(app)
+      .get('/api/v1/')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'text/html; charset=UTF-8')
+      .expect(200)
+      .end((err) => {
+        if (err) return done(err);
         done();
       });
   });
 
-  it('should return a status of 200 when a random route is used ', (done) => {
+  it('should redirect to home page when a random route is used', (done) => {
     request(app)
-      .get('/test')
+      .get('/api/v1/test')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'text/html; charset=UTF-8')
       .expect(200)
@@ -537,9 +541,9 @@ describe('Home Page', () => {
 
 
 describe('SignOut Route', () => {
-  it('should return status 200 when the user sign out', (done) => {
+  it('should successfully signed out the user from the app', (done) => {
     request(app)
-      .post('/user/signout')
+      .post('/api/v1/user/signout')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
@@ -557,9 +561,9 @@ describe('EndPoint: Reset Password', () => {
   const invalidEmail = 'gfhr@gmail.com';
   const email = 'wesumeh@gmail.com';
 
-  it('should return 200 when a user logs in successfully', (done) => {
+  it('should successfully sign in a resgistered user', (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email, password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -570,9 +574,9 @@ describe('EndPoint: Reset Password', () => {
   });
 
 
-  it('should return status 200 when the email is valid for reset', (done) => {
+  it('should successfully send the user an email to reset password', (done) => {
     request(app)
-      .post('/user/reset')
+      .post('/api/v1/user/reset')
       .send({ email: 'wesumeh@gmail.com' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -580,16 +584,16 @@ describe('EndPoint: Reset Password', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('An email has been sent for password reset.');
+        .eql('An email has been sent to your inbox for password reset.');
         if (err) return done(err);
         done();
       });
   });
 
 
-  it('should return status 404 if a email/user dose not exist', (done) => {
+  it('should return validation error if the email does not exist', (done) => {
     request(app)
-      .post('/user/reset')
+      .post('/api/v1/user/reset')
       .send({ email: invalidEmail })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -603,9 +607,10 @@ describe('EndPoint: Reset Password', () => {
       });
   });
 
-  it('should return status 400 for badly formatted email', (done) => {
+  it('should return validation error if the email is badly formatted',
+  (done) => {
     request(app)
-      .post('/user/reset')
+      .post('/api/v1/user/reset')
       .send({ email: 'ebuka@' })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -621,45 +626,77 @@ describe('EndPoint: Reset Password', () => {
 });
 
 
-describe('EndPoint: Get all Phone Numbers from the Database', () => {
-  it('should return status 200 when all users are returned', (done) => {
+describe('EndPoint: Phone Numbers', () => {
+  it('should successfully return numbers in user database', (done) => {
     request(app)
-      .get('/users/allnumbers')
+      .get('/api/v1/users/numbers')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(23);
+        res.body.should.have.lengthOf(19);
+        expect(res.body).include(
+          '2345677676878',
+          '2345677676338',
+          '2349055483634',
+          '2348066098146',
+          '2341231231232',
+          '2345666666666',
+          '2348081239880',
+          '2348088098146',
+          '2345677676878'
+        );
         if (err) return done(err);
         done();
       });
   });
 });
 
-describe('EndPoint: Get all Emails from the Database', () => {
-  it('should return status 200 when all emails are returned', (done) => {
+describe('EndPoint: Emails', () => {
+  it('should successfully return emails in user database', (done) => {
     request(app)
-      .get('/users/allemails')
+      .get('/api/v1/users/emails')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(23);
+        res.body.should.have.lengthOf(19);
+        expect(res.body).include(
+          'wesumeh@gmail.com',
+          'emekasmithyu@gmal.com',
+          'jandoe@email.com',
+          'jat@gmail.com',
+          'Edythe31@gmail.com',
+          'ola@ola.com',
+          'quduskunle@gmail.com',
+          'shazily012@gmail.com',
+          'seun@gmail.com'
+        );
         if (err) return done(err);
         done();
       });
   });
 });
 
-describe('EndPoint: Get all Users from the Database', () => {
-  it('should return status 200 when all users are returned', (done) => {
+describe('EndPoint: Users', () => {
+  it('should successfully return the users in user database', (done) => {
     request(app)
-      .get('/users/allusers')
+      .get('/api/v1/users/users')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(23);
+        res.body.should.have.lengthOf(19);
+        expect(res.body).include(
+          'Abdul-Quddus',
+          'Gideon',
+          'Jandoe',
+          'Jat',
+          'Jundoe',
+          'Kakashi',
+          'Victor',
+          'Yank'
+        );
         if (err) return done(err);
         done();
       });
@@ -667,29 +704,40 @@ describe('EndPoint: Get all Users from the Database', () => {
 });
 
 
-describe('EndPoint: Get all Notification for a User', () => {
-
-  it('should return status 200 when all notifications are received', (done) => {
+describe('EndPoint: Notification', () => {
+  it('should successfully return the users notifications', (done) => {
     request(app)
-      .get('/user/notification/Jat')
+      .get('/api/v1/user/notification/Jat')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(1);
+        res.body.should.have.lengthOf(3);
+        res.body.should.be.eql([
+        { notification: 'Ebuka posted in Age group' },
+        { notification: 'Newton has posted in Facebook group' },
+        { notification: 'Yank has posted in Facebook group' }
+        ]);
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 200 when a googleUser logs in', (done) => {
+  it('should successfully create a new user via google signup', (done) => {
     request(app)
-      .get('/user/notification/Ebuka')
+      .get('/api/v1/user/notification/Ebuka')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(7);
+        res.body.should.have.lengthOf(5);
+        res.body.should.be.eql([
+          { notification: 'Chap posted in Nnn group' },
+          { notification: 'Newton posted in An group' },
+          { notification: 'Newton posted in My group' },
+          { notification: 'Sasiliyu posted in Testersgroup group' },
+          { notification: 'Yank posted in Lll group' }
+        ]);
         if (err) return done(err);
         done();
       });

@@ -1,203 +1,254 @@
 import axios from 'axios';
 import toastr from 'toastr';
+
+import { getClientErrors, getServerErrors } from './../helpers/utils';
 import AppActions from '../actions/AppActions';
 
-module.exports = {
-  saveContact(contact) {
-    return axios.post('/user/signup', {
-      userName: contact.username,
-      email: contact.email,
-      password: contact.password,
-      number: contact.number
-    }).then((response) => {
+
+const AppAPI = {
+/**
+   * @description describes an API call to the server for a post request
+   * to register a user
+   *
+   * @param { Object } userDetails
+   *
+   * @returns { Object } returns registered user registration details
+   */
+  signUpUser(userDetails) {
+    return axios.post('/api/v1/user/signup', userDetails)
+    .then((response) => {
       const user = response.data.userData;
-      if (response.data.message ===
-         'The email address is already in use by another account.') {
-        toastr.error(response.data.message);
-      } else if (response.data.message ===
-         'The email address is badly formatted.') {
-        toastr.error(response.data.message);
-      } else {
-        AppActions.receiveLogin(user);
-        toastr.success('Welcome,  An email will be sent to you.');
-      }
-    }).catch((error) => {
-      toastr.error(error);
-    });
+      AppActions.receiveLogin(user);
+      toastr.success('Welcome,  An email will be sent to you.');
+    }).catch(getServerErrors);
   },
 
-  getContacts() {
-    return axios.get('/users/allusers')
-      .then((contacts) => {
-        AppActions.receiveContact(contacts.data);
-      })
-      .catch((error) => {
-        toastr.error(error);
-      });
+  /**
+   * @description describes an API call to the server for a post request
+   * to login a user.
+   *
+   * @param { Object } userDetails
+   *
+   * @returns { Object } returns registered user details
+   */
+  login(userDetails) {
+    return axios.post('/api/v1/user/signin', userDetails)
+    .then((response) => {
+      const user = response.data;
+      AppActions.receiveLogin(user);
+      toastr.success('Welcome To PostIt');
+    }).catch(getServerErrors);
   },
 
-  getNumbers() {
-    return axios.get('/users/allnumbers')
-        .then((response) => {
-          AppActions.receiveNumber(response.data);
-        })
-        .catch((error) => {
-          toastr.error(error);
-        });
-  },
 
-  getEmails() {
-    return axios.get('/users/allemails')
-        .then((response) => {
-          AppActions.receiveEmails(response.data);
-        })
-        .catch((error) => {
-          toastr.error(error);
-        });
-  },
-
-  saveGroup(group) {
-    return axios.post('/group', {
-      groupName: group.groupName,
-      userName: group.userName
-    }).then((response) => {
+ /**
+   * @description describes an API call to the server for a post request
+   * to save a user's group
+   *
+   * @param { Object } group
+   *
+   * @returns { Object } returns notification message
+   */
+  createGroup(group) {
+    return axios.post('/api/v1/group', group).then((response) => {
       toastr.success(response.data.message);
-    }).catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
   },
 
+   /**
+   * @description describes an API call to the server for a get request
+   * to get all the groups that a user belong to.
+   *
+   * @param { Object } userName
+   *
+   * @returns { Object } returns an object containing user's group
+   */
   getGroups(userName) {
-    return axios.get(`/group/${userName}`)
+    return axios.get(`/api/v1/group/${userName}`,
+    { headers: { authorization: localStorage.getItem('token') } })
     .then((response) => {
       const groups = response.data;
       AppActions.receiveGroups(groups);
-    }).catch((error) => {
-      toastr.error(error);
+    }).catch((err) => {
+      getClientErrors(err);
     });
   },
 
+   /**
+   * @description describes an API call to the server for a get request
+   * to get a user's notification.
+   *
+   * @param { Object } userName
+   *
+   * @returns { Object } returns an object containing user's notificaions
+   */
   getNotifications(userName) {
-    return axios.get(`/user/notification/${userName}`)
+    return axios.get(`/api/v1/user/notification/${userName}`)
     .then((response) => {
       const notification = response.data;
       AppActions.receiveNotification(notification);
-    })
-    .catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
   },
 
+  /**
+   * @description describes an API call to the server for a post request
+   * to save a user into a group.
+   *
+   * @param { Object } addUser
+   *
+   * @returns { Object } returns a notification message
+   */
   addUserToGroup(addUser) {
-    return axios.post('/group/groupName/user', {
-      groupName: addUser.groupname,
-      user: addUser.userName
-    })
+    return axios.post('/api/v1/group/groupName/user', addUser)
     .then((response) => {
       toastr.success(response.data.message);
-    }).catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
   },
 
-  saveMessages(message) {
-    return axios.post('/group/user/message', {
-      group: message.group,
-      user: message.user,
-      message: message.text,
-      notification: message.notification,
-      priority: message.priority
-    })
+  /**
+   * @description describes an API call to the server for a post request
+   * to save a message.
+   *
+   * @param { Object } message
+   *
+   * @returns { void }
+   */
+  postMessages(message) {
+    return axios.post('/api/v1/group/user/message', message)
     .then((response) => {
       toastr.success(response.data.message);
-    }).catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
   },
 
+    /**
+   * @description describes an API call to the server for a post request
+   * to save a message.
+   *
+   * @param { Object } user
+   *
+   * @returns { Object } returns an object containing list of users who
+   * have seen a message
+   */
   seenMessage(user) {
     const groupName = user.groupName;
     const messageID = user.messageID;
-    return axios.get(`/seen/${groupName}/${messageID}`)
+    return axios.get(`/api/v1/seen/${groupName}/${messageID}`)
     .then((response) => {
       AppActions.receiveSeenUsers(response.data);
-    })
-    .catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
   },
 
-  login(contact) {
-    return axios.post('/user/signin', {
-      email: contact.email,
-      password: contact.password
-    }).then((response) => {
-      const user = response.data.userData;
-      if (response.data === 'There is no user record corresponding to this ') {
-        toastr.error(response.data);
-      } else if (response.data.message ===
-         'The password is invalid or the user does not have a password.') {
-        toastr.error(response.data.message);
-      } else {
-        AppActions.receiveLogin(user);
-        toastr.success('Welcome To PostIt');
-      }
-    }).catch(() => {
-      toastr.error('Your email or password is invalid');
-    });
-  },
-
+  /**
+   * @description describes an API call to the server to sign the user out
+   *
+   * @returns { Object } returns registered user details
+   */
   setLogout() {
-    return axios.post('/user/signout').then((response) => {
+    return axios.post('/api/v1/user/signout').then((response) => {
       toastr.success(response.data.message);
-    }).catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
   },
 
+  /**
+   * @description describes an API call to the server for a get request
+   * to get the list of users and message in a group.
+   *
+   * @param { Object } group
+   *
+   * @returns { Object } returns an object that contains messages an users
+   * in a group.
+   */
   searchUserMessageInGroup(group) {
     const groupName = group.groupName;
     const user = group.userName;
-    return axios.get(`/groups/${groupName}/${user}`)
+    return axios.get(`/api/v1/groups/${groupName}/${user}`)
       .then((response) => {
         const messages = response.data.messages;
         const users = response.data.users;
         AppActions.receiveMessages(messages);
         AppActions.receiveUser(users);
-      })
-      .catch((error) => {
-        toastr.error(error);
-      });
+      }).catch(getClientErrors);
   },
 
+  /**
+   * @description describes an API call to the server for a post request
+   * to register a user with a google account
+   *
+   * @param { Object } googleUser
+   *
+   * @returns { Object } returns registered user registration details
+   */
   googleSignUp(googleUser) {
-    const userName = googleUser.username.replace(' ', '');
-    const email = googleUser.email;
-    const number = googleUser.number;
-    const uid = googleUser.uid;
-
-    return axios.post('/google/signup', {
+    const { displayName, email, uid, number } = googleUser;
+    const userName = displayName.replace(' ', '');
+    return axios.post('/api/v1/google/signup', {
       userName,
       email,
       number,
       uid
-    }).then((response) => {
+    })
+    .then((response) => {
       const user = response.data;
       AppActions.receiveLogin(user);
       toastr.success('Welcome To PostIt');
-    }).catch((error) => {
-      toastr.error(error);
-    });
+    })
+    .catch(getServerErrors);
   },
 
+  /**
+   * @description describes an API call to the server for a post request
+   * to reset a user's password.
+   *
+   * @param { Object } email
+   *
+   * @returns { Object } returns a notification message
+   */
   resetPassword(email) {
-    return axios.post('/user/reset', { email
+    return axios.post('/api/v1/user/reset', { email
     }).then((response) => {
       toastr.success(response.data.message);
-    }).catch((error) => {
-      toastr.error(error);
-    });
+    }).catch(getClientErrors);
+  },
+
+  /**
+   * @description describes an API call to the server for a get request
+   * to get all users in a group.
+   *
+   * @returns { Object } returns an object containing list of users
+   */
+  getUsers() {
+    return axios.get('/api/v1/users/users')
+      .then((response) => {
+        AppActions.receiveUsers(response.data);
+      }).catch(getClientErrors);
+  },
+
+  /**
+   * @description describes an API call to the server for a post request
+   * to get all numbers.
+   *
+   * @returns { Object } returns an object containing list of numbers
+   */
+  getNumbers() {
+    return axios.get('/api/v1/users/numbers')
+        .then((response) => {
+          AppActions.receiveNumber(response.data);
+        }).catch(getClientErrors);
+  },
+
+  /**
+   * @description describes an API call to the server for a get request
+   * to get all emails.
+   *
+   * @returns { Object } returns an object containing list of emails
+   */
+  getEmails() {
+    return axios.get('/api/v1/users/emails')
+        .then((response) => {
+          AppActions.receiveEmails(response.data);
+        }).catch(getClientErrors);
   },
 
 };
 
+export default AppAPI;
