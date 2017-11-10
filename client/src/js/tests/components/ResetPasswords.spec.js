@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import ResetPassword from '../../components/container/ResetPassword'
-import AppActions from '../../actions/AppActions'
+import ResetPassword from '../../components/container/ResetPassword';
+import AppActions from '../../actions/AppActions';
 
 jest.mock('../../../../../server/config', () => ({
 }));
@@ -41,7 +41,6 @@ describe('ResetPassword component', () => {
   });
 
   it('should expect resetPassword Action to be called', () => {
-    const spyOnDispatcher = spyOn(AppActions, 'resetPassword');
     const event = {
       target: {
         email: 'name@gmail.com',

@@ -19,7 +19,7 @@ export default class Validate {
    * @param {Object} res response object
    * @param {Function} next callback function
    *
-   * @return {Object} response containing the validation status
+   * @return {Object} response containing the error message
    */
   static isAuthenticated (req, res, next) {
     const currentUser = firebase.auth().currentUser;
@@ -32,14 +32,16 @@ export default class Validate {
       });
     }
   }
+
+
   /**
-   * @description: validates the sign up
+   * @description: describe a function that validates the sign up route
    *
    * @param {Object} req request object
    * @param {Object} res response object
    * @param {Function} next callback function
    *
-   * @return {Object} response containing the validation status
+   * @return {Object} response containing the error message
    */
   static validateSignUp(req, res, next) {
     req.check('userName', 'Username is required').notEmpty();
@@ -66,7 +68,7 @@ export default class Validate {
  * @param {Object} res response object
  * @param {Function} next callback function
  *
- * @return {Object} response containing the validation status
+ * @return {Object} response containing the error message
  */
   static validateGoogleSignUp(req, res, next) {
     req.check('userName', 'Username is required').notEmpty().matches(/\w/);
@@ -91,7 +93,7 @@ export default class Validate {
  * @param {Object} res response object
  * @param {Function} next callback function
  *
- * @return {Object} response containing the validation status
+ * @return {Object} response containing the error message
  */
   static validateSignIn(req, res, next) {
     req.check('email', 'Email is required').notEmpty();
@@ -110,14 +112,14 @@ export default class Validate {
   }
 
 
-  /**
+/**
  * @description: validates the create group route
  *
  * @param {Object} req request object
  * @param {Object} res response object
  * @param {Function} next callback function
  *
- * @return {Object} response containing the validation status
+ * @return {Object} response containing the error message
  */
   static createGroup(req, res, next) {
     req.check('group', 'Group name is required').notEmpty();
@@ -141,7 +143,7 @@ export default class Validate {
  * @param {Object} res response object
  * @param {Function} next callback function
  *
- * @return {Object} response containing the validation status
+ * @return {Object} response containing the error message
  */
   static addUserToGroup(req, res, next) {
     req.check('groupName', 'Group name is required').notEmpty().matches(/\w/);
@@ -165,7 +167,7 @@ export default class Validate {
  * @param {Object} res response object
  * @param {Function} next callback function
  *
- * @return {Object} response containing the validation status
+ * @return {Object} response containing the error message
  */
   static createMessage(req, res, next) {
     req.check('group', 'Group name is required').notEmpty().matches(/\w/);

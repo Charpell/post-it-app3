@@ -1,9 +1,10 @@
 import chai from 'chai';
 
 import { getClientErrors, validateEmail } from '../../helpers/utils';
+import { error } from '../mocks/seeder';
 const expect = chai.expect;
 
-describe('EndPoint: Utils helper function', () => {
+describe('EndPoint: validateEmail', () => {
   const email = 'john@gmail.com';
 
   it('should expect validateEmail to be a function', () => {
@@ -19,16 +20,15 @@ describe('EndPoint: Utils helper function', () => {
    () => {
      expect(validateEmail('jbbjdg')).equal(false);
    });
+});
 
+describe('EndPoint: getClientErrors', () => {
   it('should expect getClientErrors to be a function', () => {
     expect(getClientErrors).to.be.a('function');
   });
 
-  it('should expect getClientErrors to return 401 message',
+  it('should expect getClientErrors to return an error message',
   () => {
-    const error = {
-      message: 'Request failed with status code 401'
-    };
-    expect(getClientErrors(error.message));
+    expect(getClientErrors(error));
   });
 });

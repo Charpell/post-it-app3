@@ -1,28 +1,8 @@
 import AppActions from '../../actions/AppActions';
 import AppDispatcher from '../../dispatcher/AppDispatcher';
 import AppConstants from '../../constants/AppConstants';
+import { message, userDetails, user, googleUser, users } from '../mocks/seeder';
 
-const displayName = 'Barak';
-const name = 'Barak Obama';
-const phoneNumber = '2348044675987';
-const email = 'bash@gmail.com';
-const uid = '343526282927345#$$$#dgskaidb';
-const photoURL = 'https://history.indiana.edu/images/no-photo.jpg';
-const password = '12345674';
-const users = ['John', 'Femi'];
-const numbers = ['2348045675987', '2348894675987'];
-const emails = ['John@gmai.com', 'Femi@gfm.com'];
-const group = 'Andela';
-const notification = ['Ebuka posted in Andela group'];
-
-const message = {
-  name,
-  group,
-  notification,
-  text: 'I am a message',
-  time: '12:32',
-  priority: 'Normal'
-};
 
 jest.mock('../../dispatcher/AppDispatcher');
 
@@ -38,13 +18,6 @@ afterEach(() => {
 
 describe('PostIt AppActions', () => {
   it('should dispatch a view action of type SIGN_UP', () => {
-    const userDetails = {
-      name,
-      email,
-      phoneNumber,
-      password
-    };
-
     AppActions.registerUser(userDetails);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.SIGN_UP,
@@ -54,11 +27,6 @@ describe('PostIt AppActions', () => {
 
 
   it('should dispatch a view action of type SIGN_IN', () => {
-    const userDetails = {
-      email,
-      password
-    };
-
     AppActions.loginUser(userDetails);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.SIGN_IN,
@@ -67,11 +35,6 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type RECEIVE_LOGIN', () => {
-    const user = {
-      email,
-      password
-    };
-
     AppActions.receiveLogin(user);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.RECEIVE_LOGIN,
@@ -81,13 +44,6 @@ describe('PostIt AppActions', () => {
 
 
   it('should dispatch a view action of type GOOGLE_LOGIN', () => {
-    const googleUser = {
-      displayName,
-      email,
-      uid,
-      photoURL
-    };
-
     AppActions.googleLogin(googleUser);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.GOOGLE_LOGIN,
@@ -104,6 +60,7 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type RECEIVE_NUMBERS', () => {
+    const numbers = ['2348045675987', '2348894675987'];
     AppActions.receiveNumber(numbers);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.RECEIVE_NUMBERS,
@@ -112,6 +69,7 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type RECEIVE_EMAILS', () => {
+    const emails = ['John@gmai.com', 'Femi@gfm.com'];
     AppActions.receiveEmails(emails);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.RECEIVE_EMAILS,
@@ -120,7 +78,6 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type SEEN_MESSAGE', () => {
-    const user = 'Barak';
     AppActions.seenMessage(user);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.SEEN_MESSAGE,
@@ -128,10 +85,11 @@ describe('PostIt AppActions', () => {
     });
   });
 
-  it('should dispatch a view action of type SAVE_GROUP', () => {
-    AppActions.saveGroup(group);
+  it('should dispatch a view action of type CREATE_GROUP', () => {
+    const group = 'Andela';
+    AppActions.createGroup(group);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
-      actionType: AppConstants.SAVE_GROUP,
+      actionType: AppConstants.CREATE_GROUP,
       group
     });
   });
@@ -146,6 +104,7 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type RECEIVE_NOTIFICATION', () => {
+    const notification = ['Ebuka posted in Andela group'];
     AppActions.receiveNotification(notification);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.RECEIVE_NOTIFICATION,
@@ -162,15 +121,11 @@ describe('PostIt AppActions', () => {
     });
   });
 
-  it('should dispatch a view action of type SAVE_GROUP_USER', () => {
-    const addUser = {
-      groupName: 'Andela',
-      userName: 'Ebuka'
-    };
-    AppActions.saveGroupUser(addUser);
+  it('should dispatch a view action of type ADD_USER_TO_GROUP', () => {
+    AppActions.addUserToGroup(userDetails);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
-      actionType: AppConstants.SAVE_GROUP_USER,
-      addUser
+      actionType: AppConstants.ADD_USER_TO_GROUP,
+      userDetails
     });
   });
 
@@ -191,6 +146,7 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type SEARCH_USER_MESSAGE', () => {
+    const group = 'Andela';
     AppActions.searchUserMessage(group);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.SEARCH_USER_MESSAGE,
@@ -199,13 +155,6 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type GOOGLE_SIGNUP', () => {
-    const googleUser = {
-      displayName,
-      email,
-      uid,
-      photoURL
-    };
-
     AppActions.googleSignup(googleUser);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.GOOGLE_SIGNUP,
@@ -229,6 +178,7 @@ describe('PostIt AppActions', () => {
   });
 
   it('should dispatch a view action of type RESET_PASSWORD', () => {
+    const email = 'wes@jkf.com';
     AppActions.resetPassword(email);
     expect(AppDispatcher.handleViewAction).toHaveBeenCalledWith({
       actionType: AppConstants.RESET_PASSWORD,

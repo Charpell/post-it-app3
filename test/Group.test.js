@@ -10,7 +10,7 @@ const email = 'jat@gmail.com';
 const password = '123456';
 
 describe('Create Group', () => {
-  const group = 'Bnu';
+  const group = 'Underhood';
   const userName = 'Ebuka';
 
   it('should successfully sign in a resgistered user',
@@ -110,7 +110,7 @@ describe('Create Group', () => {
         res.body.should.have.property('message');
         res.body.should.have.property('groupName');
         res.body.should.have.nested.property('groupName')
-        .eql('Bnu');
+        .eql('Underhood');
         res.body.should.have.nested.property('userName')
         .eql('Ebuka');
         if (err) return done(err);

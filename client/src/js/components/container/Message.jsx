@@ -6,7 +6,7 @@ import MessageList from './../presentation/MessageList';
 import ModalButton from '../presentation/ModalButton';
 
 /**
- * @description the component displays message on thr dashboard
+ * @description the component displays message on the dashboard
  *
  * @class Message
  *
@@ -36,7 +36,7 @@ export default class Message extends Component {
   /**
    * @description Makes an action call to mark users who have seen a message
    *
-   * @param {object} event
+   * @param {object} event the event object
    *
    * @returns {void}
    *
@@ -106,7 +106,7 @@ export default class Message extends Component {
    *
    * @description Render react component
    *
-   * @return { jsx } rendered jsx element
+   * @return {jsx} rendered jsx element
    *
    * @memberof Message
    */

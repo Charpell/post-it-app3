@@ -4,9 +4,9 @@ import React from 'react';
  * @description describes a reuseable component that used for for form
  * validation
  *
- * @return { void }
+ * @return {jsx} jsx markup
  *
- * @param { props } props
+ * @param {props} props
  *
  * @function Input
  */

@@ -1,30 +1,31 @@
-import jwt from 'jsonwebtoken';
-
 import config from './../config';
-import { capitalizeFirstLetter, queryUserDatabase, createToken } from './../helpers/utils';
+import { capitalizeFirstLetter, queryUserDatabase, createToken }
+from './../helpers/utils';
 
 const { firebase, usersRef } = config;
 
 /**
  * @description: A class that controls all user routes
  *
- * @class
+ * @class User
  */
 class User {
 /**
  * @description: This method creates a new user
  * route POST: /api/v1/user/signup
  *
+ * @method signUp
+ *
  * @param {Object} req request object
  * @param {Object} res response object
  *
  * @return {Object} response containing the registered user
  */
-  static signup(req, res) {
+  static signUp(req, res) {
     const { userName, password, email, number } = req.body;
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      const uid = user.uid;
+      const { uid } = user;
       const displayName = capitalizeFirstLetter(userName);
       user.updateProfile({
         displayName
@@ -69,15 +70,17 @@ class User {
   }
 
 /**
- * @description: This method creates a new user via google
+ * @description: This method creates a new user using a google account
  * route POST: /api/v1/google/signup
+ *
+ * @method registerGoogleUser
  *
  * @param {Object} req request object
  * @param {Object} res response object
  *
  * @return {Object} response containing the registered user
  */
-  static googleSignup(req, res) {
+  static registerGoogleUser(req, res) {
     const { userName, email, uid, number } = req.body;
 
     const newUser = capitalizeFirstLetter(userName);
@@ -109,16 +112,18 @@ class User {
     });
   }
 
-  /**
+/**
  * @description: This method logs in a registered user
  * route POST: /api/v1/user/signin
+ *
+ * @method signIn
  *
  * @param {Object} req request object
  * @param {Object} res response object
  *
  * @return {Object} response containing the logged-in user
  */
-  static signin(req, res) {
+  static signIn(req, res) {
     const { email, password } = req.body;
 
     firebase.auth().signInWithEmailAndPassword(email, password)
@@ -154,13 +159,14 @@ class User {
   }
 
 /**
-  * The Sign Out method
   * @description: This method logs the user out
+  *
+  * @method signout
   *
   * @param {null} req - User's Request
   * @param {object} res - Server Response
   *
-  * @return {object}  returns the user's details
+  * @return {void}  void
   */
   static signout(req, res) {
     firebase.auth().signOut().then(() => {
@@ -177,6 +183,8 @@ class User {
 /**
  * @description: This method retrieves user's notifications from database
  * route GET: /api/v1/user/getNotification
+ *
+ * @method getNotification
  *
  * @param {Object} req request object
  * @param {Object} res response object
@@ -212,13 +220,15 @@ class User {
 
 
   /**
- * @description: This method retrieves all users in user database
+ * @description: This method retrieves users in user database
  * route GET: /api/v1/user/getUsers
+ *
+ * @method getUsers
  *
  * @param {Object} req request object
  * @param {Object} res response object
  *
- * @return {Object} response containing all users in the user database
+ * @return {Object} response containing users in the user database
  */
   static getUsers(req, res) {
     queryUserDatabase('userName', res);
@@ -226,34 +236,40 @@ class User {
 
 
   /**
- * @description: This method retrieves all numbers in user database
+ * @description: This method retrieves numbers in user database
  * route GET: /api/v1/user/getNumbers
+ *
+ * @method getNumbers
  *
  * @param {Object} req request object
  * @param {Object} res response object
  *
- * @return {Object} response containing all numbers in the user database
+ * @return {Object} response containing numbers in the user database
  */
   static getNumbers(req, res) {
     queryUserDatabase('number', res);
   }
 
 /**
- * @description: This method retrieves all emails in user database
+ * @description: This method retrieves emails in user database
  * route GET: /api/v1/user/getEmails
+ *
+ * @method getEmails
  *
  * @param {Object} req request object
  * @param {Object} res response object
  *
- * @return {Object} response containing all emails in the user database
+ * @return {Object} response containing emails in the user database
  */
   static getEmails(req, res) {
     queryUserDatabase('email', res);
   }
 
-  /**
+/**
  * @description: This method reset password of a user
  * route POST: /api/v1/user/reset
+ *
+ * @method resetPassword
  *
  * @param {Object} req request object
  * @param {Object} res response object

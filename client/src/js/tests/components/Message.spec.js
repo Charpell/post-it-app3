@@ -1,8 +1,9 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import Message from '../../components/container/Message'
-import AppActions from '../../actions/AppActions'
+import Message from '../../components/container/Message';
+import AppActions from '../../actions/AppActions';
+import { messageProps } from '../mocks/seeder';
 
 jest.mock('../../../../../server/config', () => ({
 }));
@@ -19,22 +20,16 @@ afterEach(() => {
 
 
 describe('Message component', () => {
-  const props = {
-    message: [{ message: 'I am a message' }],
-    group:'Andela'
-  }
-
-
   it('should create a snapshot of itself', () => {
     const tree = renderer.create(<Message />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  const wrapper = mount(<Message {...props} />);
+  const wrapper = mount(<Message {...messageProps} />);
 
   it('should display the necessary elements', () => {
-    expect(wrapper.props().message).toEqual([{ message: 'I am a message' }])
-    expect(wrapper.props().group).toEqual('Andela')
+    expect(wrapper.props().message).toEqual([{ message: 'I am a message' }]);
+    expect(wrapper.props().group).toEqual('Andela');
   });
 
   it('should display the necessary elements', () => {
@@ -53,7 +48,6 @@ describe('Message component', () => {
 
 
   it('should expect seenMessage AppAction to be called', () => {
-    const spyOnDispatcher = spyOn(AppActions, 'seenMessage');
     const event = {
       target: {
         name: 'name',
@@ -65,6 +59,5 @@ describe('Message component', () => {
     wrapper.instance().handleSeenMessage(event);
     expect(spyOnDispatcher).toHaveBeenCalled();
   });
-
 });
 

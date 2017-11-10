@@ -1,12 +1,10 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 
-import Navigation from '../../components/presentation/Navigation'
+import Navigation from '../../components/presentation/Navigation';
 
 describe('Navigation Component', () => {
-  
   const wrapper = mount(<MemoryRouter><Navigation /></MemoryRouter>);
   it('should display the necessary elements', () => {
     expect(wrapper.find('div').length).toBe(4);

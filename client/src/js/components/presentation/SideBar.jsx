@@ -19,16 +19,16 @@ export default class SideBar extends Component {
 	 *
 	 * @memberof SideBar
 	 *
-	 * @return { jsx } rendered jsx element
+	 * @return {jsx} rendered jsx element
 	 */
   render() {
     const userName = JSON.parse(localStorage.getItem('user'));
 
     const groups = this.props.groups.map((keyName, keyIndex) =>
-    <Groups KeyName={keyName} key={keyIndex} userName={this.props.userName}/>);
+    <Groups keyName={keyName} key={keyIndex} userName={this.props.userName}/>);
 
     const groupUsers = this.props.groupUsers.map((keyName, keyIndex) =>
-    <Users KeyName={keyName} key={keyIndex}/>);
+    <Users keyName={keyName} key={keyIndex}/>);
 
     return (
       <div className="sideBar message-padding">

@@ -43,7 +43,7 @@ export default class ResetPassword extends Component {
   /**
    * @description Makes an Api Action to Reset Password
    *
-   * @param {any} event
+   * @param {object} event the event object
    *
    * @return {void} void
    *

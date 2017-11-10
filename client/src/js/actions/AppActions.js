@@ -3,14 +3,15 @@ import AppConstants from '../constants/AppConstants';
 
 
 const AppActions = {
-  /**
+/**
    * @description describes an action that makes
    * API call to the server for a post request
    * to register a user
    *
-   * @param { Object } userDetails
+   * @param {Object} userDetails an object that contains the username,
+   * password, email and phone number of a new user
    *
-   * @returns { void }
+   * @returns {void} void
    *
    */
   registerUser(userDetails) {
@@ -20,16 +21,17 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * API call to the server for a post request
    * to receive a user details
    *
-   * @param { Object } users
+   * @param {Object} users an object containing the user details
    *
-   * @returns { void }
    *
-   * @returns { Object } returns registered user registration details
+   * @returns {void} void
+   *
+   * @returns {Object} returns registered user registration details
    */
   receiveUsers(users) {
     AppDispatcher.handleViewAction({
@@ -39,14 +41,15 @@ const AppActions = {
   },
 
 
-  /**
+/**
    * @description describes an action that makes
    * API call to the server for a post request to get all users
    * who have seen a message.
    *
-   * @param { Object } user
+   * @param {Object} user contains the user and the message Id of a
+   * viewed message.
    *
-   * @returns { Object } returns an object containing list of users
+   * @returns {Object} returns an object containing list of users
    */
   seenMessage(user) {
     AppDispatcher.handleViewAction({
@@ -55,29 +58,29 @@ const AppActions = {
     });
   },
 
-   /**
+/**
    * @description describes an action that makes
    *  API call to the server for a post request to save a user's group
    *
-   * @param { Object } group
+   * @param {Object} group contains the groupname and the user
    *
-   * @returns { Object } returns notification message
+   * @returns {Object} returns notification message
    */
-  saveGroup(group) {
+  createGroup(group) {
     AppDispatcher.handleViewAction({
-      actionType: AppConstants.SAVE_GROUP,
+      actionType: AppConstants.CREATE_GROUP,
       group
     });
   },
 
-     /**
+/**
    * @description describes an action that makes
    * an API call to the server for a get request
    * to get all the groups that a user belongs to.
    *
-   * @param { Object } userName
+   * @param {Object} userName the user
    *
-   * @returns { void }
+   * @returns {void} void
    */
   getGroups(userName) {
     AppDispatcher.handleViewAction({
@@ -91,9 +94,9 @@ const AppActions = {
    * @description describes an action that
    * receive all user's notification.
    *
-   * @param { Object } notification
+   * @param {Object} notification an object of notifications
    *
-   * @returns { Object } returns an object containing user's notification
+   * @returns {Object} returns an object containing user's notification
    */
   receiveNotification(notification) {
     AppDispatcher.handleViewAction({
@@ -102,13 +105,13 @@ const AppActions = {
     });
   },
 
-  /**
-   * @description describes an action that makes
+/**
+   * @description describes an action that
    * receive all groups that a user belong to.
    *
-   * @param { Object } groups
+   * @param {Object} groups an object of groups
    *
-   * @returns { Object } returns an object containing user's group
+   * @returns {Object} returns an object containing user's group
    */
   receiveGroups(groups) {
     AppDispatcher.handleViewAction({
@@ -117,19 +120,19 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to save a user into a group.
    *
-   * @param { Object } addUser
+   * @param {Object} userDetails the groupname and the username
    *
-   * @returns { Object } returns a notification message
+   * @returns {Object} returns a notification message
    */
-  saveGroupUser(addUser) {
+  addUserToGroup(userDetails) {
     AppDispatcher.handleViewAction({
-      actionType: AppConstants.SAVE_GROUP_USER,
-      addUser
+      actionType: AppConstants.ADD_USER_TO_GROUP,
+      userDetails
     });
   },
 
@@ -138,9 +141,10 @@ const AppActions = {
    * an API call to the server for a post request
    * to save a message.
    *
-   * @param { Object } message
+   * @param {Object} message an object that contains the group, message,
+   * time it was posted, the user who posted the message
    *
-   * @returns { void }
+   * @returns {void} void
    */
   postMessage(message) {
     AppDispatcher.handleViewAction({
@@ -149,14 +153,14 @@ const AppActions = {
     });
   },
 
-    /**
+/**
    * @description describes an action that makes
    * an API call to the server for a get request
    * to receive message.
    *
-   * @param { Object } message
+   * @param {Object} message an object of messages
    *
-   * @returns { void }
+   * @returns {void} void
    */
   receiveMessages(message) {
     AppDispatcher.handleViewAction({
@@ -165,14 +169,15 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to login a user.
    *
-   * @param { Object } userDetails
+   * @param {Object} userDetails an object that contains the email and password
+   * of a registered user
    *
-   * @returns { void }
+   * @returns {void} void
    */
   loginUser(userDetails) {
     AppDispatcher.handleViewAction({
@@ -181,14 +186,14 @@ const AppActions = {
     });
   },
 
-    /**
+/**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to recieve a user's details.
    *
-   * @param { Object } user
+   * @param {Object} user an object containing the user details
    *
-   * @returns { Object } returns registered user details
+   * @returns {Object} returns registered user details
    */
   receiveLogin(user) {
     AppDispatcher.handleViewAction({
@@ -197,14 +202,14 @@ const AppActions = {
     });
   },
 
-    /**
+/**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to get users and messages in a group.
    *
-   * @param { Object } group
+   * @param {String} group group name
    *
-   * @returns { Object } returns users and messages in a group
+   * @returns {Object} returns users and messages in a group
    */
   searchUserMessage(group) {
     AppDispatcher.handleViewAction({
@@ -213,14 +218,15 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to login a user with a google account
    *
-   * @param { Object } googleUser
+   * @param {Object} googleUser an object that contains the username,
+   * email and phone number of a new user
    *
-   * @returns { Object } returns user's google account details
+   * @returns {Object} returns user's google account details
    */
   googleLogin(googleUser) {
     AppDispatcher.handleViewAction({
@@ -229,14 +235,15 @@ const AppActions = {
     });
   },
 
-  /**
+ /**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to register a user with a google account
    *
-   * @param { Object } googleUser
+   * @param {Object} googleUser an object that contains the username,
+   * email and phone number of a new user
    *
-   * @returns { Object } returns user's google account details
+   * @returns {Object} returns user's google account details
    */
   googleSignup(googleUser) {
     AppDispatcher.handleViewAction({
@@ -245,11 +252,11 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server to sign the user out
    *
-   * @returns { Object } returns registered user details
+   * @returns {Object} returns registered user details
    */
   logout() {
     AppDispatcher.handleViewAction({
@@ -257,14 +264,14 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server for a get request
    * to get all users.
    *
-   * @param { Object } users
+   * @param {Object} users object containing list of users
    *
-   * @returns { Object } returns an object containing list of users
+   * @returns {Object} returns an object containing list of users
    */
   receiveUser(users) {
     AppDispatcher.handleViewAction({
@@ -278,9 +285,9 @@ const AppActions = {
    * an API call to the server for a get request
    * to get all emails.
    *
-   * @param { Object } emails
+   * @param {Object} emails object containing list of emails
    *
-   * @returns { Object } returns an object containing list of emails
+   * @returns {Object} returns an object containing list of emails
    */
   receiveEmails(emails) {
     AppDispatcher.handleViewAction({
@@ -289,14 +296,14 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server for a get request
    * to get all numbers.
    *
-   * @param { Object } numbers
+   * @param {Object} numbers object containing list of numbers
    *
-   * @returns { Object } returns an object containing list of numbers
+   * @returns {Object} returns an object containing list of numbers
    */
   receiveNumber(numbers) {
     AppDispatcher.handleViewAction({
@@ -305,11 +312,11 @@ const AppActions = {
     });
   },
 
-    /**
+/**
    * @description describes an action that gets
    * the current user from local storage
    *
-   * @param { Object } displayName
+   * @param {String} displayName dislplay name of the user
    *
    * @returns { String } returns a displayName
    */
@@ -320,14 +327,14 @@ const AppActions = {
     });
   },
 
-  /**
+ /**
    * @description describes an action that makes
    * an API call to the server for a post request
    * to reset a user's password.
    *
-   * @param { Object } email
+   * @param {String} email the email address of the user
    *
-   * @returns { Object } returns a notification message
+   * @returns {Object} returns a notification message
    */
   resetPassword(email) {
     AppDispatcher.handleViewAction({
@@ -336,14 +343,14 @@ const AppActions = {
     });
   },
 
-  /**
+/**
    * @description describes an action that makes
    * an API call to the server for a get request
    * to get a user's notification.
    *
-   * @param { Object } userName
+   * @param {String} userName the user's name
    *
-   * @returns { Object } returns an object containing user's notificaions
+   * @returns {Object} returns an object containing user's notificaions
    */
   getNotification(userName) {
     AppDispatcher.handleViewAction({

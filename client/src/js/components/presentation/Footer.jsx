@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * @description This renders the footer Component
+ * @description describes a stateless function that renders the footer Component
  *
  * @class Welcome
  *

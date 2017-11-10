@@ -48,7 +48,7 @@ export default class Signup extends Component {
      * @description Adds an event Listener to the
 	   * Store and fires when the component is fully mounted.
      *
-     * @return { void } void
+     * @return {void} void
      *
      * @memberof Signup
      */
@@ -61,7 +61,7 @@ export default class Signup extends Component {
     *
 		* @description Removes event Listener from the Store
 		*
-		*@return { void } void
+		* @return {void} void
     *
     * @memberof Signup
     */
@@ -72,7 +72,7 @@ export default class Signup extends Component {
     /**
      * @description: controls inputs state
     *
-    * @param {object} element the current element
+    * @param {Object} element the current element
     *
     * @return {void} void
     */
@@ -87,14 +87,13 @@ export default class Signup extends Component {
      *
      * @description this method gets data from the store and sets to state
 		 *
-		 * @returns { void } void
+		 * @returns {void} void
      *
      * @memberof Signup
      */
   onChange() {
     this.setState({
       databaseUsers: AppStore.getDatabaseUsers(),
-      emails: AppStore.getGroupEmails(),
       numbers: AppStore.getAllUsersNumber(),
       googleUser: AppStore.getGoogleSignup()
     });
@@ -105,7 +104,7 @@ export default class Signup extends Component {
 		* @description describes a method that makes an action call
 		* to Sign up a user with username, email, phone number  and password
     *
-    * @param {object} event
+    * @param {object} event the event object
     *
     * @returns {void}
     *

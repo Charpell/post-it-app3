@@ -127,10 +127,10 @@ export const sendEmailNotification = (group, priority) => {
  *
  * @function sendSMSNotification
  *
- * @return { object } a string in lowercase and the First letter in Capital
+ * @return {object} a string in lowercase and the First letter in Capital
  *
- * @param {String} group
- * @param {String} priority
+ * @param {String} group the group name of the user
+ * @param {String} priority the priority of the message
  */
 export const sendSMSNotification = (group, priority) => {
   const number = [];
@@ -165,8 +165,8 @@ export const sendSMSNotification = (group, priority) => {
  *
  * @return {void}
  *
- * @param {String} groupName
- * @param {String} userName
+ * @param {String} groupName the group name of the user
+ * @param {String} userName the username of the user
  */
 export const saveUserHasSeenMessage = (groupName, userName) => {
   const messageIDRef = firebase.database()
@@ -196,7 +196,7 @@ export const saveUserHasSeenMessage = (groupName, userName) => {
  *
  * @return {Object} retrieves users or numbers or emails from user database
  *
- * @param {String} userData
+ * @param {String} userData the query parameter to the database
  * @param {Object} res response object
  */
 export const queryUserDatabase = (userData, res) => {

@@ -7,7 +7,7 @@ import Dashboard from './Dashboard';
 
 
 /**
- * @description This component maintains all routes.
+ * @description This component is the app's parent component
  * Checks for user signed in and signed out
  *
  * @class App
@@ -74,12 +74,10 @@ class App extends Component {
   }
 
   /**
-     *
-     *
-     * @memberof App
-     *
-     *  @return { jsx } rendered jsx element
-     */
+   * @memberof App
+   *
+   *  @return {jsx} rendered jsx element
+   */
   render() {
     return (
       <div>

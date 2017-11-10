@@ -7,8 +7,6 @@ import AppActions from '../../actions/AppActions';
 /**
  * @description component that registers a user with Google acccount
  *
- * @param {object} props
- *
  * @class GoogleWelcome
  *
  * @extends {Component}
@@ -35,55 +33,55 @@ export default class GoogleWelcome extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-    /**
-     * @method componentDidMount
-     *
-     * @description Adds an event Listener to the Store and fires when the
-     * component is fully mounted.
-     *
-     * @return {void}
-     *
-     * @memberof GoogleWelcome
-     */
+  /**
+   * @method componentDidMount
+   *
+   * @description Adds an event Listener to the Store and fires when the
+   * component is fully mounted.
+   *
+   * @return {void}
+   *
+   * @memberof GoogleWelcome
+   */
   componentDidMount() {
     AppStore.addChangeListener(this.onChange);
   }
 
-    /**
-    * @method componentWillUnmount
+  /**
+  * @method componentWillUnmount
 
-    * @description Removes event Listener from the Store
-    * @return {void}
-    *
-    * @memberof GoogleWelcome
-    */
+  * @description Removes event Listener from the Store
+  * @return {void}
+  *
+  * @memberof GoogleWelcome
+  */
   componentUnmount() {
     AppStore.removeChangeListener(this.onChange);
   }
 
-    /**
-    * description: controls inputs state
-    *
-    * @param {object} element the current element
-    *
-    * @return {void} void
-    */
+  /**
+  * description: controls inputs state
+  *
+  * @param {object} element the current element
+  *
+  * @return {void} void
+  */
   handleChange(element) {
     this.setState({
       [element.target.name]: element.target.value
     });
   }
 
-    /**
-    * @description Makes an action call to Sign up a user with username,
-    *email, phone number  and password
-    *
-    * @param {object} event
-    *
-    * @returns {void}
-    *
-    * @memberof GoogleWelcome
-    */
+  /**
+  * @description Makes an action call to Sign up a user with username,
+  *email, phone number  and password
+  *
+  * @param {object} event the event object
+  *
+  * @returns {void}
+  *
+  * @memberof GoogleWelcome
+  */
   handleSubmit(event) {
     event.preventDefault();
     const userDetails = { ...this.state.googleDetail,
@@ -97,14 +95,14 @@ export default class GoogleWelcome extends Component {
   }
 
     /**
-     * @method onChange
-     *
-     *@returns {void}
-     *
-     * @description Monitors changes in the components and change the state
-     *
-     * @memberof GoogleWelcome
-     */
+    * @method onChange
+    *
+    * @returns {void}
+    *
+    * @description Monitors changes in the components and change the state
+    *
+    * @memberof GoogleWelcome
+    */
   onChange() {
     this.setState({
       databaseUsers: AppStore.getDatabaseUsers(),
@@ -113,15 +111,15 @@ export default class GoogleWelcome extends Component {
     });
   }
 
-    /**
-     * @method render
-     *
-     * @description Render react component
-     *
-     * @returns {String} The HTML markup for the Register
-     *
-     * @memberof GoogleWelcome
-     */
+  /**
+   * @method render
+   *
+   * @description Render react component
+   *
+   * @returns {jsx} Jsx Markup
+   *
+   * @memberof GoogleWelcome
+   */
   render() {
     const displayName = this.state.googleDetail.displayName;
     return (

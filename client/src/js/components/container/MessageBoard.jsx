@@ -35,7 +35,7 @@ export default class MessageBoard extends Component {
   * @method componentDidMount
   *
   * @description Adds an event Listener to the Store and fires when
-  *the component is fully mounted.
+  * the component is fully mounted.
   *
   * @return {void}
   *
@@ -61,9 +61,9 @@ export default class MessageBoard extends Component {
 
   /**
   * @description Makes an action call to Sign up a user with username,
-  *email, phone number  and password
+  * email, phone number  and password
   *
-  * @param {object} event
+  * @param {object} event the event object
   *
   * @returns {void}
   *
@@ -73,7 +73,7 @@ export default class MessageBoard extends Component {
     event.preventDefault();
     const userName = JSON.parse(localStorage.getItem('user'));
     const message = {
-      user: userName.replace(' ', ''),
+      user: userName,
       group: this.state.currentGroup,
       message: this.refs.message.value.trim(),
       time: moment().format('h:mm a, MMM Do'),
@@ -87,15 +87,15 @@ export default class MessageBoard extends Component {
     }
   }
 
-  /**
-    * @method onChange
-    *
-    * @description Monitors changes in the components and change the state
-    *
-    * @return {void}
-    *
-    * @memberof MessageBoard
-    */
+/**
+  * @method onChange
+  *
+  * @description Monitors changes in the components and change the state
+  *
+  * @return {void}
+  *
+  * @memberof MessageBoard
+  */
   onChange() {
     this.setState({
       currentGroup: AppStore.getCurrentGroup(),
@@ -103,15 +103,15 @@ export default class MessageBoard extends Component {
     });
   }
 
-  /**
-     * @method render
-     *
-     * @description Render the MessageBoard component
-     *
-     * @returns {void}
-     *
-     * @memberof MessageBoard
-     */
+/**
+   * @method render
+   *
+   * @description Render the MessageBoard component
+   *
+   * @returns {void}
+   *
+   * @memberof MessageBoard
+   */
   render() {
     return (
       <div className="container" id="main">

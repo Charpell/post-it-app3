@@ -4,19 +4,20 @@ import renderer from 'react-test-renderer';
 import Signup from '../../components/container/Signup';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import { event } from '../mocks/seeder';
 
 jest.mock('../../../../../server/config', () => ({
-  }));
+}));
 jest.mock('../../actions/AppActions');
 
 
 let spyOnDispatcher;
 beforeEach(() => {
-    spyOnDispatcher = spyOn(AppActions, 'registerUser');
+  spyOnDispatcher = spyOn(AppActions, 'registerUser');
 });
 
 afterEach(() => {
-    spyOnDispatcher.mockReset();
+  spyOnDispatcher.mockReset();
 });
 
 const registerUserSpy = jest.spyOn(AppActions, 'registerUser');
@@ -24,7 +25,6 @@ const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
 
 
 describe('Signup Component', () => {
-
   const wrapper = mount(<Signup />);
   it('should have an empty initial state in the component ', () => {
     expect(wrapper.state().emails).toHaveLength(0);
@@ -40,15 +40,16 @@ describe('Signup Component', () => {
   });
 
   it('should have all the method in the component to be defined', () => {
-    expect(wrapper.node.handleChange).toBeDefined();
-    expect(wrapper.node.handleSubmit).toBeDefined();
-    expect(wrapper.node.onChange).toBeDefined();
+    wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillUnmount();
+    wrapper.instance().onChange();
+    wrapper.instance().handleSubmit(event);
+    wrapper.instance().handleChange(event);
   });
 
   it('should have all the method in the component to be defined', () => {
-    expect(wrapper.find('div')).toHaveLength(11)
-    expect(wrapper.find('form')).toHaveLength(1)
-    
+    expect(wrapper.find('div')).toHaveLength(11);
+    expect(wrapper.find('form')).toHaveLength(1);
   });
 
   it('should sign up a user', () => {
@@ -58,13 +59,12 @@ describe('Signup Component', () => {
       email: 'testemail@email.com',
       password: '123456',
       verifyPassword: '123456'
-    })
-    wrapper.find('form').simulate('submit')
+    });
+    wrapper.find('form').simulate('submit');
     expect(spyOnDispatcher).toHaveBeenCalledTimes(1);
   });
 
   it('should call componentDidMount lifecycle', () => {
     expect(addChangeListenerSpy).toHaveBeenCalled();
   });
-
 });

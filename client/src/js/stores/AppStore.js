@@ -424,7 +424,7 @@ AppDispatcher.register((payload) => {
       break;
 
 
-    case AppConstants.SAVE_GROUP:
+    case AppConstants.CREATE_GROUP:
       AppAPI.createGroup(action.group);
       AppStore.emit(CHANGE_EVENT);
       break;
@@ -444,7 +444,7 @@ AppDispatcher.register((payload) => {
       AppStore.emit(CHANGE_EVENT);
       break;
 
-    case AppConstants.SAVE_GROUP_USER:
+    case AppConstants.ADD_USER_TO_GROUP:
       AppAPI.addUserToGroup(action.addUser);
       AppStore.emit(CHANGE_EVENT);
       break;

@@ -14,8 +14,6 @@ const { firebase, provider } = config;
 /**
  * @description the signin components lets users log into the app
  *
- * @param {object} props
- *
  * @class Signin
  *
  * @extends {Component}
@@ -87,7 +85,7 @@ class Signin extends Component {
   /**
    * @description Makes an action call to Sign in a user with email and password
    *
-   * @param {object} event
+   * @param {object} event the event object
    *
    * @returns {void}
    *

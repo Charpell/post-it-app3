@@ -1,10 +1,11 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
 import MessageBoard from '../../components/container/MessageBoard';
 import AppStore from '../../stores/AppStore';
 import localStorageMock from '../../../../../mock/LocalStorageMock';
+import { event } from '../mocks/seeder';
 
 window.localStorage = localStorageMock;
 
@@ -21,8 +22,8 @@ describe('MessageBoard component', () => {
 
   it('should find all component rendered element', () => {
     expect(wrapper.find('div').length).toBe(6);
-    expect(wrapper.find('form').length).toBe(1)
-    expect(wrapper.find('input').length).toBe(1)
+    expect(wrapper.find('form').length).toBe(1);
+    expect(wrapper.find('input').length).toBe(1);
   });
 
   it('should have an empty initial state as the component ', () => {
@@ -35,18 +36,10 @@ describe('MessageBoard component', () => {
   });
 
   it('should have all the method in the component to be defined', () => {
-    const event = {
-      target: {
-        name: 'name',
-        value: 'value',
-      },
-      preventDefault: () => jest.fn()
-    };
     wrapper.instance().componentDidMount();
     wrapper.instance().componentWillUnmount();
     wrapper.instance().onChange();
-    // wrapper.instance().sendMessage(event);
+    wrapper.instance().sendMessage(event);
   });
-
 });
 

@@ -6,16 +6,12 @@ import DashboardNavigation from
 import GroupOptions from './../../components/presentation/GroupOptions';
 import ModalButton from '../../components/presentation/ModalButton';
 import localStorageMock from '../../../../../mock/LocalStorageMock';
+import { props, dashboardProps } from '../mocks/seeder';
 
 window.localStorage = localStorageMock;
 
 describe('DashBoardNavigation.js', () => {
-  const props = {
-    group: [{ groupName: 'Andela' }],
-    allUsers: ['George', 'Phil', 'Odim'],
-    notification: ['George has posted in Green group'],
-    userName: 'George'
-  };
+
 
   const wrapper = mount(<DashboardNavigation {...props}/>);
 
@@ -44,7 +40,7 @@ describe('DashBoardNavigation.js', () => {
     expect(wrapper.node.closeModalGroup).toBeDefined();
     expect(wrapper.node.openModalNotification).toBeDefined();
     expect(wrapper.node.closeModalNotification).toBeDefined();
-    expect(wrapper.node.addUser).toBeDefined();
+    expect(wrapper.node.addUserToGroup).toBeDefined();
     expect(wrapper.node.createGroup).toBeDefined();
     expect(wrapper.node.logout).toBeDefined();
     expect(wrapper.node.handleNotificationButton).toBeDefined();
@@ -66,7 +62,7 @@ describe('DashBoardNavigation.js', () => {
     wrapper.instance().openModalNotification();
     wrapper.instance().closeModalNotification();
     wrapper.instance().createGroup(event);
-    wrapper.instance().addUser(event);
+    wrapper.instance().addUserToGroup(event);
     wrapper.instance().handleAddUserButton();
     wrapper.instance().handleNotificationButton();
     wrapper.instance().logout(event);
@@ -74,16 +70,7 @@ describe('DashBoardNavigation.js', () => {
 
 
   it('should be able to change state when an action is triggered', () => {
-    const newStateProperty = {
-      createGroupModal: true,
-      addUserModal: true,
-      notificationModal: true,
-      groupName: 'Pie',
-      userName: 'George',
-      users: ['Luke', 'John']
-    };
-
-    wrapper.setState(newStateProperty);
+    wrapper.setState(dashboardProps);
     expect(wrapper.state().createGroupModal).toEqual(true);
     expect(wrapper.state().addUserModal).toEqual(true);
     expect(wrapper.state().notificationModal).toEqual(true);

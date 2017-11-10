@@ -131,7 +131,6 @@ export default class DashBoard extends Component {
           />
           :
           <MessageBoard
-            contact={this.state.contacts}
             emails={this.state.emails}
             numbers={this.state.numbers}
             userName ={userName}

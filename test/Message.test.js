@@ -138,7 +138,7 @@ describe('Create Message', () => {
 });
 
 describe('EndPoint: Read Message', () => {
-  it('should return empty object if no user has read a message',
+  it('should return empty array if no user has read a message',
   (done) => {
     const groupName = 'Lll';
     const messageID = '-KyFtHJMfy45vGEpW5kL';
@@ -151,6 +151,9 @@ describe('EndPoint: Read Message', () => {
         res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('No user has read this message');
+        res.body.should.have.property('users');
+        res.body.should.have.nested.property('users')
+        .eql([]);
         if (err) return done(err);
         done();
       });
@@ -177,6 +180,9 @@ describe('EndPoint: Read Message', () => {
         res.body.should.have.property('messageID');
         res.body.should.have.nested.property('messageID')
         .eql('-KyWIibYf7MwLHaXEnN1');
+        res.body.should.have.property('users');
+        res.body.should.have.nested.property('users')
+        .eql({ Bot: 'Bot', Yank: 'Yank' });
         if (err) return done(err);
         done();
       });

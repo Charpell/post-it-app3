@@ -15,6 +15,8 @@ class Group {
   * @description This method creates a group for a user
   * route POST: /api/v1/group
   *
+  * @method createGroup
+  *
   * @param {Object} req requset object
   * @param {Object} res response object
   *
@@ -72,11 +74,11 @@ class Group {
 
     const user = capitalizeFirstLetter(newUser);
     const userDatabase = firebase.database();
-    usersRef.child(user).once('value', (snapshot) => {
-      if (snapshot.exists()) {
-        const userName = snapshot.val().userName;
-        const email = snapshot.val().email;
-        const number = snapshot.val().number;
+    usersRef.child(user).once('value', (snapShot) => {
+      if (snapShot.exists()) {
+        const userName = snapShot.val().userName;
+        const email = snapShot.val().email;
+        const number = snapShot.val().number;
         userDatabase.ref(`/users/${user}/Groups`).push({
           groupName
         });
@@ -115,25 +117,28 @@ class Group {
   /**
 * @description: This method retrieves all groups the user belongs to
 *
+* @method getUserGroups
+*
 * @param {Object} req request object
 * @param {Object} res response object
 *
 * @return {Object} response containing all users and messages in a group
 */
-  static getGroups(req, res) {
+  static getUserGroups(req, res) {
     const userName = req.params.userName;
     const groups = [];
     usersRef.child(userName).child('Groups')
-    .once('value', (snap) => {
-      snap.forEach((data) => {
+    .once('value', (snapShot) => {
+      snapShot.forEach((groupSnapShot) => {
         groups.push({
-          groupName: data.val().groupName
+          groupName: groupSnapShot.val().groupName
         });
       });
       if (groups.length === 0) {
-        res.status(200).json(
-          { message: 'You currently do not belong to a group' }
-        );
+        res.status(200).json({
+          message: 'You currently do not belong to a group',
+          groups: []
+        });
       } else {
         res.status(200).send(groups);
       }
@@ -148,45 +153,52 @@ class Group {
  * @description: This method retrieves all users and messages in a group.
  * It will also save user who have read a message
  *
+ * @method getGroupMessages
+ *
  * @param {Object} req request object
  * @param {Object} res response object
  *
  * @return {Object} response containing all users nd messages of a group
  */
-  static getUsersMessagesInGroups(req, res) {
-    const groupName = req.params.groupName;
-    const userName = req.params.user;
+  static getGroupMessages(req, res) {
+    const { groupName, userName } = req.params;
 
     const messages = [];
     const users = [];
-
     groupRef.child(groupName).child('Messages').limitToLast(14)
-    .once('value', (snap) => {
-      snap.forEach((data) => {
+    .once('value', (snapShot) => {
+      snapShot.forEach((messageSnapShot) => {
         messages.push({
-          id: data.key,
-          user: data.val().user,
-          message: data.val().message,
-          time: data.val().time,
-          priority: data.val().priority
+          id: messageSnapShot.key,
+          user: messageSnapShot.val().user,
+          message: messageSnapShot.val().message,
+          time: messageSnapShot.val().time,
+          priority: messageSnapShot.val().priority
         });
       });
-
       groupRef.child(groupName).child('Users')
       .once('value', (userSnapshot) => {
-        userSnapshot.forEach((data) => {
+        userSnapshot.forEach((userValue) => {
           users.push({
-            userName: data.val()
+            userName: userValue.val()
           });
         });
 
         saveUserHasSeenMessage(groupName, userName);
 
-        res.status(200).json({
-          message: `Messages and Users in ${groupName} database`,
-          messages,
-          users
-        });
+        if (messages.length === 0) {
+          res.status(200).json({
+            message: 'The group currently has no message',
+            messages: [],
+            users
+          });
+        } else {
+          res.status(200).json({
+            message: `Messages and Users in ${groupName} database`,
+            messages,
+            users
+          });
+        }
       });
     })
     .catch(() => {

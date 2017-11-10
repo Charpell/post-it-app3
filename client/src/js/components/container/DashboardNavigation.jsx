@@ -39,7 +39,7 @@ export default class DashboardNavigation extends Component {
     this.closeModalGroup = this.closeModalGroup.bind(this);
     this.openModalNotification = this.openModalNotification.bind(this);
     this.closeModalNotification = this.closeModalNotification.bind(this);
-    this.addUser = this.addUser.bind(this);
+    this.addUserToGroup = this.addUserToGroup.bind(this);
     this.createGroup = this.createGroup.bind(this);
     this.logout = this.logout.bind(this);
     this.handleNotificationButton = this.handleNotificationButton.bind(this);
@@ -131,7 +131,7 @@ export default class DashboardNavigation extends Component {
       group: this.refs.group.value.trim(),
       userName: this.props.userName
     };
-    AppActions.saveGroup(group);
+    AppActions.createGroup(group);
   }
 
 
@@ -144,17 +144,17 @@ export default class DashboardNavigation extends Component {
 
   * @memberof DashboardNavigation
   */
-  addUser(event) {
+  addUserToGroup(event) {
     event.preventDefault();
 
-    const addUser = {
+    const userDetails = {
       groupName: this.refs.type.value.trim(),
       newUser: this.refs.user.value
     };
     if (this.refs.type.value === 'Groups') {
       toastr.error('Select a Group name');
     } else {
-      AppActions.saveGroupUser(addUser);
+      AppActions.addUserToGroup(userDetails);
     }
   }
 
@@ -184,7 +184,7 @@ export default class DashboardNavigation extends Component {
   /**
   * @description Method for logging out Users
 
-  * @param {object} event
+  * @param {object} event the event object
 
   * @returns {void}
 
@@ -208,9 +208,6 @@ export default class DashboardNavigation extends Component {
 
     const notificationList = this.props.notification.map((keyName, keyIndex) =>
      <li key={keyIndex}>{keyName.notification}</li>);
-
-    const allUsers = this.props.allUsers.map((keyName, keyIndex) =>
-     <option key={keyIndex}>{keyName}</option>);
 
     return (
       <div>
@@ -249,7 +246,7 @@ export default class DashboardNavigation extends Component {
           action={this.handleAddUserButton}
           modalState={this.state.addUserModal}
         >
-          <form onSubmit={this.addUser} className="whatever">
+          <form onSubmit={this.addUserToGroup} className="whatever">
             <div className='form-group'>
               <select
                 className="form-control"
@@ -262,13 +259,8 @@ export default class DashboardNavigation extends Component {
 
               <input type="text" ref='user'
                 className='form-control'
-                list="users"
                 placeholder='Search for a User' required />
 
-              <datalist id="users">
-                {allUsers}
-              </datalist>
-              
             </div>
 
             <button type='submit'

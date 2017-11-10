@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import renderer from 'react-test-renderer';
-import Signin from '../../components/container/Signin';
-import GoogleWelcome from '../../components/container/GoogleWelcome';
-import AppActions from '../../actions/AppActions';
 import GoogleButton from 'react-google-button';
+
+
+import Signin from '../../components/container/Signin';
+import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import Input from '../../components/presentation/Input.jsx'
-import firebase from '../../../../../server/config'
+import Input from '../../components/presentation/Input.jsx';
+import firebase from '../../../../../server/config';
+import { event } from '../mocks/seeder';
 
 
 jest.mock('../../../../../server/config', () => {
@@ -15,9 +16,9 @@ jest.mock('../../../../../server/config', () => {
  * @description describes a function that mocks firebase module,
  * fires it action to make an Api call, returns a promise that is mocked
  *
- * @param { void } void takes no parameter
+ * @param {void} void takes no parameter
  *
- * @return { object } mockfirebase object
+ * @return {Object} mockfirebase object
  *
  * @function Test
  */
@@ -37,13 +38,12 @@ jest.mock('../../../../../server/config', () => {
 });
 
 const googleSpy = jest.spyOn(AppActions, 'googleLogin');
-const loginUserSpy = jest.spyOn(AppActions, 'loginUser'); 
+const loginUserSpy = jest.spyOn(AppActions, 'loginUser');
 const getGoogleSignupSpy = jest.spyOn(AppStore, 'getGoogleSignup');
 const addChangeListenerSpy = jest.spyOn(AppStore, 'addChangeListener');
 
 
 describe('Signin Component', () => {
-
   const wrapper = mount(<Signin />);
   it('should have an empty initial state as the component ', () => {
     expect(wrapper.state().emails).toHaveLength(0);
@@ -59,13 +59,13 @@ describe('Signin Component', () => {
     expect(wrapper.node.handleGoogleSignin).toBeDefined();
     expect(wrapper.node.onChange).toBeDefined();
   });
-  
+
   it('should sign in a validated user', () => {
     wrapper.setState({
       email: 'testemail@email.com',
       password: 'test'
-    })
-    wrapper.find('form').simulate('submit')
+    });
+    wrapper.find('form').simulate('submit');
     expect(loginUserSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -77,26 +77,12 @@ describe('Signin Component', () => {
     expect(wrapper.find(GoogleButton)).toHaveLength(1);
     expect(wrapper.find('Input').length).toEqual(2);
     expect(wrapper.find('button')).toHaveLength(1);
-  })
+  });
 
   it('expects the following functions defined', () => {
-    const event = {
-      target: {
-        name: 'name',
-        value: 'value',
-      },
-      preventDefault: () => jest.fn()
-    };
     wrapper.instance().componentDidMount();
     wrapper.instance().componentWillUnmount();
     wrapper.instance().handleSubmit(event);
     wrapper.instance().onChange();
   });
-
-  xit('should call firebase', () => {
-    wrapper.find(GoogleButton).simulate('click');
-    expect(firebase.auth.GoogleAuthProvider.prototype.addScope)
-    .toHaveBeenCalledTimes(2);
-    expect(firebase.auth().signInWithPopup).toHaveBeenCalled();
-  })
 });

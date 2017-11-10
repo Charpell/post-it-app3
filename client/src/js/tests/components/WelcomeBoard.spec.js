@@ -1,7 +1,6 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import WelcomeBoard from '../../components/presentation/WelcomeBoard'
+import WelcomeBoard from '../../components/presentation/WelcomeBoard';
 
 
 describe('WelcomeBoard component', () => {

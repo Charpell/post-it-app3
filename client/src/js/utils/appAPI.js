@@ -10,7 +10,10 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to register a user
    *
-   * @param {Object} userDetails
+   * @method signUpUser
+   *
+   * @param {Object} userDetails an object that contains the username,
+   * password, email and phone number of a new user
    *
    * @returns {Object} returns registered user registration details
    */
@@ -28,7 +31,10 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to login a user.
    *
-   * @param {Object} userDetails
+   * @method login
+   *
+   * @param {Object} userDetails an object that contains the email and password
+   * of a registered user
    *
    * @returns {Object} returns registered user details
    */
@@ -47,7 +53,9 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to save a user's group
    *
-   * @param {Object} group
+   * @method createGroup
+   *
+   * @param {Object} group an object that contains the group name and the user
    *
    * @returns {Object} returns notification message
    */
@@ -61,7 +69,9 @@ const AppAPI = {
    * @description describes an API call to the server for a get request
    * to get all the groups that a user belong to.
    *
-   * @param {Object} userName
+   * @method getGroups
+   *
+   * @param {Object} userName The username of the user
    *
    * @returns {Object} returns an object containing user's group
    */
@@ -78,7 +88,9 @@ const AppAPI = {
    * @description describes an API call to the server for a get request
    * to get a user's notification.
    *
-   * @param {Object} userName
+   * @method getNotifications
+   *
+   * @param {Object} userName The username of the user
    *
    * @returns {Object} returns an object containing user's notificaions
    */
@@ -94,12 +106,15 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to save a user into a group.
    *
-   * @param {Object} addUser
+   * @method addUserToGroup
+   *
+   * @param {Object} userDetails an object that contains the group name and
+   * the user
    *
    * @returns {Object} returns a notification message
    */
-  addUserToGroup(addUser) {
-    return axios.post('/api/v1/group/groupName/user', addUser)
+  addUserToGroup(userDetails) {
+    return axios.post('/api/v1/group/groupName/user', userDetails)
     .then((response) => {
       toastr.success(response.data.message);
     }).catch(getClientErrors);
@@ -109,7 +124,10 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to save a message.
    *
-   * @param {Object} message
+   * @method postMessages
+   *
+   * @param {Object} message an object that contains the group, message,
+   * time it was posted, the user who posted the message
    *
    * @returns {void}
    */
@@ -124,15 +142,17 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to save a message.
    *
-   * @param {Object} user
+   * @method seenMessage
+   *
+   * @param {Object} messageDetails an object that contains the user's group
+   * and message ID
    *
    * @returns {Object} returns an object containing list of users who
    * have seen a message
    */
-  seenMessage(user) {
-    const groupName = user.groupName;
-    const messageID = user.messageID;
-    return axios.get(`/api/v1/seen/${groupName}/${messageID}`)
+  seenMessage(messageDetails) {
+    return axios.get(`/api/v1/seen/${messageDetails.groupName}
+    /${messageDetails.messageID}`)
     .then((response) => {
       AppActions.receiveSeenUsers(response.data);
     }).catch(getClientErrors);
@@ -140,6 +160,8 @@ const AppAPI = {
 
   /**
    * @description describes an API call to the server to sign the user out
+   *
+   * @method setLogout
    *
    * @returns {Object} returns registered user details
    */
@@ -153,15 +175,15 @@ const AppAPI = {
    * @description describes an API call to the server for a get request
    * to get the list of users and message in a group.
    *
-   * @param { Object } group
+   * @method searchUserMessageInGroup
    *
-   * @returns { Object } returns an object that contains messages an users
+   * @param {Object} group an object that contain the user and group name
+   *
+   * @returns {Object} returns an object that contains messages an users
    * in a group.
    */
   searchUserMessageInGroup(group) {
-    const groupName = group.groupName;
-    const user = group.userName;
-    return axios.get(`/api/v1/groups/${groupName}/${user}`)
+    return axios.get(`/api/v1/groups/${group.groupName}/${group.userName}`)
       .then((response) => {
         const messages = response.data.messages;
         const users = response.data.users;
@@ -174,7 +196,10 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to register a user with a google account
    *
-   * @param {Object} googleUser
+   * @method googleSignUp
+   *
+   * @param {Object} googleUser an object that contains the username,
+   * email and phone number of a new user
    *
    * @returns {Object} returns registered user registration details
    */
@@ -199,7 +224,9 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to reset a user's password.
    *
-   * @param {Object} email
+   * @method resetPassword
+   *
+   * @param {Object} email the email of the user
    *
    * @returns {Object} returns a notification message
    */
@@ -214,6 +241,8 @@ const AppAPI = {
    * @description describes an API call to the server for a get request
    * to get all users in a group.
    *
+   * @method getUsers
+   *
    * @returns {Object} returns an object containing list of users
    */
   getUsers() {
@@ -227,6 +256,8 @@ const AppAPI = {
    * @description describes an API call to the server for a post request
    * to get all numbers.
    *
+   * @method getNumbers
+   *
    * @returns {Object} returns an object containing list of numbers
    */
   getNumbers() {
@@ -239,6 +270,8 @@ const AppAPI = {
   /**
    * @description describes an API call to the server for a get request
    * to get all emails.
+   *
+   * @method getEmails
    *
    * @returns {Object} returns an object containing list of emails
    */

@@ -24,21 +24,19 @@ class Home extends Component {
     this.state = {
       isAuthenticated: AppStore.getAuthenticatedState()
     };
-    this.onChange = this
-      .onChange
-      .bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  /**
-    * @method componentDidMount
-    *
-    * @description Adds an event Listener to the Store and fires when the
-    * component is fully mounted.
-    *
-    * @return {void}
-    *
-    * @memberof Home
-    */
+/**
+  * @method componentDidMount
+  *
+  * @description Adds an event Listener to the Store and fires when the
+  * component is fully mounted.
+  *
+  * @return {void}
+  *
+  * @memberof Home
+  */
   componentDidMount() {
     AppStore.addChangeListener(this.onChange);
   }
@@ -47,7 +45,7 @@ class Home extends Component {
   * @method componentUnmount
   *
   * @description Removes event Listener from the Store
-  * @return { void } void
+  * @return {void} void
   *
   * @memberof Home
   */
@@ -59,7 +57,7 @@ class Home extends Component {
    * @method setApp
    *
    * @description Monitors changes in the components and change the state
-   * @return { void } void
+   * @return {void} void
    *
    * @memberof Home
    */
@@ -74,7 +72,7 @@ class Home extends Component {
 	 *
 	 * @memberof Home
 	 *
-	 * @return { jsx } rendered jsx element
+	 * @return {jsx} rendered jsx element
 	 */
   render() {
     return (

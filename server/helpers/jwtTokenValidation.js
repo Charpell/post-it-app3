@@ -4,7 +4,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 const jwtSecret = process.env.TOKEN_SECRET;
 
-
+/**
+ * @description: describe a function that decodes the token from the client
+ * amd checks if it has expired
+ *
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next callback function
+ *
+ * @return {Object} response containing the error message
+ */
 const jwtTokenValidation = (req, res, next) => {
   const token = req.headers.authorization || req.headers['x-access-token'] ||
    req.header('authorization');

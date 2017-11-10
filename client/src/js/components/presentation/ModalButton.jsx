@@ -8,8 +8,6 @@ import { Modal } from 'react-bootstrap';
  *
  * @method ModalButton
  *
- * @extends { DashboardNavigation }
- *
  * @return {ReactElement} markup
  */
 const ModalButton = props => ({

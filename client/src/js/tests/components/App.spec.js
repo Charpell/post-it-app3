@@ -9,6 +9,7 @@ import Routes from '../../components/presentation/Routes';
 import Dashboard from '../../components/container/Dashboard';
 import localStorageMock from '../../../../../mock/LocalStorageMock';
 import AppStore from '../../stores/AppStore';
+import { newStateProperty } from '../mocks/seeder';
 
 window.localStorage = localStorageMock;
 
@@ -16,11 +17,6 @@ jest.mock('../../../../../server/config', () => ({
 }));
 
 describe('App Component', () => {
-  const newStateProperty = {
-    isAuthenticated: true,
-    userName: 'Ebuka'
-  };
-
   const mock = jest.fn();
   const getAuthenticatedStateSpy = jest.spyOn(AppStore,
   'getAuthenticatedState');
