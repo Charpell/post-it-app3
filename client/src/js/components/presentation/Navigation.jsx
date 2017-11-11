@@ -11,11 +11,10 @@ import { Link } from 'react-router-dom';
  */
 const Navigation = () => (
   <div>
-    <nav className="navbar navbar-inverse fixed-top"
-      style={{ borderRadius: '0px' }}>
+    <nav className="navbar navbar-inverse fixed-top">
       <div className="container-fluid">
         <div className="navbar-header" id="navbar-header">
-          <a className="navbar-brand low-red" href="#"> &nbsp;&nbsp;POST IT</a>
+          <a className="navbar-brand low-red" href="/"> &nbsp;&nbsp;POST IT</a>
         </div>
         <div className="collapse navbar-collapse" id="myNavbar">
           <ul className="nav navbar-nav">

@@ -56,20 +56,6 @@ export const event = {
   preventDefault: () => jest.fn()
 };
 
-// export const appActionSeed = {
-//   displayName: 'Barak',
-//   name: 'Barak Obama',
-//   phoneNumber: '2348044675987',
-//   email: 'bash@gmail.com',
-//   uid: '343526282927345#$$$#dgskaidb',
-//   photoURL: 'https://history.indiana.edu/images/no-photo.jpg',
-//   password: '12345674',
-//   users: ['John', 'Femi'],
-//   numbers: ['2348045675987', '2348894675987'],
-//   emails: ['John@gmai.com', 'Femi@gfm.com'],
-//   group: 'Andela',
-//   notification: ['Ebuka posted in Andela group']
-// };
 const displayName = 'Barak';
 const name = 'Barak Obama';
 const phoneNumber = '2348044675987';

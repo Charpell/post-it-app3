@@ -173,44 +173,39 @@ class Signin extends Component {
 	 *@return { jsx } rendered jsx element
    */
   render() {
-    let display;
-    if (!this.state.googleComponent) {
-      display =
-        <div className='well col-md-8 col-md-offset-2'>
-          <h3>Sign In</h3>
-          <form onSubmit={this.handleSubmit}>
-            <Input
-              name="email"
-              type={'text'}
-              action={this.handleChange}
-              className={'form-control'}
-              placeholder={'Email'}
-            />
-            <Input
-              name="password"
-              type={'password'}
-              action={this.handleChange}
-              className={'form-control'}
-              placeholder={'Password'}
-            />
-            <div><a href="#/reset">Forgot Password?</a></div>
-            <div><a href="#/register">Don't have an account? Signup</a></div>
-            <button type='submit' onClick={this.addAlert}
-              className='btn btn-primary'>Log in</button>
-          </form>
-
-          <GoogleButton
-            className="google-button"
-            onClick={this.handleGoogleSignin}
-          />
-        </div>;
-    } else {
-      display = < GoogleWelcome />;
-    }
     return (
       <div className="row">
         <div className="col-sm-12">
-          {display}
+          {!this.state.googleComponent ?
+            <div className='well col-md-8 col-md-offset-2'>
+              <h3>Sign In</h3>
+              <form onSubmit={this.handleSubmit}>
+                <Input
+                  name="email"
+                  type={'text'}
+                  action={this.handleChange}
+                  className={'form-control'}
+                  placeholder={'Email'}
+                />
+                <Input
+                  name="password"
+                  type={'password'}
+                  action={this.handleChange}
+                  className={'form-control'}
+                  placeholder={'Password'}
+                />
+                <div><a href="/reset">Forgot Password?</a></div>
+                <div><a href="/register">Don't have an account? Signup</a></div>
+                <button type='submit' onClick={this.addAlert}
+                  className='btn btn-primary'>Log in</button>
+              </form>
+
+              <GoogleButton
+                className="google-button"
+                onClick={this.handleGoogleSignin}
+              />
+            </div> :
+            < GoogleWelcome />}
         </div>
       </div>
     );

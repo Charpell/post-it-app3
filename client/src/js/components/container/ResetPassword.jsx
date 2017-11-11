@@ -86,7 +86,7 @@ export default class ResetPassword extends Component {
             </form>
             <br />
             <div>
-              <a href="#/login">Back to Log in</a>
+              <a href="/">Back to Log in</a>
             </div>
           </div>
         </div>

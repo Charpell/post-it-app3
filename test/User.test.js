@@ -578,7 +578,7 @@ describe('EndPoint: Reset Password', () => {
   (done) => {
     request(app)
       .post('/api/v1/user/reset')
-      .send({ email: 'yank@gmail.com' })
+      .send({ email })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
@@ -635,7 +635,7 @@ describe('EndPoint: Phone Numbers', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(19);
+        res.body.should.have.lengthOf(22);
         expect(res.body).include(
           '2345677676878',
           '2345677676338',
@@ -661,11 +661,9 @@ describe('EndPoint: Emails', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(19);
+        res.body.should.have.lengthOf(22);
         expect(res.body).include(
-          'wesumeh@gmail.com',
           'emekasmithyu@gmal.com',
-          'jandoe@email.com',
           'jat@gmail.com',
           'Edythe31@gmail.com',
           'ola@ola.com',
@@ -687,11 +685,10 @@ describe('EndPoint: Users', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(19);
+        res.body.should.have.lengthOf(22);
         expect(res.body).include(
           'Abdul-Quddus',
           'Gideon',
-          'Jandoe',
           'Jat',
           'Jundoe',
           'Kakashi',
@@ -727,20 +724,14 @@ describe('EndPoint: Notification', () => {
 
   it('should successfully return the users notifications', (done) => {
     request(app)
-      .get('/api/v1/user/notification/Ebuka')
+      .get('/api/v1/user/notification/Gideon')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(7);
+        res.body.should.have.lengthOf(1);
         res.body.should.be.eql([
-          { notification: 'Chap posted in Nnn group' },
-          { notification: 'Kinuthia posted in Blue group' },
-          { notification: 'Newton posted in An group' },
-          { notification: 'Newton posted in My group' },
-          { notification: 'Sasiliyu posted in Testersgroup group' },
           { notification: 'Yank posted in Ann group' },
-          { notification: 'Yank posted in Lll group' }
         ]);
         if (err) return done(err);
         done();
