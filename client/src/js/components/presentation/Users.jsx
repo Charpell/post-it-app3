@@ -4,12 +4,12 @@ import React from 'react';
 /**
  * @description Displays the List of Users in a group
  *
-  * @param  {object} props store data passed to the component
- *
- * @class Users
- *
- * @extends {Component}
- */
+* @param  {object} props store data passed to the component
+*
+* @class Users
+*
+* @extends {Component}
+*/
 const Users = () => ({
   render() {
     return (

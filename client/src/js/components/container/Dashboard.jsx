@@ -16,10 +16,10 @@ import AppActions from '../../actions/AppActions';
  * @extends {Component}
  */
 export default class DashBoard extends Component {
-   /**
+  /**
    * @description Creates an instance of DashBoard.
    * bind methods and set initial state.
-	 *
+   *
    * @memberof Signup
    *
    * @param {object} props
@@ -106,13 +106,13 @@ export default class DashBoard extends Component {
             data-toggle="collapse" data-target="#menu-content"></i>
           <div className="menu-list">
             <ul id="menu-content" className="menu-content collapse out">
-                &nbsp;&nbsp;&nbsp;{userName}
+              &nbsp;&nbsp;&nbsp;{userName}
               <DashboardNavigation
                 group={this.state.groups}
                 user={this.state.user}
                 allUsers={this.state.allUsers}
                 notification={this.state.notification}
-                userName ={userName}
+                userName={userName}
               />
               <br />
 
@@ -127,13 +127,13 @@ export default class DashBoard extends Component {
 
         {!this.state.currentGroup ?
           <WelcomeBoard
-           userName ={userName}
+            userName={userName}
           />
           :
           <MessageBoard
             emails={this.state.emails}
             numbers={this.state.numbers}
-            userName ={userName}
+            userName={userName}
           />
         }
       </div>

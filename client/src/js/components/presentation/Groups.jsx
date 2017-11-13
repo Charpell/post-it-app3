@@ -21,7 +21,7 @@ const Groups = props => ({
     };
     return (
       <li onClick={() => AppActions.searchUserMessage(group)}>
-      <a href="#/dashboard" className="text-decoration">
+        <a href="#/dashboard" className="text-decoration">
           {this.props.keyName.groupName}</a>
       </li>
     );

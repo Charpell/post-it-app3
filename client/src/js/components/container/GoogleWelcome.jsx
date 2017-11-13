@@ -12,7 +12,7 @@ import AppActions from '../../actions/AppActions';
  * @extends {Component}
  */
 export default class GoogleWelcome extends Component {
- /**
+  /**
    * @description Creates an instance of Signup.
    * bind methods and set initial state.
    *
@@ -49,7 +49,7 @@ export default class GoogleWelcome extends Component {
 
   /**
   * @method componentWillUnmount
-
+  *
   * @description Removes event Listener from the Store
   * @return {void}
   *
@@ -84,8 +84,10 @@ export default class GoogleWelcome extends Component {
   */
   handleSubmit(event) {
     event.preventDefault();
-    const userDetails = { ...this.state.googleDetail,
-      number: this.state.number };
+    const userDetails = {
+      ...this.state.googleDetail,
+      number: this.state.number
+    };
 
     if (this.state.numbers.includes(this.state.number)) {
       toastr.error('The phone number already exist');
@@ -94,15 +96,15 @@ export default class GoogleWelcome extends Component {
     }
   }
 
-    /**
-    * @method onChange
-    *
-    * @returns {void}
-    *
-    * @description Monitors changes in the components and change the state
-    *
-    * @memberof GoogleWelcome
-    */
+  /**
+  * @method onChange
+  *
+  * @returns {void}
+  *
+  * @description Monitors changes in the components and change the state
+  *
+  * @memberof GoogleWelcome
+  */
   onChange() {
     this.setState({
       databaseUsers: AppStore.getDatabaseUsers(),
@@ -123,30 +125,30 @@ export default class GoogleWelcome extends Component {
   render() {
     const displayName = this.state.googleDetail.displayName;
     return (
-        <div>
-            <h3> Welcome {displayName} </h3>
-            <p>One more step, we need your phone number</p>
-            <div className='well'>
-                <form onSubmit={this.handleSubmit}>
-                    <div className='form-group'>
-                        <input type="number" name='number'
-                            className='form-control'
-                            onChange={this.handleChange}
-                            placeholder='Phone Number: Ex 2348066098146'
-                            pattern="[234][0-9]{12}"
-                            title="Should be 13 numbers and start with 234"
-                            required
-                        />
-                    </div>
-
-                    <button
-                        type='submit'
-                        className='btn btn-primary'>
-                        Submit
-                    </button>
-                </form>
+      <div>
+        <h3> Welcome {displayName} </h3>
+        <p>One more step, we need your phone number</p>
+        <div className='well'>
+          <form onSubmit={this.handleSubmit}>
+            <div className='form-group'>
+              <input type="number" name='number'
+                className='form-control'
+                onChange={this.handleChange}
+                placeholder='Phone Number: Ex 2348066098146'
+                pattern="[234][0-9]{12}"
+                title="Should be 13 numbers and start with 234"
+                required
+              />
             </div>
+
+            <button
+              type='submit'
+              className='btn btn-primary'>
+              Submit
+            </button>
+          </form>
         </div>
+      </div>
     );
   }
 }

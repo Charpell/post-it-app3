@@ -14,13 +14,13 @@ import AppStore from '../../stores/AppStore';
  */
 export default class MessageBoard extends Component {
   /**
- * @description Creates an instance of MessageBoard.
- * bind methods and set initial state.
- *
- * @memberof MessageBoard
- *
- * @param {object} props
- */
+   * @description Creates an instance of MessageBoard.
+   * bind methods and set initial state.
+   *
+   * @memberof MessageBoard
+   *
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -87,7 +87,7 @@ export default class MessageBoard extends Component {
     }
   }
 
-/**
+  /**
   * @method onChange
   *
   * @description Monitors changes in the components and change the state
@@ -103,7 +103,7 @@ export default class MessageBoard extends Component {
     });
   }
 
-/**
+  /**
    * @method render
    *
    * @description Render the MessageBoard component

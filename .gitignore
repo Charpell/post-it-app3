@@ -5,3 +5,4 @@ test2.js
 .nyc_output
 .env
 coverage
+dist/*
