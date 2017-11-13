@@ -99,8 +99,6 @@ export default class Validate {
     req.check('email', 'Email is required').notEmpty();
     req.check('email', 'The email address is badly formatted.').isEmail();
     req.check('password', 'Password is required').notEmpty();
-    req.check('password', 'Password must be a mininum of 6 character')
-    .isLength(6, 50);
 
     const errors = req.validationErrors();
     if (errors) {

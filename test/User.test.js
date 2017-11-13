@@ -42,7 +42,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -58,7 +57,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -74,7 +72,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -90,7 +87,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Password is required');
         if (err) return done(err);
@@ -106,7 +102,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -122,7 +117,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -138,7 +132,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -154,7 +147,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Password is required');
         if (err) return done(err);
@@ -171,7 +163,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('The email address is badly formatted.');
         if (err) return done(err);
@@ -187,7 +178,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(409);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('The email address is already in use by another account.');
         if (err) return done(err);
@@ -205,7 +195,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Password should be at least 6 characters');
         if (err) return done(err);
@@ -247,7 +236,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Email is required');
         if (err) return done(err);
@@ -264,7 +252,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Password is required');
         if (err) return done(err);
@@ -280,7 +267,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Email is required');
         if (err) return done(err);
@@ -296,7 +282,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Password is required');
         if (err) return done(err);
@@ -313,7 +298,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('The email address is badly formatted.');
         if (err) return done(err);
@@ -330,9 +314,8 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('The email does not exist.');
+        .eql('The email or password you entered is incorrect');
         if (err) return done(err);
         done();
       });
@@ -347,9 +330,8 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('The password is invalid.');
+        .eql('The email or password you entered is incorrect');
         if (err) return done(err);
         done();
       });
@@ -370,7 +352,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -387,7 +368,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -404,7 +384,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -421,7 +400,6 @@ describe('Google SignUp Route', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('message');
       res.body.message.should.be
       .eql('Uid is required');
       if (err) return done(err);
@@ -438,7 +416,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Uid is required');
         if (err) return done(err);
@@ -454,7 +431,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -470,7 +446,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -486,7 +461,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -502,7 +476,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(409);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username already exist');
         if (err) return done(err);
@@ -548,7 +521,6 @@ describe('SignOut Route', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('You have successfully signed out');
         if (err) return done(err);
@@ -583,7 +555,6 @@ describe('EndPoint: Reset Password', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('An email has been sent to your inbox for password reset.');
         if (err) return done(err);
@@ -600,7 +571,6 @@ describe('EndPoint: Reset Password', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Email address does not exist');
         if (err) return done(err);
@@ -617,7 +587,6 @@ describe('EndPoint: Reset Password', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('The email address is badly formatted.');
         if (err) return done(err);

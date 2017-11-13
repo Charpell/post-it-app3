@@ -10,7 +10,7 @@ const email = 'jat@gmail.com';
 const password = '123456';
 
 describe('Create Group', () => {
-  const group = 'Elixr';
+  const group = 'Aaqaf';
   const userName = 'Ebuka';
 
   it('should successfully sign in a resgistered user',
@@ -43,7 +43,6 @@ describe('Create Group', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('message');
       res.body.message.should.be
       .eql('Group name is required');
       if (err) return done(err);
@@ -59,7 +58,6 @@ describe('Create Group', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('message');
       res.body.message.should.be
       .eql('Group name is required');
       if (err) return done(err);
@@ -75,7 +73,6 @@ describe('Create Group', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('message');
       res.body.message.should.be
       .eql('Username is required');
       if (err) return done(err);
@@ -91,7 +88,6 @@ describe('Create Group', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('message');
       res.body.message.should.be
       .eql('Username is required');
       if (err) return done(err);
@@ -107,10 +103,8 @@ describe('Create Group', () => {
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
-        res.body.should.have.property('groupName');
         res.body.should.have.nested.property('groupName')
-        .eql('Elixr');
+        .eql('Aaqaf');
         res.body.should.have.nested.property('userName')
         .eql('Ebuka');
         if (err) return done(err);
@@ -126,7 +120,6 @@ describe('Create Group', () => {
       .end((err, res) => {
         res.status.should.equal(409);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Group already exist');
         if (err) return done(err);
@@ -163,7 +156,6 @@ describe('Add User to a Group', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Group does not exist');
         if (err) return done(err);
@@ -180,7 +172,6 @@ describe('Add User to a Group', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('The User does not exist');
         if (err) return done(err);
@@ -199,7 +190,6 @@ describe('EndPoint: Users and Messages in a Group',
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.nested.property('message')
         .eql('Messages and Users in Lll database');
         res.body.should.have.nested.property('messages')
