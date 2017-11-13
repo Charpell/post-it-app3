@@ -14,10 +14,10 @@ import ModalButton from './../presentation/ModalButton';
  * @extends {Component}
  */
 export default class DashboardNavigation extends Component {
-   /**
+  /**
    * @description Creates an instance of DashboardNavigation.
    * bind methods and set initial state.
-	 *
+   *
    * @memberof DashboardNavigation
    *
    * @param {object} props
@@ -118,11 +118,11 @@ export default class DashboardNavigation extends Component {
 
   /**
   * @description Method for adding user to the group
-
+  *
   * @param {object} event
-
+  *
   * @returns {void}
-
+  *
   * @memberof DashboardNavigation
   */
   createGroup(event) {
@@ -137,11 +137,11 @@ export default class DashboardNavigation extends Component {
 
   /**
   * @description Method for adding user to the group
-
+  *
   * @param {object} event
-
+  *
   * @returns {void}
-
+  *
   * @memberof DashboardNavigation
   */
   addUserToGroup(event) {
@@ -159,23 +159,23 @@ export default class DashboardNavigation extends Component {
   }
 
   /**
-    * @description Method for adding user to the group
-
-    * @returns {void}
-
-    * @memberof DashboardNavigation
-    */
+  * @description Method for adding user to the group
+  *
+  * @returns {void}
+  *
+  * @memberof DashboardNavigation
+  */
   handleAddUserButton() {
     AppActions.getGroups(this.props.userName);
   }
 
   /**
-    * @description Method for getting notifications of a user
-    *
-    * @returns {void}
-    *
-    * @memberof DashboardNavigation
-    */
+  * @description Method for getting notifications of a user
+  *
+  * @returns {void}
+  *
+  * @memberof DashboardNavigation
+  */
   handleNotificationButton() {
     AppActions.getNotification(this.props.userName);
   }
@@ -183,11 +183,11 @@ export default class DashboardNavigation extends Component {
 
   /**
   * @description Method for logging out Users
-
+  *
   * @param {object} event the event object
-
+  *
   * @returns {void}
-
+  *
   * @memberof DashboardNavigation
   */
   logout(event) {
@@ -204,10 +204,10 @@ export default class DashboardNavigation extends Component {
    */
   render() {
     const groupOptions = this.props.group.map((keyName, keyIndex) =>
-     <GroupOptions keyName={keyName} key={keyIndex} />);
+      <GroupOptions keyName={keyName} key={keyIndex} />);
 
     const notificationList = this.props.notification.map((keyName, keyIndex) =>
-     <li key={keyIndex}>{keyName.notification}</li>);
+      <li key={keyIndex}>{keyName.notification}</li>);
 
     return (
       <div>
@@ -233,7 +233,7 @@ export default class DashboardNavigation extends Component {
               type='submit'
               className='btn btn-primary'>
               Submit
-            </button>
+</button>
           </form>
         </ModalButton>
 

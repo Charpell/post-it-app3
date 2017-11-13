@@ -15,10 +15,10 @@ import Dashboard from './Dashboard';
  * @extends {Component}
  */
 class App extends Component {
-   /**
+  /**
    * @description Creates an instance of App.
    * bind methods and set initial state.
-	 *
+   *
    * @memberof App
    *
    * @param {object} props
@@ -45,28 +45,28 @@ class App extends Component {
     AppStore.addChangeListener(this.onChange);
   }
 
-    /**
-    * @method componentUnmount
-    *
-    * @return {void}
-    *
-    * @description Removes event Listener from the Store
-    *
-    * @memberof App
-    */
+  /**
+  * @method componentUnmount
+  *
+  * @return {void}
+  *
+  * @description Removes event Listener from the Store
+  *
+  * @memberof App
+  */
   componentUnmount() {
     AppStore.removeChangeListener(this.onChange);
   }
 
-    /**
-    * @method onChange
-    *
-    * @return {void}
-    *
-    * @description Monitors changes in the components and change the state
-    *
-    * @memberof App
-    */
+  /**
+  * @method onChange
+  *
+  * @return {void}
+  *
+  * @description Monitors changes in the components and change the state
+  *
+  * @memberof App
+  */
   onChange() {
     this.setState({
       isAuthenticated: AppStore.getAuthenticatedState(),
@@ -81,9 +81,9 @@ class App extends Component {
   render() {
     return (
       <div>
-      {localStorage.getItem('user') == null ?
-        <div className="row">
-          <Navigation />
+        {localStorage.getItem('user') == null ?
+          <div className="row">
+            <Navigation />
             <div className="row">
               <Routes
                 isAuthenticated={this.state.isAuthenticated}
@@ -92,9 +92,9 @@ class App extends Component {
             <div className="row">
               <Footer />
             </div>
-        </div> :
-       <Dashboard />};
-      </div>
+          </div> :
+          <Dashboard />};
+</div>
     );
   }
 }

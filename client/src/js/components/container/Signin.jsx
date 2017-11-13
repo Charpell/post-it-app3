@@ -58,8 +58,8 @@ class Signin extends Component {
   /**
    * @method componentDidMount
    *
-   * @description Adds an event Listener to the Store and fires
-	 * when the component is fully mounted.
+   * @description A react life cycle method that listens to change
+   * from the store,then fires an action.
    *
    * @return {void} void
    *
@@ -73,9 +73,9 @@ class Signin extends Component {
   * @method componentWillUnmount
   *
   * @description Removes event Listener from the Store
-	*
-	* @return {void} void
-	*
+  *
+  * @return {void} void
+  *
   * @memberof Signin
   */
   componentWillUnmount() {
@@ -90,7 +90,7 @@ class Signin extends Component {
    * @returns {void}
    *
    * @memberof Signin
-*/
+  */
   handleSubmit(event) {
     event.preventDefault();
     const userDetails = {
@@ -109,13 +109,13 @@ class Signin extends Component {
 
   /**
   * @description Makes an action call to Sign in a user with google account
-
+  *
   * @param {object} event
   *
   * @returns {void}
   *
   * @memberof Signin
-*/
+  */
   handleGoogleSignin(event) {
     event.preventDefault();
     const firstName = (username) => {
@@ -151,8 +151,8 @@ class Signin extends Component {
    * @description this method gets data from the store and sets to state
    *
    * @description Monitors changes in the components and change the state
-	 *
-	 * @returns { void } void
+   *
+   * @returns { void } void
    *
    * @memberof Signin
    */
@@ -169,9 +169,9 @@ class Signin extends Component {
    * @description Render react component
    *
    * @memberof Signin
-	 *
-	 *@return { jsx } rendered jsx element
-   */
+   *
+   *@return {jsx} rendered jsx element
+  */
   render() {
     return (
       <div className="row">
