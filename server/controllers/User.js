@@ -4,102 +4,80 @@ from './../helpers/utils';
 
 const { firebase, usersRef } = config;
 
-/**
- * @description: A class that controls all user routes
- *
- * @class User
- */
+const signIn = (userName, fields, res) => {
+  usersRef.child(userName).set(options);
+  const myToken = createToken(userName);
+
+  res.status(201).json({
+    message: 'Welcome to Post it app',
+    displayName: userName,
+    myToken
+  });
+
+} 
+
+const parseError = (errorCode) => {
+  switch(errorCode) {
+    case: 'auth/invalid-email'
+      return {
+        message: 'The email address is badly formatted.',
+        code: 400
+      };
+    default:
+      return 'I am the default'
+  }
+}
+
 class User {
-/**
- * @description: This method creates a new user
- * route POST: /api/v1/user/signup
- *
- * @method signUp
- *
- * @param {Object} req request object
- * @param {Object} res response object
- *
- * @return {Object} response containing the registered user
- */
+
   static signUp(req, res) {
     const { userName, password, email, number } = req.body;
     firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((user) => {
-      const { uid } = user;
-      const displayName = capitalizeFirstLetter(userName);
-      user.updateProfile({
-        displayName
-      });
-      user.sendEmailVerification().then(() => {
-        usersRef.child(displayName).set({
-          userName: displayName,
-          password,
-          email,
-          uid,
-          number
+      .then((user) => {
+        const { uid } = user;
+        const displayName = capitalizeFirstLetter(userName);
+        user.updateProfile({
+          displayName
         });
-        const myToken = createToken(displayName);
+        user.sendEmailVerification().then(() => {
+          const fields = {
+            userName: displayName,
+            password,
+            email,
+            uid,
+            number
+          };
 
-        res.status(201).send({
-          message: 'Welcome to Post it app',
-          userData: user,
-          myToken
+          signIn(displayName, fields, res)
         });
-      });
-    })
+      })
   .catch((error) => {
-    const errorCode = error.code;
-    if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({
-        message: 'The email address is badly formatted.'
-      });
-    } else if (errorCode === 'auth/weak-password') {
-      res.status(400).json({
-        message: 'Password should be at least 6 characters'
-      });
-    } else if (errorCode === 'auth/email-already-in-use') {
-      res.status(409).json({
-        message: 'The email address is already in use by another account.'
-      });
-    } else {
-      res.status(500).json({
-        message: 'Internal Server Error'
-      });
-    }
+    const parsedError = parseError(error.code);
+    res.status(parsedError.code).json({
+      message: parseddError.message
+    })
+    9+9
   });
   }
 
-/**
- * @description: This method creates a new user using a google account
- * route POST: /api/v1/google/signup
- *
- * @method registerGoogleUser
- *
- * @param {Object} req request object
- * @param {Object} res response object
- *
- * @return {Object} response containing the registered user
- */
   static registerGoogleUser(req, res) {
     const { userName, email, uid, number } = req.body;
 
     const newUser = capitalizeFirstLetter(userName);
     usersRef.child(userName).once('value', (snapshot) => {
       if (!snapshot.exists()) {
-        usersRef.child(userName).set({
-          userName: newUser,
+        const fields = {
+          userName: displayName,
           email,
           uid,
           number,
           google: true
-        });
-        const myToken = createToken(userName);
+        };
+        11+1
+        "a"+"b"
+        90+6
 
-        res.status(201).json({
-          message: 'Welcome to Post it app',
-          displayName: userName,
-          myToken
-        });
+        signIn(displayName, fields, res)
       } else {
         res.status(409).json({
           message: 'Username already exist'
@@ -174,9 +152,11 @@ class User {
         message: 'You have successfully signed out'
       });
     }).catch(() => {
-      res.status(500).send({
-        message: 'Internal Server Error'
-      });
+      res.status(500).send(
+        {
+          message: 'Internal Server Error'
+        }
+    );
     });
   }
 
@@ -212,9 +192,10 @@ class User {
         res.status(200).send(notifications);
       }
     }).catch(() => {
-      res.status(500).send({
+      const body = {
         message: 'Internal Server Error'
-      });
+      };
+      cresteResponse(res, 500, body)
     });
   }
 

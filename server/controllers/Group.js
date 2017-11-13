@@ -4,7 +4,22 @@ from './../helpers/utils';
 
 const { usersRef, groupRef, firebase } = config;
 
-
+const saveNodes = (nodes) => {
+  nodes.forEach((node) => {
+    if (node.field === 'Users') {
+      groupRef
+        .child(node.groupName)
+        .child('Users')
+        .child(node.value)
+        .set(node.value);
+    } else {
+      groupRef
+        .child(node.groupName)
+        .child(node.field)
+        .push(node.value);
+      }
+  })
+}
 /**
   * @description: A class that controls all group  routes
   *
@@ -28,13 +43,32 @@ class Group {
     const groupName = capitalizeFirstLetter(group);
     const userDatabase = firebase.database();
     groupRef.child(groupName).once('value', (snapshot) => {
+
+      const nodes = [
+        { groupName, field: 'Users', value: userName },
+        { groupName, field: 'Users', value: 'Bot' },
+        { groupName, field: 'Email', value: 'bot@postit.com' },
+        { groupName, field: 'Number', value: '2348066098141' },
+        { groupName, field: 'Messages/Seen', value: null },
+      ];
+
       if (!snapshot.exists()) {
-        groupRef.child(groupName).child('Users').child(userName)
-          .set(userName);
-        groupRef.child(groupName).child('Users').child('Bot').set('Bot');
-        groupRef.child(groupName).child('Email').push('bot@postit.com');
-        groupRef.child(groupName).child('Number').push('2348066098141');
-        groupRef.child(groupName).child('Messages/Seen').push(null);
+        saveNodes(nodes);
+        // groupRef
+        // .child(groupName)
+        // .child('Users')
+        // .child(userName)
+        // .set(userName);
+        
+        // groupRef.child(groupName)
+        // .child('Users')
+        // .child('Bot')
+        // .set('Bot');
+        
+        
+        // groupRef.child(groupName).child('Email').push('bot@postit.com');
+        // groupRef.child(groupName).child('Number').push('2348066098141');
+        // groupRef.child(groupName).child('Messages/Seen').push(null);
 
         userDatabase.ref(`/users/${userName}/Groups`).push({
           groupName,
@@ -192,6 +226,7 @@ class Group {
             messages: [],
             users
           });
+
         } else {
           res.status(200).json({
             message: `Messages and Users in ${groupName} database`,

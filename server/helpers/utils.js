@@ -246,3 +246,7 @@ export const createToken = (userName) => {
   { expiresIn: '24h' });
   return myToken;
 };
+
+export const createResponse = (res, code, body) => {
+  res.status(code).json(body);
+};
