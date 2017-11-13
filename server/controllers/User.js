@@ -144,11 +144,11 @@ class User {
         });
       } else if (errorCode === 'auth/user-not-found') {
         res.status(404).json({
-          message: 'The email does not exist.'
+          message: 'The email or password you entered is incorrect'
         });
       } else if (errorCode === 'auth/wrong-password') {
         res.status(404).json({
-          message: 'The password is invalid.'
+          message: 'The email or password you entered is incorrect'
         });
       } else {
         res.status(500).json(
