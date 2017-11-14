@@ -78,14 +78,14 @@ exports[`Home should create a snapshot of itself 1`] = `
                 </div>
                 <div>
                   <a
-                    href="#/reset"
+                    href="/reset"
                   >
                     Forgot Password?
                   </a>
                 </div>
                 <div>
                   <a
-                    href="#/register"
+                    href="/register"
                   >
                     Don't have an account? Signup
                   </a>
