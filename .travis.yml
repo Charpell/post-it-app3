@@ -1,13 +1,16 @@
 language: node_js
+
 node_js:
   - "6"
 before_install:
   - travis_wait npm install
-after_script:
+
+cache: 
+  - node_modules
+
+script:
   - npm test
   - npm run client-test
-env:
- CODECLIMATE_REPO_TOKEN: process.env.CODE_CLIMATE
 
 after_success:
   - npm run coverage
