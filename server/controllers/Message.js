@@ -33,8 +33,8 @@ class Message {
       }).key;
 
     groupRef.child(group).child('Messages').child(messageKey).child('Seen')
-      .child('Bot')
-      .set('Bot')
+      .child(user)
+      .set(user)
       .then(() => {
         res.status(201).json({
           message: 'Message posted successfully',
@@ -44,16 +44,15 @@ class Message {
           notification,
           priority
         });
+        sendInAppNotification(group, user, notification);
+        sendEmailNotification(group, priority);
+        sendSMSNotification(group, priority);
       })
       .catch(() => {
         res.status(500).json(
           { message: 'Internal server error' }
         );
       });
-
-    sendInAppNotification(group, user, notification);
-    sendEmailNotification(group, priority);
-    sendSMSNotification(group, priority);
   }
 
 

@@ -1,9 +1,11 @@
 import config from './../config';
-import { capitalizeFirstLetter, saveUserHasSeenMessage }
-from './../helpers/utils';
+import {
+  capitalizeFirstLetter, saveUserHasSeenMessage, checkIfGroupExist,
+  checkIfUserExist, checkGroupNotExist, addGroupData, isUserInGroup,
+  getGroupErrors, getUsersInGroup
+ } from './../helpers/utils';
 
 const { usersRef, groupRef, firebase } = config;
-
 
 /**
   * @description: A class that controls all group  routes
@@ -27,35 +29,26 @@ class Group {
 
     const groupName = capitalizeFirstLetter(group);
     const userDatabase = firebase.database();
-    groupRef.child(groupName).once('value', (snapshot) => {
-      if (!snapshot.exists()) {
-        groupRef.child(groupName).child('Users').child(userName)
-          .set(userName);
-        groupRef.child(groupName).child('Users').child('Bot').set('Bot');
-        groupRef.child(groupName).child('Email').push('bot@postit.com');
-        groupRef.child(groupName).child('Number').push('2348066098141');
-        groupRef.child(groupName).child('Messages/Seen').push(null);
-
-        userDatabase.ref(`/users/${userName}/Groups`).push({
-          groupName,
-          userName
-        }).then(() => {
-          res.status(201).json({
-            message: `Group ${groupName} created`,
-            groupName,
-            userName
-          });
-        }).catch(() => {
-          res.status(500).json({ message: 'Internal server error' });
-        });
-      } else {
-        res.status(409).json({ message: 'Group already exist' });
-      }
+    checkIfGroupExist(groupName)
+    .then(() => {
+      groupRef.child(groupName).child('Users').child(userName)
+      .set(userName);
+      return userDatabase.ref(`/users/${userName}/Groups`).push({
+        groupName
+      });
     })
-    .catch(() => {
-      res.status(500).json(
-        { message: 'Internal server error' }
-      );
+    .then(() => {
+      res.status(201).json({
+        message: `Group ${groupName} created`,
+        groupName,
+        userName
+      });
+    })
+    .catch((error) => {
+      const groupErrors = getGroupErrors(error);
+      res.status(groupErrors.code).json({
+        message: groupErrors.message
+      });
     });
   }
 
@@ -73,42 +66,24 @@ class Group {
     const { groupName, newUser } = req.body;
 
     const user = capitalizeFirstLetter(newUser);
-    const userDatabase = firebase.database();
-    usersRef.child(user).once('value', (snapShot) => {
-      if (snapShot.exists()) {
-        const userName = snapShot.val().userName;
-        const email = snapShot.val().email;
-        const number = snapShot.val().number;
-        userDatabase.ref(`/users/${user}/Groups`).push({
-          groupName
-        });
 
-        groupRef.child(groupName).once('value', (groupSnapshot) => {
-          if (groupSnapshot.exists()) {
-            groupRef.child(groupName).child('Users').child(userName)
-              .set(userName);
-            groupRef.child(groupName).child('Email').push(email);
-            groupRef.child(groupName).child('Number').push(number);
-          } else {
-            res.status(404).json({ message: 'Group does not exist' });
-          }
-        })
-        .then(() => {
-          res.status(201).json({
-            message: 'User added successfully',
-            user,
-            groupName
-          });
-        });
-      } else {
-        res.status(404).json({
-          message: 'The User does not exist'
-        });
-      }
+    let userData;
+    checkIfUserExist(user).then((response) => {
+      userData = response;
+      return checkGroupNotExist(groupName);
     })
-    .catch(() => {
-      res.status(500).json({
-        message: 'Internal server error'
+    .then(() => isUserInGroup(groupName, user)).then(() => {
+      addGroupData(groupName, userData);
+      res.status(201).json({
+        message: 'User added successfully',
+        user,
+        groupName
+      });
+    })
+    .catch((error) => {
+      const groupErrors = getGroupErrors(error);
+      res.status(groupErrors.code).json({
+        message: groupErrors.message
       });
     });
   }
@@ -164,7 +139,6 @@ class Group {
     const { groupName, userName } = req.params;
 
     const messages = [];
-    const users = [];
     groupRef.child(groupName).child('Messages').limitToLast(14)
     .once('value', (snapShot) => {
       snapShot.forEach((messageSnapShot) => {
@@ -176,30 +150,22 @@ class Group {
           priority: messageSnapShot.val().priority
         });
       });
-      groupRef.child(groupName).child('Users')
-      .once('value', (userSnapshot) => {
-        userSnapshot.forEach((userValue) => {
-          users.push({
-            userName: userValue.val()
-          });
+    });
+    getUsersInGroup(groupName).then((users) => {
+      saveUserHasSeenMessage(groupName, userName);
+      if (messages.length === 0) {
+        res.status(200).json({
+          message: 'The group currently has no message',
+          messages: [],
+          users
         });
-
-        saveUserHasSeenMessage(groupName, userName);
-
-        if (messages.length === 0) {
-          res.status(200).json({
-            message: 'The group currently has no message',
-            messages: [],
-            users
-          });
-        } else {
-          res.status(200).json({
-            message: `Messages and Users in ${groupName} database`,
-            messages,
-            users
-          });
-        }
-      });
+      } else {
+        res.status(200).json({
+          message: `Messages and Users in ${groupName} database`,
+          messages,
+          users
+        });
+      }
     })
     .catch(() => {
       res.status(500).send({

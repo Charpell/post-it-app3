@@ -1,8 +1,9 @@
 import config from './../config';
-import { capitalizeFirstLetter, queryUserDatabase, createToken }
-from './../helpers/utils';
+import { capitalizeFirstLetter, queryUserDatabase, createToken,
+getServerErrors, registerNewUser } from './../helpers/utils';
 
 const { firebase, usersRef } = config;
+
 
 /**
  * @description: A class that controls all user routes
@@ -31,42 +32,22 @@ class User {
         displayName
       });
       user.sendEmailVerification().then(() => {
-        usersRef.child(displayName).set({
+        const fields = {
           userName: displayName,
           password,
           email,
           uid,
           number
-        });
-        const myToken = createToken(displayName);
-
-        res.status(201).send({
-          message: 'Welcome to Post it app',
-          userData: user,
-          myToken
-        });
+        };
+        registerNewUser(displayName, fields, user, res);
       });
     })
-  .catch((error) => {
-    const errorCode = error.code;
-    if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({
-        message: 'The email address is badly formatted.'
+    .catch((error) => {
+      const serverErrors = getServerErrors(error.code);
+      res.status(serverErrors.code).json({
+        message: serverErrors.message
       });
-    } else if (errorCode === 'auth/weak-password') {
-      res.status(400).json({
-        message: 'Password should be at least 6 characters'
-      });
-    } else if (errorCode === 'auth/email-already-in-use') {
-      res.status(409).json({
-        message: 'The email address is already in use by another account.'
-      });
-    } else {
-      res.status(500).json({
-        message: 'Internal Server Error'
-      });
-    }
-  });
+    });
   }
 
 /**
@@ -86,20 +67,14 @@ class User {
     const newUser = capitalizeFirstLetter(userName);
     usersRef.child(userName).once('value', (snapshot) => {
       if (!snapshot.exists()) {
-        usersRef.child(userName).set({
+        const fields = {
           userName: newUser,
           email,
           uid,
           number,
           google: true
-        });
-        const myToken = createToken(userName);
-
-        res.status(201).json({
-          message: 'Welcome to Post it app',
-          displayName: userName,
-          myToken
-        });
+        };
+        registerNewUser(newUser, fields, res);
       } else {
         res.status(409).json({
           message: 'Username already exist'
@@ -136,25 +111,12 @@ class User {
         userData: user,
         myToken
       });
-    }).catch((error) => {
-      const errorCode = error.code;
-      if (errorCode === 'auth/invalid-email') {
-        res.status(400).json({
-          message: 'The email address is badly formatted.'
-        });
-      } else if (errorCode === 'auth/user-not-found') {
-        res.status(404).json({
-          message: 'The email or password you entered is incorrect'
-        });
-      } else if (errorCode === 'auth/wrong-password') {
-        res.status(404).json({
-          message: 'The email or password you entered is incorrect'
-        });
-      } else {
-        res.status(500).json(
-            { message: 'Internal Server Error' }
-          );
-      }
+    })
+    .catch((error) => {
+      const serverErrors = getServerErrors(error.code);
+      res.status(serverErrors.code).json({
+        message: serverErrors.message
+      });
     });
   }
 
@@ -283,23 +245,18 @@ class User {
       res.status(200).json({
         message: 'An email has been sent to your inbox for password reset.'
       });
-    }).catch((error) => {
-      const errorCode = error.code;
-      if (errorCode === 'auth/invalid-email') {
-        res.status(400).json({
-          message: 'The email address is badly formatted.'
-        });
-      } else if (errorCode === 'auth/user-not-found') {
+    })
+    .catch((error) => {
+      if (error.code === 'auth/user-not-found') {
         res.status(404).json({ message: 'Email address does not exist' });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error'
+        const serverErrors = getServerErrors(error.code);
+        res.status(serverErrors.code).json({
+          message: serverErrors.message
         });
       }
     });
   }
-
 }
 
 export default User;
-

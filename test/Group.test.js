@@ -10,7 +10,7 @@ const email = 'jat@gmail.com';
 const password = '123456';
 
 describe('Create Group', () => {
-  const group = 'Aaqaf';
+  const group = 'Schoolboy';
   const userName = 'Ebuka';
 
   it('should successfully sign in a resgistered user',
@@ -104,7 +104,7 @@ describe('Create Group', () => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
         res.body.should.have.nested.property('groupName')
-        .eql('Aaqaf');
+        .eql('Sc');
         res.body.should.have.nested.property('userName')
         .eql('Ebuka');
         if (err) return done(err);
@@ -132,7 +132,7 @@ describe('Add User to a Group', () => {
   it('should successfully add a user to a group', (done) => {
     request(app)
       .post('/api/v1/group/groupName/user')
-      .send({ newUser: 'Jat', groupName: 'Facebook' })
+      .send({ newUser: 'Jat', groupName: 'Sc' })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(201);
@@ -142,7 +142,7 @@ describe('Add User to a Group', () => {
         res.body.should.have.property('user')
         .eql('Jat');
         res.body.should.have.property('groupName')
-        .eql('Facebook');
+        .eql('Sc');
         if (err) return done(err);
         done();
       });

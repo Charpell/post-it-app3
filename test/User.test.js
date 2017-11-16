@@ -485,34 +485,6 @@ describe('Google SignUp Route', () => {
 });
 
 
-describe('Home Page', () => {
-  it('should open the home page of the app', (done) => {
-    request(app)
-      .get('/api/v1/')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', 'text/html; charset=UTF-8')
-      .expect(200)
-      .end((err) => {
-        if (err) return done(err);
-        done();
-      });
-  });
-
-  it('should redirect to home page when a random route is used',
-  (done) => {
-    request(app)
-      .get('/api/v1/test')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', 'text/html; charset=UTF-8')
-      .expect(200)
-      .end((err) => {
-        if (err) return done(err);
-        done();
-      });
-  });
-});
-
-
 describe('SignOut Route', () => {
   it('should successfully signed out the user from the app', (done) => {
     request(app)
@@ -604,7 +576,7 @@ describe('EndPoint: Phone Numbers', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(22);
+        res.body.should.have.lengthOf(20);
         expect(res.body).include(
           '2345677676878',
           '2345677676338',
@@ -630,7 +602,7 @@ describe('EndPoint: Emails', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(22);
+        res.body.should.have.lengthOf(20);
         expect(res.body).include(
           'emekasmithyu@gmal.com',
           'jat@gmail.com',
@@ -654,7 +626,7 @@ describe('EndPoint: Users', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(22);
+        res.body.should.have.lengthOf(20);
         expect(res.body).include(
           'Abdul-Quddus',
           'Gideon',

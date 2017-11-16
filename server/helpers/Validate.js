@@ -33,9 +33,9 @@ export default class Validate {
     }
   }
 
-
   /**
-   * @description: describe a function that validates the sign up route
+   * @description: describe a middleware that validates username and number
+   * field
    *
    * @param {Object} req request object
    * @param {Object} res response object
@@ -43,12 +43,28 @@ export default class Validate {
    *
    * @return {Object} response containing the error message
    */
-  static validateSignUp(req, res, next) {
+  static validatesNewUser(req, res, next) {
     req.check('userName', 'Username is required').notEmpty();
     req.check('userName', 'Username is invalid').matches(/^[a-z0-9]+$/i);
     req.check('number', 'Phone number is required').notEmpty().matches(/\d/);
-    req.check('email', 'Email is required').notEmpty();
-    req.check('email', 'The email address is badly formatted.').isEmail();
+    const errors = req.validationErrors();
+    if (errors) {
+      const message = errors[0].msg;
+      res.status(400).json({ message });
+    } else {
+      next();
+    }
+  }
+  /**
+   * @description: describe a middleware that validates the Password field
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Function} next callback function
+   *
+   * @return {Object} response containing the error message
+   */
+  static validatesPassword(req, res, next) {
     req.check('password', 'Password is required').notEmpty();
     req.check('password', 'Password should be at least 6 characters')
       .isLength(6, 50);
@@ -62,7 +78,7 @@ export default class Validate {
   }
 
   /**
- * @description: validates the googgle signup route
+ * @description: validates the Uid field
  *
  * @param {Object} req request object
  * @param {Object} res response object
@@ -70,11 +86,7 @@ export default class Validate {
  *
  * @return {Object} response containing the error message
  */
-  static validateGoogleSignUp(req, res, next) {
-    req.check('userName', 'Username is required').notEmpty().matches(/\w/);
-    req.check('number', 'Phone number is required').notEmpty().matches(/\d/);
-    req.check('email', 'Email is required').notEmpty();
-    req.check('email', 'Please put a valid email').isEmail();
+  static validatesUid(req, res, next) {
     req.check('uid', 'Uid is required').notEmpty().matches(/\w/);
 
     const errors = req.validationErrors();
@@ -87,7 +99,7 @@ export default class Validate {
   }
 
     /**
- * @description: validates the login route
+ * @description: validates the Email field
  *
  * @param {Object} req request object
  * @param {Object} res response object
@@ -95,10 +107,9 @@ export default class Validate {
  *
  * @return {Object} response containing the error message
  */
-  static validateSignIn(req, res, next) {
+  static validatesEmail(req, res, next) {
     req.check('email', 'Email is required').notEmpty();
     req.check('email', 'The email address is badly formatted.').isEmail();
-    req.check('password', 'Password is required').notEmpty();
 
     const errors = req.validationErrors();
     if (errors) {
