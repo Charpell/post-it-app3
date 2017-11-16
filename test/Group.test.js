@@ -1,5 +1,6 @@
 import chai from 'chai';
 import request from 'supertest';
+import faker from 'faker';
 
 import app from '../server/app';
 
@@ -8,9 +9,10 @@ const expect = chai.expect;
 
 const email = 'jat@gmail.com';
 const password = '123456';
+const groupID = faker.name.jobArea();
 
 describe('Create Group', () => {
-  const group = 'Aaqaf';
+  const group = 'Denly';
   const userName = 'Ebuka';
 
   it('should successfully sign in a resgistered user',
@@ -98,13 +100,13 @@ describe('Create Group', () => {
   it('should successfully create a group', (done) => {
     request(app)
       .post('/api/v1/group')
-      .send({ userName, group })
+      .send({ userName, group: groupID })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
         res.body.should.have.nested.property('groupName')
-        .eql('Aaqaf');
+        .eql(groupID);
         res.body.should.have.nested.property('userName')
         .eql('Ebuka');
         if (err) return done(err);
@@ -132,7 +134,7 @@ describe('Add User to a Group', () => {
   it('should successfully add a user to a group', (done) => {
     request(app)
       .post('/api/v1/group/groupName/user')
-      .send({ newUser: 'Jat', groupName: 'Facebook' })
+      .send({ newUser: 'Jat', groupName: groupID })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(201);
@@ -142,7 +144,7 @@ describe('Add User to a Group', () => {
         res.body.should.have.property('user')
         .eql('Jat');
         res.body.should.have.property('groupName')
-        .eql('Facebook');
+        .eql(groupID);
         if (err) return done(err);
         done();
       });
@@ -185,26 +187,30 @@ describe('EndPoint: Users and Messages in a Group',
   it('should successfully return all users and messages in a group',
   (done) => {
     request(app)
-      .get('/api/v1/groups/Lll/Yank')
+      .get('/api/v1/groups/Nnn/Jat')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
         res.body.should.have.nested.property('message')
-        .eql('Messages and Users in Lll database');
+        .eql('Messages and Users in Nnn database');
         res.body.should.have.nested.property('messages')
-        .eql([{ id: '-KyV-ysWPX3-u1fE-Aro',
-          user: 'Yank',
-          message: 'Mess',
-          time: '10:02 am, Nov 9th',
-          priority: 'Urgent' },
-        { id: '-KyWIibYf7MwLHaXEnN1',
-          user: 'Yank',
-          message: 'hfikg',
-          time: '4:03 pm, Nov 9th',
-          priority: 'Normal' }]);
+        .eql([{
+          id: '-KyFQl6m3RWuS-yhMQkR',
+          user: 'Chap',
+          message: 'Op',
+          time: '9:25 am, Nov 6th',
+          priority: 'Normal'
+        },
+        {
+          id: '-KyFQmloB2p8qIgGkn3F',
+          user: 'Chap',
+          message: 'Urgent',
+          time: '9:25 am, Nov 6th',
+          priority: 'Urgent'
+        }]);
         res.body.should.have.nested.property('users')
-          .eql([{ userName: 'Chap' }, { userName: 'Yank' }]);
+          .eql([{ userName: 'Bot' }, { userName: 'Jat' }]);
         if (err) return done(err);
         done();
       });

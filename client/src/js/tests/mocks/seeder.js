@@ -1,7 +1,7 @@
 export const error = {
   response: {
     data: {
-      message: 'Internal Serer Error'
+      message: 'Internal Server Error'
     }
   }
 };

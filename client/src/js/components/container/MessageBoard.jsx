@@ -4,6 +4,8 @@ import moment from 'moment';
 import Message from './Message';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import { getUsername } from '../../helpers/utils';
+
 
 /**
  * @description The component that renders all message activities
@@ -71,7 +73,7 @@ export default class MessageBoard extends Component {
   */
   sendMessage(event) {
     event.preventDefault();
-    const userName = JSON.parse(localStorage.getItem('user'));
+    const userName = getUsername();
     const message = {
       user: userName,
       group: this.state.currentGroup,

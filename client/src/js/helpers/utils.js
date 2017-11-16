@@ -39,3 +39,15 @@ export const validateEmail = (email) => {
   const emailExpression = /([\w\.-]+)@([\w\.-]+)(\.[\w\.]+)/;
   return emailExpression.test(email);
 };
+
+/**
+ * @description decribes a method that gets the username from local storage
+ *
+ * @function getUsername
+ *
+ * @return {String} returns the username
+ *
+ */
+export const getUsername = () =>
+  JSON.parse(localStorage.getItem('user'));
+

@@ -4,7 +4,7 @@ import smtpTransport from 'nodemailer-smtp-transport';
 import Nexmo from 'nexmo';
 import config from './../config';
 
-const { firebase, usersRef } = config;
+const { firebase, usersRef, groupRef } = config;
 
 /**
  * @description: A function that change all character to lower case and
@@ -246,3 +246,249 @@ export const createToken = (userName) => {
   { expiresIn: '24h' });
   return myToken;
 };
+
+
+/**
+ * @description describes a method that returns error message from firebase
+ *
+ * @function getServerErrors
+ *
+ * @param {error} errorCode
+ * @param {Object} res response object
+ *
+ * @return {object} returns custom error message
+ *
+ */
+export const getServerErrors = (errorCode, res) => {
+  switch (errorCode) {
+    case 'auth/invalid-email':
+      return res.status(400).json({
+        message: 'The email address is badly formatted.'
+      });
+    case 'auth/weak-password':
+      return res.status(400).json({
+        message: 'Password should be at least 6 characters'
+      });
+    case 'auth/email-already-in-use':
+      return res.status(409).json({
+        message: 'The email address is already in use by another account.'
+      });
+    case 'auth/user-not-found':
+      return res.status(404).json({
+        message: 'The email or password you entered is incorrect'
+      });
+    case 'auth/wrong-password':
+      return res.status(404).json({
+        message: 'The email or password you entered is incorrect'
+      });
+    default:
+      return {
+        message: 'Internal Server Error',
+        code: 500
+      };
+  }
+};
+
+/**
+ * @description describes a method that returns successful response
+ *
+ * @function getServerResponse
+ *
+ * @param {Object} res response object
+ * @param {statusCode} statusCode status code
+ * @param {message} message custom error message to return
+ *
+ * @return {object} returns the response object
+ *
+ */
+export const getServerResponse = (res, statusCode, message) => {
+  if (typeof message !== 'string') {
+    return res.status(statusCode).json(message);
+  }
+  return res.status(statusCode).json({ message });
+};
+
+
+/**
+ * @description describes a method that registers a new user
+ *
+ * @function registerNewUser
+ *
+ * @param {groupName} userName
+ * @param {fields} fields an  object that contains the user details
+ * @param {userData} userData an  object that contains the user details
+ * @param {Object} res response object
+ *
+ * @return {void} void
+ *
+ */
+export const registerNewUser = (userName, fields, userData = '', res) => {
+  usersRef.child(userName).set(fields);
+  const myToken = createToken(userName);
+
+  res.status(201).json({
+    message: 'Welcome to Post it app',
+    userData,
+    displayName: userName,
+    myToken
+  });
+};
+
+/**
+ * @description describes a method that adds user details to group database
+ *
+ * @function addGroupData
+ *
+ * @param {groupName} groupName
+ * @param {data} userData an  object that contains the user details
+ *
+ * @return {void} void
+ *
+ */
+export const addGroupData = (groupName, userData) => {
+  const ref = groupRef.child(groupName);
+  const { userName, email, number } = userData;
+  const userDatabase = firebase.database();
+
+  userDatabase.ref(`/users/${userName}/Groups`).push({
+    groupName
+  });
+  ref.child('Users').child(userName).set(userName);
+  ref.child('Email').push(email);
+  return ref.child('Number').push(number);
+};
+
+ /**
+ * @description describes a method that checks if a group exist
+ *
+ * @function checkIfGroupExist
+ *
+ * @param {groupName} groupName the group name
+ *
+ */
+export const checkIfGroupExist = groupName =>
+new Promise((resolve, reject) => {
+  groupRef.child(groupName).once('value', (snapshot) => {
+    if (!snapshot.exists()) {
+      return resolve();
+    }
+    return reject('Group already exist');
+  });
+});
+
+
+ /**
+ * @description describes a method that checks if a group does not exist
+ *
+ * @function checkGroupNotExist
+ *
+ * @param {groupName} groupName the group name
+ *
+ */
+export const checkGroupNotExist = groupName =>
+new Promise((resolve, reject) => {
+  groupRef.child(groupName).once('value', (snapshot) => {
+    if (snapshot.exists()) {
+      return resolve();
+    }
+    return reject('Group does not exist');
+  });
+});
+
+ /**
+ * @description describes a method that checks if a user does not exist
+ *
+ * @function checkIfUserExist
+ *
+ * @param {user} user the user's name
+ *
+ */
+export const checkIfUserExist = user => new Promise((resolve, reject) => {
+  usersRef.child(user).once('value', (snapShot) => {
+    if (snapShot.exists()) {
+      return resolve(snapShot.val());
+    }
+    return reject('The User does not exist');
+  });
+});
+
+
+ /**
+ * @description describes a method that checks if user exist in a group
+ *
+ * @function isUserInGroup
+ *
+ * @param {groupName} groupName the group name
+ * @param {user} user the user's name
+ *
+ */
+export const isUserInGroup = (groupName, user) =>
+new Promise((resolve, reject) => {
+  groupRef.child(groupName).child('Users').child(user).once('value',
+  (existSnapShot) => {
+    if (!existSnapShot.exists()) {
+      return resolve();
+    }
+    return reject('The user already exist in this group');
+  });
+});
+
+
+/**
+ * @description describes a method that returns group error messages
+ *
+ * @function getGroupErrors
+ *
+ * @param {error} error error status message
+ * @param {Object} res response object
+ *
+ * @return {object} returns custom error message
+ *
+ */
+export const getGroupErrors = (error, res) => {
+  switch (error) {
+    case 'Group does not exist':
+      return res.status(404).json({
+        message: 'Group does not exist'
+      });
+    case 'The User does not exist':
+      return res.status(404).json({
+        message: 'The User does not exist'
+      });
+    case 'Group already exist':
+      return res.status(409).json({
+        message: 'Group already exist'
+      });
+    case 'The user already exist in this group':
+      return res.status(409).json({
+        message: 'The user already exist in this group'
+      });
+    default:
+      return {
+        message: 'Internal Server Error',
+        code: 500
+      };
+  }
+};
+
+
+ /**
+ * @description describes a method that gets users in a group
+ *
+ * @function getUsersInGroup
+ *
+ * @param {groupName} groupName the user's name
+ *
+ */
+export const getUsersInGroup = groupName => new Promise((resolve) => {
+  const users = [];
+  groupRef.child(groupName).child('Users')
+  .once('value', (userSnapshot) => {
+    userSnapshot.forEach((userValue) => {
+      users.push({
+        userName: userValue.val()
+      });
+    });
+    return resolve(users);
+  });
+});

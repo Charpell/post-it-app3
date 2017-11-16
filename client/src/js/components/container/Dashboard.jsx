@@ -6,6 +6,7 @@ import SideBar from './../presentation/SideBar';
 import MessageBoard from './MessageBoard';
 import WelcomeBoard from './../presentation/WelcomeBoard';
 import AppActions from '../../actions/AppActions';
+import { getUsername } from '../../helpers/utils';
 
 
 /**
@@ -48,7 +49,7 @@ export default class DashBoard extends Component {
    * @memberof DashBoard
    */
   componentDidMount() {
-    AppActions.getGroups(JSON.parse(localStorage.getItem('user')));
+    AppActions.getGroups(getUsername());
     AppStore.addChangeListener(this.onChange);
   }
 
@@ -94,7 +95,7 @@ export default class DashBoard extends Component {
    * @memberof DashBoard
    */
   render() {
-    const userName = JSON.parse(localStorage.getItem('user'));
+    const userName = getUsername();
     return (
       <div>
         <div className="nav-side-menu" >

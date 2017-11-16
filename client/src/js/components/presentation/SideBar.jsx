@@ -4,6 +4,7 @@ import Users from './Users';
 import Groups from './Groups';
 import AppActions from '../../actions/AppActions';
 import ModalButton from './ModalButton';
+import { getUsername } from '../../helpers/utils';
 
 
 /**
@@ -22,7 +23,7 @@ export default class SideBar extends Component {
 	 * @return {jsx} rendered jsx element
 	 */
   render() {
-    const userName = JSON.parse(localStorage.getItem('user'));
+    const userName = getUsername();
 
     const groups = this.props.groups.map((keyName, keyIndex) =>
     <Groups keyName={keyName} key={keyIndex} userName={this.props.userName}/>);

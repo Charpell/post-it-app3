@@ -2,10 +2,25 @@ import AppStore from '../../stores/AppStore';
 import AppAPI from '../../utils/AppAPI';
 import AppDispatcher from '../../dispatcher/AppDispatcher';
 import localStorageMock from '../../../../../mock/LocalStorageMock';
-import { postMessage, registerUser, receiveUsers, receiveEmails,
-receiveNumbers, createGroup, getGroups, getNotifications, addUserToGroup,
- seenUser, receiveSeenUsers, googleLogin, googleRegister, setCurrentGroup,
- resetPassword, notifications, usersInGroup } from './seeders';
+import {
+  postMessage,
+  registerUser,
+  receiveUsers,
+  receiveEmails,
+  receiveNumbers,
+  createGroup,
+  getGroups,
+  getNotifications,
+  addUserToGroup,
+  seenUser,
+  receiveSeenUsers,
+  googleLogin,
+  googleRegister,
+  setCurrentGroup,
+  resetPassword,
+  notifications,
+  usersInGroup
+} from './seeders';
 
 window.localStorage = localStorageMock;
 

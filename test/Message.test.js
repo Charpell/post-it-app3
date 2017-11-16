@@ -149,8 +149,8 @@ describe('EndPoint: Read Message', () => {
 
   it('should successfully return all users who have read a message',
   (done) => {
-    const groupName = 'Lll';
-    const messageID = '-KyWIibYf7MwLHaXEnN1';
+    const groupName = 'Kisi';
+    const messageID = '-KurdOvqLtffNeeszlxi';
     request(app)
       .get(`/api/v1/seen/${groupName}/${messageID}`)
       .set('Accept', 'application/json')
@@ -161,12 +161,11 @@ describe('EndPoint: Read Message', () => {
         .eql('Users who have read this message');
         expect('users').to.have.lengthOf(5);
         res.body.should.have.nested.property('groupName')
-        .eql('Lll');
-        res.body.should.have.property('messageID');
+        .eql('Kisi');
         res.body.should.have.nested.property('messageID')
-        .eql('-KyWIibYf7MwLHaXEnN1');
+        .eql('-KurdOvqLtffNeeszlxi');
         res.body.should.have.nested.property('users')
-        .eql({ Bot: 'Bot', Yank: 'Yank' });
+        .eql({ Bot: 'Bot', KAWTHAR: 'KAWTHAR', Quduskunle: 'Quduskunle' });
         if (err) return done(err);
         done();
       });
