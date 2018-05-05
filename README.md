@@ -1,7 +1,7 @@
 ## Post-it-app
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
-[![Build Status](https://travis-ci.org/Charpell/post-it-app.svg?branch=Chore/second-feedback-implementation)](https://travis-ci.org/Charpell/post-it-app)
-[![Coverage Status](https://coveralls.io/repos/github/Charpell/post-it-app/badge.svg?branch=Chore%2Fsecond-feedback-implementation)](https://coveralls.io/github/Charpell/post-it-app?branch=Chore%2Fsecond-feedback-implementation) 
+[![Build Status](https://travis-ci.org/Charpell/post-it-app.svg?branch=Chore/third-feedback-implementation)](https://travis-ci.org/Charpell/post-it-app)
+[![Coverage Status](https://coveralls.io/repos/github/Charpell/post-it-app/badge.svg?branch=Chore%2Fthird-feedback-implementation)](https://coveralls.io/github/Charpell/post-it-app?branch=Chore%2Fthird-feedback-implementation)
 [![Code Climate](https://codeclimate.com/github/Charpell/post-it-app/badges/gpa.svg)](https://codeclimate.com/github/Charpell/post-it-app)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
 

@@ -45,22 +45,16 @@ describe('Create Message', () => {
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Message posted successfully');
-        res.body.should.have.property('messageData');
         res.body.should.have.property('messageData')
         .eql('This is a test message');
-        res.body.should.have.property('group');
         res.body.should.have.property('group')
         .eql('Facebook');
-        res.body.should.have.property('user');
         res.body.should.have.property('user')
         .eql('Yank');
-        res.body.should.have.property('notification');
         res.body.should.have.property('notification')
         .eql('Yank has posted in Facebook group');
-        res.body.should.have.property('priority');
         res.body.should.have.property('priority')
         .eql('Normal');
         done();
@@ -77,7 +71,6 @@ describe('Create Message', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('errorMessage');
         res.body.should.have.property('errorMessage')
         .eql('Group name is required');
         if (err) return done(err);
@@ -94,7 +87,6 @@ describe('Create Message', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('errorMessage');
       res.body.should.have.property('errorMessage')
       .eql('Group name is required');
       if (err) return done(err);
@@ -111,7 +103,6 @@ describe('Create Message', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('errorMessage');
       res.body.should.have.property('errorMessage')
       .eql('Username is required');
       if (err) return done(err);
@@ -128,7 +119,6 @@ describe('Create Message', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('errorMessage');
       res.body.should.have.property('errorMessage')
       .eql('Username is required');
       if (err) return done(err);
@@ -148,10 +138,8 @@ describe('EndPoint: Read Message', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('No user has read this message');
-        res.body.should.have.property('users');
         res.body.should.have.nested.property('users')
         .eql([]);
         if (err) return done(err);
@@ -161,28 +149,23 @@ describe('EndPoint: Read Message', () => {
 
   it('should successfully return all users who have read a message',
   (done) => {
-    const groupName = 'Lll';
-    const messageID = '-KyWIibYf7MwLHaXEnN1';
+    const groupName = 'Kisi';
+    const messageID = '-KurdOvqLtffNeeszlxi';
     request(app)
       .get(`/api/v1/seen/${groupName}/${messageID}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Users who have read this message');
-        res.body.should.have.property('users');
         expect('users').to.have.lengthOf(5);
-        res.body.should.have.property('groupName');
         res.body.should.have.nested.property('groupName')
-        .eql('Lll');
-        res.body.should.have.property('messageID');
+        .eql('Kisi');
         res.body.should.have.nested.property('messageID')
-        .eql('-KyWIibYf7MwLHaXEnN1');
-        res.body.should.have.property('users');
+        .eql('-KurdOvqLtffNeeszlxi');
         res.body.should.have.nested.property('users')
-        .eql({ Bot: 'Bot', Yank: 'Yank' });
+        .eql({ Bot: 'Bot', KAWTHAR: 'KAWTHAR', Quduskunle: 'Quduskunle' });
         if (err) return done(err);
         done();
       });

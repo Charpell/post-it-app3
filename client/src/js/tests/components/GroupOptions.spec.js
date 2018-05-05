@@ -1,10 +1,8 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import { MemoryRouter } from 'react-router-dom';
+import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
 import GroupOptions from '../../components/presentation/GroupOptions';
-import groups from './../_mocks_/groups';
 
 const allGroups = [{ groupName: 'Andela' }];
 const wrapper = mount(<GroupOptions keyName={allGroups} />);

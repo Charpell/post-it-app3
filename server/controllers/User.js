@@ -1,8 +1,15 @@
 import config from './../config';
-import { capitalizeFirstLetter, queryUserDatabase, createToken }
-from './../helpers/utils';
+import {
+  capitalizeFirstLetter,
+  queryUserDatabase,
+  createToken,
+  getServerErrors,
+  registerNewUser,
+  getServerResponse
+} from './../helpers/utils';
 
 const { firebase, usersRef } = config;
+
 
 /**
  * @description: A class that controls all user routes
@@ -31,42 +38,17 @@ class User {
         displayName
       });
       user.sendEmailVerification().then(() => {
-        usersRef.child(displayName).set({
+        const fields = {
           userName: displayName,
           password,
           email,
           uid,
           number
-        });
-        const myToken = createToken(displayName);
-
-        res.status(201).send({
-          message: 'Welcome to Post it app',
-          userData: user,
-          myToken
-        });
+        };
+        registerNewUser(displayName, fields, user, res);
       });
     })
-  .catch((error) => {
-    const errorCode = error.code;
-    if (errorCode === 'auth/invalid-email') {
-      res.status(400).json({
-        message: 'The email address is badly formatted.'
-      });
-    } else if (errorCode === 'auth/weak-password') {
-      res.status(400).json({
-        message: 'Password should be at least 6 characters'
-      });
-    } else if (errorCode === 'auth/email-already-in-use') {
-      res.status(409).json({
-        message: 'The email address is already in use by another account.'
-      });
-    } else {
-      res.status(500).json({
-        message: 'Internal Server Error'
-      });
-    }
-  });
+    .catch(error => getServerErrors(error.code, res));
   }
 
 /**
@@ -86,30 +68,21 @@ class User {
     const newUser = capitalizeFirstLetter(userName);
     usersRef.child(userName).once('value', (snapshot) => {
       if (!snapshot.exists()) {
-        usersRef.child(userName).set({
+        const fields = {
           userName: newUser,
           email,
           uid,
           number,
           google: true
-        });
-        const myToken = createToken(userName);
-
-        res.status(201).json({
-          message: 'Welcome to Post it app',
-          displayName: userName,
-          myToken
-        });
+        };
+        registerNewUser(newUser, fields, res);
       } else {
-        res.status(409).json({
-          message: 'Username already exist'
+        getServerResponse(res, 409, {
+          message: 'Username already exist',
         });
       }
-    }).catch(() => {
-      res.status(500).json(
-        { message: 'Internal Server Error' }
-      );
-    });
+    })
+    .catch(error => getServerErrors(error.code, res));
   }
 
 /**
@@ -130,32 +103,13 @@ class User {
     .then((user) => {
       const displayName = user.displayName;
       const myToken = createToken(displayName);
-
-      res.status(200).send({
+      return getServerResponse(res, 200, {
         message: 'Welcome to Post it app',
         userData: user,
         myToken
       });
-    }).catch((error) => {
-      const errorCode = error.code;
-      if (errorCode === 'auth/invalid-email') {
-        res.status(400).json({
-          message: 'The email address is badly formatted.'
-        });
-      } else if (errorCode === 'auth/user-not-found') {
-        res.status(404).json({
-          message: 'The email does not exist.'
-        });
-      } else if (errorCode === 'auth/wrong-password') {
-        res.status(404).json({
-          message: 'The password is invalid.'
-        });
-      } else {
-        res.status(500).json(
-            { message: 'Internal Server Error' }
-          );
-      }
-    });
+    })
+    .catch(error => getServerErrors(error.code, res));
   }
 
 /**
@@ -169,15 +123,10 @@ class User {
   * @return {void}  void
   */
   static signout(req, res) {
-    firebase.auth().signOut().then(() => {
-      res.status(200).send({
-        message: 'You have successfully signed out'
-      });
-    }).catch(() => {
-      res.status(500).send({
-        message: 'Internal Server Error'
-      });
-    });
+    firebase.auth().signOut().then(() => getServerResponse(res, 200, {
+      message: 'You have successfully signed out',
+    }))
+    .catch(error => getServerErrors(error.code, res));
   }
 
 /**
@@ -204,18 +153,14 @@ class User {
           notification: notificationData.val()
         });
       });
-      if (notifications.length === 0) {
-        res.status(200).json(
-          { message: 'You currently do not have notification' }
-        );
-      } else {
-        res.status(200).send(notifications);
+      if (!notifications.length) {
+        return getServerResponse(res, 200, {
+          message: 'You currently do not have notification',
+        });
       }
-    }).catch(() => {
-      res.status(500).send({
-        message: 'Internal Server Error'
-      });
-    });
+      return getServerResponse(res, 200, notifications);
+    })
+    .catch(error => getServerErrors(error.code, res));
   }
 
 
@@ -279,27 +224,17 @@ class User {
   static resetPassword(req, res) {
     const emailAddress = req.body.email;
     firebase.auth().sendPasswordResetEmail(emailAddress)
-    .then(() => {
-      res.status(200).json({
-        message: 'An email has been sent to your inbox for password reset.'
-      });
-    }).catch((error) => {
-      const errorCode = error.code;
-      if (errorCode === 'auth/invalid-email') {
-        res.status(400).json({
-          message: 'The email address is badly formatted.'
-        });
-      } else if (errorCode === 'auth/user-not-found') {
+    .then(() => getServerResponse(res, 200, {
+      message: 'An email has been sent to your inbox for password reset.',
+    }))
+    .catch((error) => {
+      if (error.code === 'auth/user-not-found') {
         res.status(404).json({ message: 'Email address does not exist' });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error'
-        });
+        getServerErrors(error.code, res);
       }
     });
   }
-
 }
 
 export default User;
-

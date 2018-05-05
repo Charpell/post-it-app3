@@ -6,7 +6,6 @@ import app from '../server/app';
 
 const should = chai.should();
 const expect = chai.expect;
-
 const password = '123456';
 
 
@@ -42,7 +41,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -58,7 +56,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -74,7 +71,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -90,7 +86,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Password is required');
         if (err) return done(err);
@@ -106,7 +101,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -122,7 +116,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -138,7 +131,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -154,7 +146,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Password is required');
         if (err) return done(err);
@@ -171,7 +162,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('The email address is badly formatted.');
         if (err) return done(err);
@@ -187,7 +177,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(409);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('The email address is already in use by another account.');
         if (err) return done(err);
@@ -205,7 +194,6 @@ describe('EndPoint: SignUp', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Password should be at least 6 characters');
         if (err) return done(err);
@@ -247,7 +235,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Email is required');
         if (err) return done(err);
@@ -264,7 +251,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Password is required');
         if (err) return done(err);
@@ -280,7 +266,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Email is required');
         if (err) return done(err);
@@ -296,7 +281,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Password is required');
         if (err) return done(err);
@@ -313,7 +297,6 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('The email address is badly formatted.');
         if (err) return done(err);
@@ -330,9 +313,8 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('The email does not exist.');
+        .eql('The email or password you entered is incorrect');
         if (err) return done(err);
         done();
       });
@@ -347,9 +329,8 @@ describe('SignIn Route', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('The password is invalid.');
+        .eql('The email or password you entered is incorrect');
         if (err) return done(err);
         done();
       });
@@ -370,7 +351,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -387,7 +367,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -404,7 +383,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -421,7 +399,6 @@ describe('Google SignUp Route', () => {
     .end((err, res) => {
       res.status.should.equal(400);
       res.body.should.be.a('object');
-      res.body.should.have.property('message');
       res.body.message.should.be
       .eql('Uid is required');
       if (err) return done(err);
@@ -438,7 +415,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Uid is required');
         if (err) return done(err);
@@ -454,7 +430,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username is required');
         if (err) return done(err);
@@ -470,7 +445,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Email is required');
         if (err) return done(err);
@@ -486,7 +460,6 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Phone number is required');
         if (err) return done(err);
@@ -502,37 +475,8 @@ describe('Google SignUp Route', () => {
       .end((err, res) => {
         res.status.should.equal(409);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('Username already exist');
-        if (err) return done(err);
-        done();
-      });
-  });
-});
-
-
-describe('Home Page', () => {
-  it('should open the home page of the app', (done) => {
-    request(app)
-      .get('/api/v1/')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', 'text/html; charset=UTF-8')
-      .expect(200)
-      .end((err) => {
-        if (err) return done(err);
-        done();
-      });
-  });
-
-  it('should redirect to home page when a random route is used',
-  (done) => {
-    request(app)
-      .get('/api/v1/test')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', 'text/html; charset=UTF-8')
-      .expect(200)
-      .end((err) => {
         if (err) return done(err);
         done();
       });
@@ -548,7 +492,6 @@ describe('SignOut Route', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('You have successfully signed out');
         if (err) return done(err);
@@ -583,7 +526,6 @@ describe('EndPoint: Reset Password', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('An email has been sent to your inbox for password reset.');
         if (err) return done(err);
@@ -600,7 +542,6 @@ describe('EndPoint: Reset Password', () => {
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('Email address does not exist');
         if (err) return done(err);
@@ -617,7 +558,6 @@ describe('EndPoint: Reset Password', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.message.should.be
         .eql('The email address is badly formatted.');
         if (err) return done(err);
@@ -635,7 +575,7 @@ describe('EndPoint: Phone Numbers', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(22);
+        res.body.should.have.lengthOf(21);
         expect(res.body).include(
           '2345677676878',
           '2345677676338',
@@ -661,7 +601,7 @@ describe('EndPoint: Emails', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(22);
+        res.body.should.have.lengthOf(21);
         expect(res.body).include(
           'emekasmithyu@gmal.com',
           'jat@gmail.com',
@@ -685,7 +625,7 @@ describe('EndPoint: Users', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('array');
-        res.body.should.have.lengthOf(22);
+        res.body.should.have.lengthOf(21);
         expect(res.body).include(
           'Abdul-Quddus',
           'Gideon',

@@ -1,8 +1,13 @@
 import moment from 'moment';
 
 import config from './../config';
-import { sendInAppNotification, sendEmailNotification, sendSMSNotification }
-from '../helpers/utils';
+import {
+  sendInAppNotification,
+  sendEmailNotification,
+  sendSMSNotification,
+  getServerResponse,
+  getServerErrors
+} from '../helpers/utils';
 
 const { groupRef } = config;
 
@@ -33,10 +38,10 @@ class Message {
       }).key;
 
     groupRef.child(group).child('Messages').child(messageKey).child('Seen')
-      .child('Bot')
-      .set('Bot')
+      .child(user)
+      .set(user)
       .then(() => {
-        res.status(201).json({
+        getServerResponse(res, 201, {
           message: 'Message posted successfully',
           messageData: message,
           group,
@@ -44,16 +49,11 @@ class Message {
           notification,
           priority
         });
+        sendInAppNotification(group, user, notification);
+        sendEmailNotification(group, priority);
+        sendSMSNotification(group, priority);
       })
-      .catch(() => {
-        res.status(500).json(
-          { message: 'Internal server error' }
-        );
-      });
-
-    sendInAppNotification(group, user, notification);
-    sendEmailNotification(group, priority);
-    sendSMSNotification(group, priority);
+      .catch(error => getServerErrors(error.code, res));
   }
 
 
@@ -72,36 +72,29 @@ class Message {
     const numberOfUsers = [];
 
     groupRef.child(groupName).child('Messages')
-    .child(messageID).child('Seen')
-    .once('value', (users) => {
-      users.forEach((userSnapShot) => {
-        numberOfUsers.push({
-          userName: userSnapShot.val().users
+      .child(messageID).child('Seen')
+      .once('value', (users) => {
+        users.forEach((userSnapShot) => {
+          numberOfUsers.push({
+            userName: userSnapShot.val().users
+          });
         });
-      });
 
-      if (numberOfUsers.length === 0) {
-        res.status(200).json({
-          message: 'No user has read this message',
-          users: []
+        if (!numberOfUsers.length) {
+          return getServerResponse(res, 200, {
+            message: 'No user has read this message',
+            users: []
+          });
         }
-        );
-      } else {
-        res.status(200).json({
+        return getServerResponse(res, 200, {
           message: 'Users who have read this message',
           users,
           groupName,
           messageID
         });
-      }
-    })
-    .catch(() => {
-      res.status(500).json({
-        message: 'Internal server error'
-      });
-    });
+      })
+    .catch(error => getServerErrors(error.code, res));
   }
-
 }
 
 

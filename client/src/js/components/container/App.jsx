@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+
 import Footer from '../presentation/Footer';
 import Routes from '../presentation/Routes';
 import AppStore from '../../stores/AppStore';
 import Navigation from '../presentation/Navigation';
 import Dashboard from './Dashboard';
+import { getUsername } from '../../helpers/utils';
 
 
 /**
@@ -81,7 +83,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {localStorage.getItem('user') == null ?
+        {!getUsername() ?
           <div className="row">
             <Navigation />
             <div className="row">
@@ -94,7 +96,7 @@ class App extends Component {
             </div>
           </div> :
           <Dashboard />};
-</div>
+      </div>
     );
   }
 }
