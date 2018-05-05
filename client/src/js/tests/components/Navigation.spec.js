@@ -1,28 +1,16 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import renderer from 'react-test-renderer';
-import Navigation from '../../components/Navigation'
+import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router-dom';
 
-
-jest.mock('../../../../../server/config', () => ({
-  }));
-
+import Navigation from '../../components/presentation/Navigation';
 
 describe('Navigation Component', () => {
-  it('It should Navigation Home component', () => {
-    const tree = renderer.create(<Navigation />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
+  const wrapper = mount(<MemoryRouter><Navigation /></MemoryRouter>);
   it('should display the necessary elements', () => {
-    const wrapper = mount(<Navigation />);
-    expect(wrapper.find('div').length).toBe(7);
-    expect(wrapper.find('h2').length).toBe(1);
-    expect(wrapper.find('h4').length).toBe(1);
-    expect(wrapper.find('form').length).toBe(1);
-    expect(wrapper.find('input').length).toBe(1);
-    expect(wrapper.find('a').length).toBe(1);
-    expect(wrapper.find('br').length).toBe(3);
-});
-
+    expect(wrapper.find('div').length).toBe(4);
+    expect(wrapper.find('nav').length).toBe(1);
+    expect(wrapper.find('ul').length).toBe(1);
+    expect(wrapper.find('li').length).toBe(1);
+    expect(wrapper.find('a').length).toBe(2);
+  });
 });

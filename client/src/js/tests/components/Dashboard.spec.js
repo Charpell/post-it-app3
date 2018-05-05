@@ -1,41 +1,62 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import renderer from 'react-test-renderer';
-import Dashboard from '../../components/Dashboard/Dashboard'
+import { shallow } from 'enzyme';
 
+import Dashboard from '../../components/container/Dashboard';
+import DashboardNavigation from
+'../../components/container/DashboardNavigation';
+import MessageBoard from '../../components/container/MessageBoard';
+import SideBar from '../../components/presentation/SideBar';
+import WelcomeBoard from '../../components/presentation/WelcomeBoard';
+import localStorageMock from '../../../../../mock/LocalStorageMock';
+import { newObjectProperty } from '../mocks/seeder';
+
+
+window.localStorage = localStorageMock;
 
 jest.mock('../../../../../server/config', () => ({
-  }));
+}));
+
+jest.mock('../../stores/AppStore');
+
+
+const mock = jest.fn();
 
 
 describe('Dashboard Component', () => {
-  it('About component should render as expected', () => {
-    const tree = renderer.create(<Dashboard />).toJSON();
-    expect(tree).toMatchSnapshot();
+  const wrapper = shallow(<Dashboard />);
+
+  it('should contain a <WelcomeBoard /> component', () => {
+    expect(wrapper.find(WelcomeBoard)).toHaveLength(1);
   });
 
-  it('should display the necessary elements', () => {
-    const wrapper = shallow(<Dashboard />);
+  it('should contain a <SideBar /> component', () => {
+    expect(wrapper.find(SideBar)).toHaveLength(1);
+  });
+
+  it('should contain a <DashboardNavigation /> component', () => {
+    expect(wrapper.find(DashboardNavigation)).toHaveLength(1);
+  });
+
+  it('should return initial default state inside the component', () => {
+    expect(wrapper.state().allUsers.length).toEqual(0);
+    expect(wrapper.state().currentGroup).toEqual('');
+    expect(wrapper.state().groups.length).toEqual(0);
+    expect(wrapper.state().notification.length).toEqual(0);
+  });
+
+  it('should contain a new state when the store has updated',
+    () => {
+      wrapper.setState(newObjectProperty);
+      expect(wrapper.state('user')).toEqual('Ebuka');
+      expect(wrapper.state().currentGroup).toEqual('Andela');
+      expect(wrapper.state().groups.length).toEqual(2);
+      expect(wrapper.state().notification.length).toEqual(1);
+      expect(wrapper.find(MessageBoard)).toHaveLength(1);
+    });
+
+  it('expects the following functions to be defined', () => {
     wrapper.instance().componentDidMount();
     wrapper.instance().componentWillUnmount();
-    expect(wrapper.find('div').length).toBe(7);
-    expect(wrapper.find('h2').length).toBe(1);
-    expect(wrapper.find('h4').length).toBe(1);
-    expect(wrapper.find('form').length).toBe(1);
-    expect(wrapper.find('input').length).toBe(1);
-    expect(wrapper.find('a').length).toBe(1);
-    expect(wrapper.find('br').length).toBe(3);
-});
-
-it('It should call onChange method', () => {
-    const event = {
-        target: {
-          name: 'name',
-          value: 'value',
-        },
-      };
-    const wrapper = mount(<Dashboard />);
-    wrapper.instance().onChange(event);
-});
-
+    wrapper.instance().onChange();
+  });
 });

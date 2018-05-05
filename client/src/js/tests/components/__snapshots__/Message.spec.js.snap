@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Message component should create a snapshot of itself 1`] = `
+<div>
+  <a
+    className="list-group-item list-group-item-action"
+    href="#"
+  >
+    <div
+      className="d-flex w-100 justify-content-between"
+    >
+      <h5
+        className="mb-1"
+      >
+        <strong />
+          
+        <small
+          className="text-muted"
+        />
+          
+        <span
+          onClick={[Function]}
+        >
+          <span
+            className="glyphicon glyphicon-user"
+          />
+        </span>
+      </h5>
+    </div>
+    <p
+      className="mb-1"
+    />
+  </a>
+  <div>
+    <li
+      className="collapsed"
+      data-toggle="collapse"
+      onClick={undefined}
+    >
+      <a
+        href="#"
+        onClick={undefined}
+      >
+        <i
+          className="fa fa-globe fa-lg"
+        />
+          
+      </a>
+    </li>
+  </div>
+</div>
+`;

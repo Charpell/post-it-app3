@@ -19,12 +19,13 @@ const groupRef = db.ref('Groups');
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-module.exports = {
+const config = {
   firebase,
   db,
   usersRef,
   groupRef,
   firebaseAuth,
-  provider,
+  provider
 };
 
+export default config;

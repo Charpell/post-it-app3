@@ -1,22 +1,24 @@
-const chaiHttp = require('chai-http');
-const chai = require('chai');
+import chai from 'chai';
+import request from 'supertest';
+import faker from 'faker';
 
-const app = require('../server/app');
-const request = require('supertest');
+import app from '../server/app';
 
-chai.use(chaiHttp);
 const should = chai.should();
+const expect = chai.expect;
+
 const email = 'jat@gmail.com';
 const password = '123456';
+const groupID = faker.name.jobArea();
 
 describe('Create Group', () => {
-  const groupName = 'SoccerNet';
+  const group = 'Denly';
   const userName = 'Ebuka';
 
-  it('should return status 200 when the user logs in',
+  it('should successfully sign in a resgistered user',
   (done) => {
     request(app)
-      .post('/user/signin')
+      .post('/api/v1/user/signin')
       .send({ email, password })
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -30,27 +32,81 @@ describe('Create Group', () => {
         .eql('Jat');
         res.body.should.have.nested.property('userData.uid')
         .eql('Sb1mgQOVOoXafC3MMnQXVjKlPdJ2');
-        res.body.should.have.nested.property('userData.apiKey')
-        .eql('AIzaSyDx5Xi4OxL1F18jqNO1L1JyAhO8CM3J3h0');
-        res.body.should.have.nested.property('userData.authDomain')
-        .eql('post-it-app-8b2cb.firebaseapp.com');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 201 when a group is created', (done) => {
+  it('should return validation error if group name is undefined', (done) => {
     request(app)
-      .post('/group')
-      .send({ userName, groupName })
+    .post('/api/v1/group')
+    .send({ userName })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.message.should.be
+      .eql('Group name is required');
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('should return validation error if group name field is empty', (done) => {
+    request(app)
+    .post('/api/v1/group')
+    .send({ group: '', userName })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.message.should.be
+      .eql('Group name is required');
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('should return validation error if username is empty', (done) => {
+    request(app)
+    .post('/api/v1/group')
+    .send({ group, userName: '' })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.message.should.be
+      .eql('Username is required');
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('should return validation error if username is undefined', (done) => {
+    request(app)
+    .post('/api/v1/group')
+    .send({ group })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      res.status.should.equal(400);
+      res.body.should.be.a('object');
+      res.body.message.should.be
+      .eql('Username is required');
+      if (err) return done(err);
+      done();
+    });
+  });
+
+  it('should successfully create a group', (done) => {
+    request(app)
+      .post('/api/v1/group')
+      .send({ userName, group: groupID })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
-        res.body.should.have.property('groupName');
         res.body.should.have.nested.property('groupName')
-        .eql('SoccerNet');
+        .eql(groupID);
         res.body.should.have.nested.property('userName')
         .eql('Ebuka');
         if (err) return done(err);
@@ -58,17 +114,16 @@ describe('Create Group', () => {
       });
   });
 
-  it('should return status 409 when a group already exist', (done) => {
+  it('should not create a group with an existing group name', (done) => {
     request(app)
-      .post('/group')
-      .send({ userName, groupName: 'Exist' })
+      .post('/api/v1/group')
+      .send({ userName, group: 'Exist' })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(409);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('Group already exists');
+        .eql('Group already exist');
         if (err) return done(err);
         done();
       });
@@ -76,56 +131,51 @@ describe('Create Group', () => {
 });
 
 describe('Add User to a Group', () => {
-  it('should return status 201 when a user is added to a Group', (done) => {
+  it('should successfully add a user to a group', (done) => {
     request(app)
-      .post('/group/groupName/user')
-      .send({ user: 'Jat', groupName: 'Facebook' })
+      .post('/api/v1/group/groupName/user')
+      .send({ newUser: 'Jat', groupName: groupID })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(201);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
         .eql('User added successfully');
-        res.body.should.have.property('user');
         res.body.should.have.property('user')
         .eql('Jat');
-        res.body.should.have.property('groupName');
         res.body.should.have.property('groupName')
-        .eql('Facebook');
+        .eql(groupID);
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 404 if the group does not exist', (done) => {
+  it('should return validation error if the group does not exist', (done) => {
     request(app)
-      .post('/group/groupName/user')
-      .send({ user: 'Jat', groupName: 'Book' })
+      .post('/api/v1/group/groupName/user')
+      .send({ newUser: 'Jat', groupName: 'Book' })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('Group dose not exists');
+        .eql('Group does not exist');
         if (err) return done(err);
         done();
       });
   });
 
-  it('should return status 404 when the user does not exist',
+  it('should return validation error if the user does not exist',
   (done) => {
     request(app)
-      .post('/group/groupName/user')
-      .send({ user: 'Mike', groupName: 'Facebook' })
+      .post('/api/v1/group/groupName/user')
+      .send({ newUser: 'Mike', groupName: 'Facebook' })
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(404);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
         res.body.should.have.property('message')
-        .eql('The User dose not exist');
+        .eql('The User does not exist');
         if (err) return done(err);
         done();
       });
@@ -134,74 +184,33 @@ describe('Add User to a Group', () => {
 
 describe('EndPoint: Users and Messages in a Group',
 () => {
-  it('should return status 200 when the all users and messages are retrived',
+  it('should successfully return all users and messages in a group',
   (done) => {
     request(app)
-      .get('/groups/:groupName/:user')
-      .send({ groupName: 'FILE', user: 'Hh' })
+      .get('/api/v1/groups/Nnn/Jat')
       .set('Accept', 'application/json')
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('message');
-        res.body.should.have.property('message')
-        .eql('Getting Messages and Users in :groupName database');
-        if (err) return done(err);
-        done();
-      });
-  });
-});
-
-describe('EndPoint: Get all Groups of a User', () => {
-  it('should return status 200 when the user logs in',
-  (done) => {
-    request(app)
-      .post('/user/signin')
-      .send({ email, password })
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.should.be.a('object');
-        res.body.should.have.property('message')
-        .eql('Welcome to Post it app');
-        res.body.should.have.nested.property('userData.email')
-        .eql('jat@gmail.com');
-        res.body.should.have.nested.property('userData.displayName')
-        .eql('Jat');
-        res.body.should.have.nested.property('userData.uid')
-        .eql('Sb1mgQOVOoXafC3MMnQXVjKlPdJ2');
-        res.body.should.have.nested.property('userData.apiKey')
-        .eql('AIzaSyDx5Xi4OxL1F18jqNO1L1JyAhO8CM3J3h0');
-        res.body.should.have.nested.property('userData.authDomain')
-        .eql('post-it-app-8b2cb.firebaseapp.com');
-        if (err) return done(err);
-        done();
-      });
-  });
-
-  it('should return status 200 when all groups of a user is received',
-  (done) => {
-    request(app)
-      .get('/group/Seun')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.should.be.a('array');
-        res.body.should.have.lengthOf(16);
-        if (err) return done(err);
-        done();
-      });
-  });
-
-  it('should return status 200 when all groups of a user is received',
-  (done) => {
-    request(app)
-      .get('/group/Temi')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.should.be.a('array');
-        res.body.should.have.lengthOf(1);
+        res.body.should.have.nested.property('message')
+        .eql('Messages and Users in Nnn database');
+        res.body.should.have.nested.property('messages')
+        .eql([{
+          id: '-KyFQl6m3RWuS-yhMQkR',
+          user: 'Chap',
+          message: 'Op',
+          time: '9:25 am, Nov 6th',
+          priority: 'Normal'
+        },
+        {
+          id: '-KyFQmloB2p8qIgGkn3F',
+          user: 'Chap',
+          message: 'Urgent',
+          time: '9:25 am, Nov 6th',
+          priority: 'Urgent'
+        }]);
+        res.body.should.have.nested.property('users')
+          .eql([{ userName: 'Bot' }, { userName: 'Jat' }]);
         if (err) return done(err);
         done();
       });
